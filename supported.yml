@@ -1,0 +1,229 @@
+datasources:
+  - model_name: app_group
+    oas_endpoint: /apps/protocols.eda.nokia.com
+    oas_schema: AppGroup
+  - model_name: resource_list
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2
+    oas_schema: ResourceList
+  - model_name: aggregate_route_list
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/aggregateroutes
+    oas_schema: com.nokia.eda.protocols.v2.AggregateRouteList
+  - model_name: aggregate_route
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/aggregateroutes/{name}
+    oas_schema: com.nokia.eda.protocols.v2.AggregateRoute
+  - model_name: bgp_group_list
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/bgpgroups
+    oas_schema: com.nokia.eda.protocols.v2.BGPGroupList
+  - model_name: bgp_group
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/bgpgroups/{name}
+    oas_schema: com.nokia.eda.protocols.v2.BGPGroup
+  - model_name: bgp_peer_list
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/bgppeers
+    oas_schema: com.nokia.eda.protocols.v2.BGPPeerList
+  - model_name: bgp_peer
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/bgppeers/{name}
+    oas_schema: com.nokia.eda.protocols.v2.BGPPeer
+  - model_name: default_aggregate_route_list
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultaggregateroutes
+    oas_schema: com.nokia.eda.protocols.v2.DefaultAggregateRouteList
+  - model_name: default_aggregate_route
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultaggregateroutes/{name}
+    oas_schema: com.nokia.eda.protocols.v2.DefaultAggregateRoute
+  - model_name: default_bgp_group_list
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultbgpgroups
+    oas_schema: com.nokia.eda.protocols.v2.DefaultBGPGroupList
+  - model_name: default_bgp_group
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultbgpgroups/{name}
+    oas_schema: com.nokia.eda.protocols.v2.DefaultBGPGroup
+  - model_name: default_bgp_peer_list
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultbgppeers
+    oas_schema: com.nokia.eda.protocols.v2.DefaultBGPPeerList
+  - model_name: default_bgp_peer
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultbgppeers/{name}
+    oas_schema: com.nokia.eda.protocols.v2.DefaultBGPPeer
+  - model_name: default_ospf_area_list
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultospfareas
+    oas_schema: com.nokia.eda.protocols.v2.DefaultOSPFAreaList
+  - model_name: default_ospf_area
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultospfareas/{name}
+    oas_schema: com.nokia.eda.protocols.v2.DefaultOSPFArea
+  - model_name: default_ospf_instance_list
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultospfinstances
+    oas_schema: com.nokia.eda.protocols.v2.DefaultOSPFInstanceList
+  - model_name: default_ospf_instance
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultospfinstances/{name}
+    oas_schema: com.nokia.eda.protocols.v2.DefaultOSPFInstance
+  - model_name: default_ospf_interface_list
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultospfinterfaces
+    oas_schema: com.nokia.eda.protocols.v2.DefaultOSPFInterfaceList
+  - model_name: default_ospf_interface
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultospfinterfaces/{name}
+    oas_schema: com.nokia.eda.protocols.v2.DefaultOSPFInterface
+  - model_name: default_route_reflector_client_list
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultroutereflectorclients
+    oas_schema: com.nokia.eda.protocols.v2.DefaultRouteReflectorClientList
+  - model_name: default_route_reflector_client
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultroutereflectorclients/{name}
+    oas_schema: com.nokia.eda.protocols.v2.DefaultRouteReflectorClient
+  - model_name: default_route_reflector_list
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultroutereflectors
+    oas_schema: com.nokia.eda.protocols.v2.DefaultRouteReflectorList
+  - model_name: default_route_reflector
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultroutereflectors/{name}
+    oas_schema: com.nokia.eda.protocols.v2.DefaultRouteReflector
+  - model_name: default_static_route_list
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultstaticroutes
+    oas_schema: com.nokia.eda.protocols.v2.DefaultStaticRouteList
+  - model_name: default_static_route
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultstaticroutes/{name}
+    oas_schema: com.nokia.eda.protocols.v2.DefaultStaticRoute
+  - model_name: ospf_area_list
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/ospfareas
+    oas_schema: com.nokia.eda.protocols.v2.OSPFAreaList
+  - model_name: ospf_area
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/ospfareas/{name}
+    oas_schema: com.nokia.eda.protocols.v2.OSPFArea
+  - model_name: ospf_instance_list
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/ospfinstances
+    oas_schema: com.nokia.eda.protocols.v2.OSPFInstanceList
+  - model_name: ospf_instance
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/ospfinstances/{name}
+    oas_schema: com.nokia.eda.protocols.v2.OSPFInstance
+  - model_name: ospf_interface_list
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/ospfinterfaces
+    oas_schema: com.nokia.eda.protocols.v2.OSPFInterfaceList
+  - model_name: ospf_interface
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/ospfinterfaces/{name}
+    oas_schema: com.nokia.eda.protocols.v2.OSPFInterface
+  - model_name: route_reflector_client_list
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/routereflectorclients
+    oas_schema: com.nokia.eda.protocols.v2.RouteReflectorClientList
+  - model_name: route_reflector_client
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/routereflectorclients/{name}
+    oas_schema: com.nokia.eda.protocols.v2.RouteReflectorClient
+  - model_name: route_reflector_list
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/routereflectors
+    oas_schema: com.nokia.eda.protocols.v2.RouteReflectorList
+  - model_name: route_reflector
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/routereflectors/{name}
+    oas_schema: com.nokia.eda.protocols.v2.RouteReflector
+  - model_name: static_route_list
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/staticroutes
+    oas_schema: com.nokia.eda.protocols.v2.StaticRouteList
+  - model_name: static_route
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/staticroutes/{name}
+    oas_schema: com.nokia.eda.protocols.v2.StaticRoute
+  - model_name: check_default_bgp_peers_list
+    oas_endpoint: /workflows/v1/protocols.eda.nokia.com/v2/namespaces/{namespace}/checkdefaultbgppeerss
+    oas_schema: com.nokia.eda.protocols.v2.CheckDefaultBgpPeersList
+  - model_name: check_default_bgp_peers
+    oas_endpoint: /workflows/v1/protocols.eda.nokia.com/v2/namespaces/{namespace}/checkdefaultbgppeerss/{name}
+    oas_schema: com.nokia.eda.protocols.v2.CheckDefaultBgpPeers
+  - model_name: workflow_get_inputs_resp_elem
+    oas_endpoint: /workflows/v1/protocols.eda.nokia.com/v2/namespaces/{namespace}/checkdefaultbgppeerss/{name}/_input
+    oas_schema: WorkflowGetInputsRespElem
+
+resources:
+  - model_name: aggregate_route
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/aggregateroutes
+    oas_schema: com.nokia.eda.protocols.v2.AggregateRoute
+  - model_name: bgp_group
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/bgpgroups
+    oas_schema: com.nokia.eda.protocols.v2.BGPGroup
+  - model_name: bgp_peer
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/bgppeers
+    oas_schema: com.nokia.eda.protocols.v2.BGPPeer
+  - model_name: default_aggregate_route
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultaggregateroutes
+    oas_schema: com.nokia.eda.protocols.v2.DefaultAggregateRoute
+  - model_name: default_bgp_group
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultbgpgroups
+    oas_schema: com.nokia.eda.protocols.v2.DefaultBGPGroup
+  - model_name: default_bgp_peer
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultbgppeers
+    oas_schema: com.nokia.eda.protocols.v2.DefaultBGPPeer
+  - model_name: default_ospf_area
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultospfareas
+    oas_schema: com.nokia.eda.protocols.v2.DefaultOSPFArea
+  - model_name: default_ospf_instance
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultospfinstances
+    oas_schema: com.nokia.eda.protocols.v2.DefaultOSPFInstance
+  - model_name: default_ospf_interface
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultospfinterfaces
+    oas_schema: com.nokia.eda.protocols.v2.DefaultOSPFInterface
+  - model_name: default_route_reflector_client
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultroutereflectorclients
+    oas_schema: com.nokia.eda.protocols.v2.DefaultRouteReflectorClient
+  - model_name: default_route_reflector
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultroutereflectors
+    oas_schema: com.nokia.eda.protocols.v2.DefaultRouteReflector
+  - model_name: default_static_route
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultstaticroutes
+    oas_schema: com.nokia.eda.protocols.v2.DefaultStaticRoute
+  - model_name: ospf_area
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/ospfareas
+    oas_schema: com.nokia.eda.protocols.v2.OSPFArea
+  - model_name: ospf_instance
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/ospfinstances
+    oas_schema: com.nokia.eda.protocols.v2.OSPFInstance
+  - model_name: ospf_interface
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/ospfinterfaces
+    oas_schema: com.nokia.eda.protocols.v2.OSPFInterface
+  - model_name: route_reflector_client
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/routereflectorclients
+    oas_schema: com.nokia.eda.protocols.v2.RouteReflectorClient
+  - model_name: route_reflector
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/routereflectors
+    oas_schema: com.nokia.eda.protocols.v2.RouteReflector
+  - model_name: static_route
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/staticroutes
+    oas_schema: com.nokia.eda.protocols.v2.StaticRoute
+  - model_name: check_default_bgp_peers
+    oas_endpoint: /workflows/v1/protocols.eda.nokia.com/v2/namespaces/{namespace}/checkdefaultbgppeerss
+    oas_schema: com.nokia.eda.protocols.v2.CheckDefaultBgpPeers
+
+qualified:
+  datasources:
+    - oas_schema: IntentTargets
+      get: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/aggregateroutes/{name}/_targets
+    - oas_schema: ResourceHistory
+      get: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/aggregateroutes/{name}/_revs
+    - oas_schema: UIResult
+      get: /apps/protocols.eda.nokia.com/v2/_ui/{pathname}
+    - oas_schema: com.nokia.eda.protocols.v2.AggregateRoute_DeletedResources
+      get: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/aggregateroutes/_deleted
+    - oas_schema: com.nokia.eda.protocols.v2.BGPGroup_DeletedResources
+      get: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/bgpgroups/_deleted
+    - oas_schema: com.nokia.eda.protocols.v2.BGPPeer_DeletedResources
+      get: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/bgppeers/_deleted
+    - oas_schema: com.nokia.eda.protocols.v2.DefaultAggregateRoute_DeletedResources
+      get: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultaggregateroutes/_deleted
+    - oas_schema: com.nokia.eda.protocols.v2.DefaultBGPGroup_DeletedResources
+      get: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultbgpgroups/_deleted
+    - oas_schema: com.nokia.eda.protocols.v2.DefaultBGPPeer_DeletedResources
+      get: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultbgppeers/_deleted
+    - oas_schema: com.nokia.eda.protocols.v2.DefaultOSPFArea_DeletedResources
+      get: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultospfareas/_deleted
+    - oas_schema: com.nokia.eda.protocols.v2.DefaultOSPFInstance_DeletedResources
+      get: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultospfinstances/_deleted
+    - oas_schema: com.nokia.eda.protocols.v2.DefaultOSPFInterface_DeletedResources
+      get: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultospfinterfaces/_deleted
+    - oas_schema: com.nokia.eda.protocols.v2.DefaultRouteReflectorClient_DeletedResources
+      get: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultroutereflectorclients/_deleted
+    - oas_schema: com.nokia.eda.protocols.v2.DefaultRouteReflector_DeletedResources
+      get: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultroutereflectors/_deleted
+    - oas_schema: com.nokia.eda.protocols.v2.DefaultStaticRoute_DeletedResources
+      get: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultstaticroutes/_deleted
+    - oas_schema: com.nokia.eda.protocols.v2.OSPFArea_DeletedResources
+      get: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/ospfareas/_deleted
+    - oas_schema: com.nokia.eda.protocols.v2.OSPFInstance_DeletedResources
+      get: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/ospfinstances/_deleted
+    - oas_schema: com.nokia.eda.protocols.v2.OSPFInterface_DeletedResources
+      get: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/ospfinterfaces/_deleted
+    - oas_schema: com.nokia.eda.protocols.v2.RouteReflectorClient_DeletedResources
+      get: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/routereflectorclients/_deleted
+    - oas_schema: com.nokia.eda.protocols.v2.RouteReflector_DeletedResources
+      get: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/routereflectors/_deleted
+    - oas_schema: com.nokia.eda.protocols.v2.StaticRoute_DeletedResources
+      get: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/staticroutes/_deleted
+  resources:
