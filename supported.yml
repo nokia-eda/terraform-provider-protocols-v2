@@ -41,6 +41,18 @@ datasources:
   - model_name: default_bgp_peer
     oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultbgppeers/{name}
     oas_schema: com.nokia.eda.protocols.v2.DefaultBGPPeer
+  - model_name: default_isis_instance_list
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultisisinstances
+    oas_schema: com.nokia.eda.protocols.v2.DefaultISISInstanceList
+  - model_name: default_isis_instance
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultisisinstances/{name}
+    oas_schema: com.nokia.eda.protocols.v2.DefaultISISInstance
+  - model_name: default_isis_interface_list
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultisisinterfaces
+    oas_schema: com.nokia.eda.protocols.v2.DefaultISISInterfaceList
+  - model_name: default_isis_interface
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultisisinterfaces/{name}
+    oas_schema: com.nokia.eda.protocols.v2.DefaultISISInterface
   - model_name: default_ospf_area_list
     oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultospfareas
     oas_schema: com.nokia.eda.protocols.v2.DefaultOSPFAreaList
@@ -77,6 +89,18 @@ datasources:
   - model_name: default_static_route
     oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultstaticroutes/{name}
     oas_schema: com.nokia.eda.protocols.v2.DefaultStaticRoute
+  - model_name: isis_instance_list
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/isisinstances
+    oas_schema: com.nokia.eda.protocols.v2.ISISInstanceList
+  - model_name: isis_instance
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/isisinstances/{name}
+    oas_schema: com.nokia.eda.protocols.v2.ISISInstance
+  - model_name: isis_interface_list
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/isisinterfaces
+    oas_schema: com.nokia.eda.protocols.v2.ISISInterfaceList
+  - model_name: isis_interface
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/isisinterfaces/{name}
+    oas_schema: com.nokia.eda.protocols.v2.ISISInterface
   - model_name: ospf_area_list
     oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/ospfareas
     oas_schema: com.nokia.eda.protocols.v2.OSPFAreaList
@@ -142,6 +166,12 @@ resources:
   - model_name: default_bgp_peer
     oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultbgppeers
     oas_schema: com.nokia.eda.protocols.v2.DefaultBGPPeer
+  - model_name: default_isis_instance
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultisisinstances
+    oas_schema: com.nokia.eda.protocols.v2.DefaultISISInstance
+  - model_name: default_isis_interface
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultisisinterfaces
+    oas_schema: com.nokia.eda.protocols.v2.DefaultISISInterface
   - model_name: default_ospf_area
     oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultospfareas
     oas_schema: com.nokia.eda.protocols.v2.DefaultOSPFArea
@@ -160,6 +190,12 @@ resources:
   - model_name: default_static_route
     oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultstaticroutes
     oas_schema: com.nokia.eda.protocols.v2.DefaultStaticRoute
+  - model_name: isis_instance
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/isisinstances
+    oas_schema: com.nokia.eda.protocols.v2.ISISInstance
+  - model_name: isis_interface
+    oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/isisinterfaces
+    oas_schema: com.nokia.eda.protocols.v2.ISISInterface
   - model_name: ospf_area
     oas_endpoint: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/ospfareas
     oas_schema: com.nokia.eda.protocols.v2.OSPFArea
@@ -202,6 +238,10 @@ qualified:
       get: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultbgpgroups/_deleted
     - oas_schema: com.nokia.eda.protocols.v2.DefaultBGPPeer_DeletedResources
       get: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultbgppeers/_deleted
+    - oas_schema: com.nokia.eda.protocols.v2.DefaultISISInstance_DeletedResources
+      get: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultisisinstances/_deleted
+    - oas_schema: com.nokia.eda.protocols.v2.DefaultISISInterface_DeletedResources
+      get: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultisisinterfaces/_deleted
     - oas_schema: com.nokia.eda.protocols.v2.DefaultOSPFArea_DeletedResources
       get: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultospfareas/_deleted
     - oas_schema: com.nokia.eda.protocols.v2.DefaultOSPFInstance_DeletedResources
@@ -214,6 +254,10 @@ qualified:
       get: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultroutereflectors/_deleted
     - oas_schema: com.nokia.eda.protocols.v2.DefaultStaticRoute_DeletedResources
       get: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultstaticroutes/_deleted
+    - oas_schema: com.nokia.eda.protocols.v2.ISISInstance_DeletedResources
+      get: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/isisinstances/_deleted
+    - oas_schema: com.nokia.eda.protocols.v2.ISISInterface_DeletedResources
+      get: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/isisinterfaces/_deleted
     - oas_schema: com.nokia.eda.protocols.v2.OSPFArea_DeletedResources
       get: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/ospfareas/_deleted
     - oas_schema: com.nokia.eda.protocols.v2.OSPFInstance_DeletedResources

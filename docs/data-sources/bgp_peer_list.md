@@ -35,10 +35,6 @@ description: |-
 <a id="nestedatt--items"></a>
 ### Nested Schema for `items`
 
-Optional:
-
-- `spec` (Attributes) BGPPeer enables the configuration of BGP sessions. It allows specifying a description, an interface reference (either RoutedInterface or IRBInterface), and the peer IP address. The resource also supports dynamic neighbors, common BGP settings, and peer-specific configurations. (see [below for nested schema](#nestedatt--items--spec))
-
 Read-Only:
 
 - `alarms` (Attributes) (see [below for nested schema](#nestedatt--items--alarms))
@@ -46,12 +42,43 @@ Read-Only:
 - `deviations` (Attributes) (see [below for nested schema](#nestedatt--items--deviations))
 - `kind` (String)
 - `metadata` (Attributes) (see [below for nested schema](#nestedatt--items--metadata))
+- `spec` (Attributes) BGPPeer enables the configuration of BGP sessions. It allows specifying a description, an interface reference (either RoutedInterface or IRBInterface), and the peer IP address. The resource also supports dynamic neighbors, common BGP settings, and peer-specific configurations. (see [below for nested schema](#nestedatt--items--spec))
 - `status` (Attributes) BGPPeerStatus defines the observed state of BGPPeer (see [below for nested schema](#nestedatt--items--status))
+
+<a id="nestedatt--items--alarms"></a>
+### Nested Schema for `items.alarms`
+
+Read-Only:
+
+- `critical` (Number)
+- `major` (Number)
+- `minor` (Number)
+- `warning` (Number)
+
+
+<a id="nestedatt--items--deviations"></a>
+### Nested Schema for `items.deviations`
+
+Read-Only:
+
+- `count` (Number)
+
+
+<a id="nestedatt--items--metadata"></a>
+### Nested Schema for `items.metadata`
+
+Read-Only:
+
+- `annotations` (Map of String)
+- `labels` (Map of String)
+- `name` (String)
+- `namespace` (String)
+
 
 <a id="nestedatt--items--spec"></a>
 ### Nested Schema for `items.spec`
 
-Optional:
+Read-Only:
 
 - `as_path_options` (Attributes) AS Path Options (see [below for nested schema](#nestedatt--items--spec--as_path_options))
 - `bfd` (Boolean) Enable or disable Bi-forward Forwarding Detection (BFD) with fast failover.
@@ -84,7 +111,7 @@ Optional:
 <a id="nestedatt--items--spec--as_path_options"></a>
 ### Nested Schema for `items.spec.as_path_options`
 
-Optional:
+Read-Only:
 
 - `allow_own_as` (Number) The maximum number of times the global AS number or a local AS number of the BGP instance can appear in any received AS_PATH before it is considered a loop and considered invalid.
 - `remove_private_as` (Attributes) Options for removing private AS numbers (2-byte and 4-byte) from the advertised AS path towards all peers. (see [below for nested schema](#nestedatt--items--spec--as_path_options--remove_private_as))
@@ -92,7 +119,7 @@ Optional:
 <a id="nestedatt--items--spec--as_path_options--remove_private_as"></a>
 ### Nested Schema for `items.spec.as_path_options.remove_private_as`
 
-Optional:
+Read-Only:
 
 - `ignore_peer_as` (Boolean) If set to true then do not delete or replace a private AS number that is the same as the peer AS number.
 - `leading_only` (Boolean) If set to true then only delete or replace private AS numbers that appear before the first occurrence of a non-private ASN in the sequence of most recent ASNs in the AS path.
@@ -103,17 +130,19 @@ Optional:
 <a id="nestedatt--items--spec--ipv4_unicast"></a>
 ### Nested Schema for `items.spec.ipv4_unicast`
 
-Optional:
+Read-Only:
 
 - `advertise_ipv6_next_hops` (Boolean) Enables advertisement of IPv4 Unicast routes with IPv6 next-hops to peers.
 - `enabled` (Boolean) Enables the IPv4 unicast AFISAFI.
+- `export_policies` (List of String) Reference to a Policy resource for route exports for this address family.
+- `import_policies` (List of String) Reference to a Policy resource for route imports for this address family.
 - `prefix_limit` (Attributes) Configures the maximum number of IPv4 unicast prefixes that can be received from a BGP peer. (see [below for nested schema](#nestedatt--items--spec--ipv4_unicast--prefix_limit))
 - `receive_ipv6_next_hops` (Boolean) Enables the advertisement of the RFC 5549 capability to receive IPv4 routes with IPv6 next-hops.
 
 <a id="nestedatt--items--spec--ipv4_unicast--prefix_limit"></a>
 ### Nested Schema for `items.spec.ipv4_unicast.prefix_limit`
 
-Optional:
+Read-Only:
 
 - `prefix_limit_accepted` (Attributes) Configuration of the maximum number of prefixes that can be accepted from a BGP peer. (see [below for nested schema](#nestedatt--items--spec--ipv4_unicast--prefix_limit--prefix_limit_accepted))
 - `prefix_limit_received` (Attributes) Configuration of the maximum number of prefixes that can be received from a BGP peer. (see [below for nested schema](#nestedatt--items--spec--ipv4_unicast--prefix_limit--prefix_limit_received))
@@ -121,7 +150,7 @@ Optional:
 <a id="nestedatt--items--spec--ipv4_unicast--prefix_limit--prefix_limit_accepted"></a>
 ### Nested Schema for `items.spec.ipv4_unicast.prefix_limit.prefix_limit_accepted`
 
-Optional:
+Read-Only:
 
 - `log_only` (Boolean) Defines the action to take when the maximum number of prefixes is exceeded. Session is reset if set to false, otherwise only a warning is logged.
 - `max_received_routes` (Number) Maximum number of prefixes allowed to be received from the neighbor, counting only accepted routes.
@@ -131,7 +160,7 @@ Optional:
 <a id="nestedatt--items--spec--ipv4_unicast--prefix_limit--prefix_limit_received"></a>
 ### Nested Schema for `items.spec.ipv4_unicast.prefix_limit.prefix_limit_received`
 
-Optional:
+Read-Only:
 
 - `log_only` (Boolean) Defines the action to take when the maximum number of prefixes is exceeded. Session is reset if set to false, otherwise only a warning is logged.
 - `max_received_routes` (Number) Maximum number of prefixes allowed to be received from the neighbor, counting all routes (accepted and rejected by import policies).
@@ -143,15 +172,17 @@ Optional:
 <a id="nestedatt--items--spec--ipv6_unicast"></a>
 ### Nested Schema for `items.spec.ipv6_unicast`
 
-Optional:
+Read-Only:
 
 - `enabled` (Boolean) Enables the IPv6 unicast AFISAFI
+- `export_policies` (List of String) Reference to a Policy resource for route exports for this address family.
+- `import_policies` (List of String) Reference to a Policy resource for route imports for this address family.
 - `prefix_limit` (Attributes) Enables advertisement of IPv6 Unicast routes with IPv4 next-hops to peers. (see [below for nested schema](#nestedatt--items--spec--ipv6_unicast--prefix_limit))
 
 <a id="nestedatt--items--spec--ipv6_unicast--prefix_limit"></a>
 ### Nested Schema for `items.spec.ipv6_unicast.prefix_limit`
 
-Optional:
+Read-Only:
 
 - `prefix_limit_accepted` (Attributes) Configuration of the maximum number of prefixes that can be accepted from a BGP peer. (see [below for nested schema](#nestedatt--items--spec--ipv6_unicast--prefix_limit--prefix_limit_accepted))
 - `prefix_limit_received` (Attributes) Configuration of the maximum number of prefixes that can be received from a BGP peer. (see [below for nested schema](#nestedatt--items--spec--ipv6_unicast--prefix_limit--prefix_limit_received))
@@ -159,7 +190,7 @@ Optional:
 <a id="nestedatt--items--spec--ipv6_unicast--prefix_limit--prefix_limit_accepted"></a>
 ### Nested Schema for `items.spec.ipv6_unicast.prefix_limit.prefix_limit_accepted`
 
-Optional:
+Read-Only:
 
 - `log_only` (Boolean) Defines the action to take when the maximum number of prefixes is exceeded. Session is reset if set to false, otherwise only a warning is logged.
 - `max_received_routes` (Number) Maximum number of prefixes allowed to be received from the neighbor, counting only accepted routes.
@@ -169,7 +200,7 @@ Optional:
 <a id="nestedatt--items--spec--ipv6_unicast--prefix_limit--prefix_limit_received"></a>
 ### Nested Schema for `items.spec.ipv6_unicast.prefix_limit.prefix_limit_received`
 
-Optional:
+Read-Only:
 
 - `log_only` (Boolean) Defines the action to take when the maximum number of prefixes is exceeded. Session is reset if set to false, otherwise only a warning is logged.
 - `max_received_routes` (Number) Maximum number of prefixes allowed to be received from the neighbor, counting all routes (accepted and rejected by import policies).
@@ -181,7 +212,7 @@ Optional:
 <a id="nestedatt--items--spec--local_as"></a>
 ### Nested Schema for `items.spec.local_as`
 
-Optional:
+Read-Only:
 
 - `autonomous_system` (Number) Local Autonomous System number.
 - `prepend_global_as` (Boolean) When set to true, the global ASN value is prepended to the AS path in outbound routes towards each BGP peer.
@@ -191,7 +222,7 @@ Optional:
 <a id="nestedatt--items--spec--peer_as"></a>
 ### Nested Schema for `items.spec.peer_as`
 
-Optional:
+Read-Only:
 
 - `autonomous_system` (Number) Local Autonomous System number.
 
@@ -199,7 +230,7 @@ Optional:
 <a id="nestedatt--items--spec--send_default_route"></a>
 ### Nested Schema for `items.spec.send_default_route`
 
-Optional:
+Read-Only:
 
 - `address_families` (List of String) Enables the sending of a synthetically generated default IPv4 or IPV6 route to each peer.
 - `export_policy` (String) Reference to a Policy that should be applied to the advertised default routes, in order to set their attributes to non-default values.
@@ -208,43 +239,13 @@ Optional:
 <a id="nestedatt--items--spec--timers"></a>
 ### Nested Schema for `items.spec.timers`
 
-Optional:
+Read-Only:
 
 - `connect_retry_seconds` (Number) The time interval in seconds between successive attempts to establish a session with a peer.
 - `hold_time_seconds` (Number) The hold-time interval in seconds that the router proposes to the peer in its OPEN message.
 - `keep_alive_seconds` (Number) The interval in seconds between successive keepalive messages sent to the peer.
 - `minimum_advertisement_interval_seconds` (Number) The value assigned to the MinRouteAdvertisementIntervalTimer of RFC 4271, for both EBGP and IBGP sessions, in seconds.
 
-
-
-<a id="nestedatt--items--alarms"></a>
-### Nested Schema for `items.alarms`
-
-Read-Only:
-
-- `critical` (Number)
-- `major` (Number)
-- `minor` (Number)
-- `warning` (Number)
-
-
-<a id="nestedatt--items--deviations"></a>
-### Nested Schema for `items.deviations`
-
-Read-Only:
-
-- `count` (Number)
-
-
-<a id="nestedatt--items--metadata"></a>
-### Nested Schema for `items.metadata`
-
-Read-Only:
-
-- `annotations` (Map of String)
-- `labels` (Map of String)
-- `name` (String)
-- `namespace` (String)
 
 
 <a id="nestedatt--items--status"></a>

@@ -102,12 +102,12 @@ func DefaultStaticRouteDataSourceSchema(ctx context.Context) schema.Schema {
 			"spec": schema.SingleNestedAttribute{
 				Attributes: map[string]schema.Attribute{
 					"configured_name": schema.StringAttribute{
-						Optional:            true,
+						Computed:            true,
 						Description:         "The name of the static route to configure on the device.",
 						MarkdownDescription: "The name of the static route to configure on the device.",
 					},
 					"default_router": schema.StringAttribute{
-						Optional:            true,
+						Computed:            true,
 						Description:         "Reference to a DefaultRouter on which to configure the static routes.",
 						MarkdownDescription: "Reference to a DefaultRouter on which to configure the static routes.",
 					},
@@ -116,12 +116,12 @@ func DefaultStaticRouteDataSourceSchema(ctx context.Context) schema.Schema {
 							"bfd": schema.SingleNestedAttribute{
 								Attributes: map[string]schema.Attribute{
 									"enabled": schema.BoolAttribute{
-										Optional:            true,
+										Computed:            true,
 										Description:         "Defines whether BFD should be enabled towards the nexthops.",
 										MarkdownDescription: "Defines whether BFD should be enabled towards the nexthops.",
 									},
 									"local_address": schema.StringAttribute{
-										Optional:            true,
+										Computed:            true,
 										Description:         "Defines the local address to use when establishing the BFD session with the nexthop.",
 										MarkdownDescription: "Defines the local address to use when establishing the BFD session with the nexthop.",
 									},
@@ -131,24 +131,24 @@ func DefaultStaticRouteDataSourceSchema(ctx context.Context) schema.Schema {
 										AttrTypes: BfdValue{}.AttributeTypes(ctx),
 									},
 								},
-								Optional:            true,
+								Computed:            true,
 								Description:         "Enables BFD to the next-hops in the group. Local and Remote discriminator parameters have been deprecated at this level. Use Nexthop to set these parameters.",
 								MarkdownDescription: "Enables BFD to the next-hops in the group. Local and Remote discriminator parameters have been deprecated at this level. Use Nexthop to set these parameters.",
 							},
 							"blackhole": schema.BoolAttribute{
-								Optional:            true,
+								Computed:            true,
 								Description:         "If set to true all traffic destined to the prefixes will be blackholed.  If enabled, next-hops are ignored and this takes precedence.",
 								MarkdownDescription: "If set to true all traffic destined to the prefixes will be blackholed.  If enabled, next-hops are ignored and this takes precedence.",
 							},
 							"blackhole_send_icmp": schema.BoolAttribute{
-								Optional:            true,
+								Computed:            true,
 								Description:         "When enabled, the router will generate ICMP Unreachable messages for packets destined to the blackhole route.",
 								MarkdownDescription: "When enabled, the router will generate ICMP Unreachable messages for packets destined to the blackhole route.",
 							},
 							"follow": schema.SingleNestedAttribute{
 								Attributes: map[string]schema.Attribute{
 									"mode": schema.StringAttribute{
-										Optional:            true,
+										Computed:            true,
 										Description:         "Follow mode. Only \"NextLongest\" is supported, which means that the route will follow the next-hop-group of the next most specific matching route in the routing table.",
 										MarkdownDescription: "Follow mode. Only \"NextLongest\" is supported, which means that the route will follow the next-hop-group of the next most specific matching route in the routing table.",
 									},
@@ -158,7 +158,7 @@ func DefaultStaticRouteDataSourceSchema(ctx context.Context) schema.Schema {
 										AttrTypes: FollowValue{}.AttributeTypes(ctx),
 									},
 								},
-								Optional:            true,
+								Computed:            true,
 								Description:         "Follow the resolution of another route. This setting is mutually exclusive with all other settings in the group.",
 								MarkdownDescription: "Follow the resolution of another route. This setting is mutually exclusive with all other settings in the group.",
 							},
@@ -168,22 +168,22 @@ func DefaultStaticRouteDataSourceSchema(ctx context.Context) schema.Schema {
 										"bfd": schema.SingleNestedAttribute{
 											Attributes: map[string]schema.Attribute{
 												"enabled": schema.BoolAttribute{
-													Optional:            true,
+													Computed:            true,
 													Description:         "Defines whether BFD should be enabled towards the nexthops.",
 													MarkdownDescription: "Defines whether BFD should be enabled towards the nexthops.",
 												},
 												"local_address": schema.StringAttribute{
-													Optional:            true,
+													Computed:            true,
 													Description:         "Defines the local address to use when establishing the BFD session with the nexthop.",
 													MarkdownDescription: "Defines the local address to use when establishing the BFD session with the nexthop.",
 												},
 												"local_discriminator": schema.Int64Attribute{
-													Optional:            true,
+													Computed:            true,
 													Description:         "Defines the local discriminator.",
 													MarkdownDescription: "Defines the local discriminator.",
 												},
 												"remote_discriminator": schema.Int64Attribute{
-													Optional:            true,
+													Computed:            true,
 													Description:         "Defines the remote discriminator.",
 													MarkdownDescription: "Defines the remote discriminator.",
 												},
@@ -193,17 +193,17 @@ func DefaultStaticRouteDataSourceSchema(ctx context.Context) schema.Schema {
 													AttrTypes: Bfd1Value{}.AttributeTypes(ctx),
 												},
 											},
-											Optional:            true,
+											Computed:            true,
 											Description:         "Enables BFD to the next-hops in the group. This overrides the configuration at the group.",
 											MarkdownDescription: "Enables BFD to the next-hops in the group. This overrides the configuration at the group.",
 										},
 										"ip_prefix": schema.StringAttribute{
-											Optional:            true,
+											Computed:            true,
 											Description:         "Address to use.",
 											MarkdownDescription: "Address to use.",
 										},
 										"resolve": schema.BoolAttribute{
-											Optional:            true,
+											Computed:            true,
 											Description:         "If set to true the next-hops can be destinations which are resolved in the route table. This overrides the configuration at the group.",
 											MarkdownDescription: "If set to true the next-hops can be destinations which are resolved in the route table. This overrides the configuration at the group.",
 										},
@@ -214,12 +214,12 @@ func DefaultStaticRouteDataSourceSchema(ctx context.Context) schema.Schema {
 										},
 									},
 								},
-								Optional:            true,
+								Computed:            true,
 								Description:         "Ordered list of nexthops.",
 								MarkdownDescription: "Ordered list of nexthops.",
 							},
 							"resolve": schema.BoolAttribute{
-								Optional:            true,
+								Computed:            true,
 								Description:         "If set to true the next-hops can be destinations which are resolved in the route table.",
 								MarkdownDescription: "If set to true the next-hops can be destinations which are resolved in the route table.",
 							},
@@ -229,18 +229,18 @@ func DefaultStaticRouteDataSourceSchema(ctx context.Context) schema.Schema {
 								AttrTypes: NexthopGroupValue{}.AttributeTypes(ctx),
 							},
 						},
-						Optional:            true,
+						Computed:            true,
 						Description:         "Group of nexthops for the list of prefixes.",
 						MarkdownDescription: "Group of nexthops for the list of prefixes.",
 					},
 					"preference": schema.Int64Attribute{
-						Optional:            true,
+						Computed:            true,
 						Description:         "Defines the route preference.",
 						MarkdownDescription: "Defines the route preference.",
 					},
 					"prefixes": schema.ListAttribute{
 						ElementType:         types.StringType,
-						Optional:            true,
+						Computed:            true,
 						Description:         "List of destination prefixes and mask to use for the static routes.",
 						MarkdownDescription: "List of destination prefixes and mask to use for the static routes.",
 					},
@@ -250,7 +250,7 @@ func DefaultStaticRouteDataSourceSchema(ctx context.Context) schema.Schema {
 						AttrTypes: SpecValue{}.AttributeTypes(ctx),
 					},
 				},
-				Optional:            true,
+				Computed:            true,
 				Description:         "DefaultStaticRoute enables the configuration of static routes within a DefaultRouter. It allows specifying destination prefixes, route preference, and a nexthop group. This resource facilitates precise control over routing behavior, including options for BFD, route resolution, and blackholing traffic.",
 				MarkdownDescription: "DefaultStaticRoute enables the configuration of static routes within a DefaultRouter. It allows specifying destination prefixes, route preference, and a nexthop group. This resource facilitates precise control over routing behavior, including options for BFD, route resolution, and blackholing traffic.",
 			},

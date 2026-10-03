@@ -97,11 +97,11 @@ func CheckDefaultBgpPeersDataSourceSchema(ctx context.Context) schema.Schema {
 				Attributes: map[string]schema.Attribute{
 					"node_selectors": schema.ListAttribute{
 						ElementType: types.StringType,
-						Optional:    true,
+						Computed:    true,
 					},
 					"nodes": schema.ListAttribute{
 						ElementType: types.StringType,
-						Optional:    true,
+						Computed:    true,
 					},
 				},
 				CustomType: SpecType{
@@ -109,7 +109,7 @@ func CheckDefaultBgpPeersDataSourceSchema(ctx context.Context) schema.Schema {
 						AttrTypes: SpecValue{}.AttributeTypes(ctx),
 					},
 				},
-				Optional:            true,
+				Computed:            true,
 				Description:         "CheckDefaultBgpPeersSpec defines the desired state of CheckDefaultBgpPeers",
 				MarkdownDescription: "CheckDefaultBgpPeersSpec defines the desired state of CheckDefaultBgpPeers",
 			},

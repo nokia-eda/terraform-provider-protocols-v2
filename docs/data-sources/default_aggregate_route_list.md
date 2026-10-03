@@ -35,10 +35,6 @@ description: |-
 <a id="nestedatt--items"></a>
 ### Nested Schema for `items`
 
-Optional:
-
-- `spec` (Attributes) DefaultAggregateRoute allows the configuration of aggregate routes on a DefaultRouter. It includes specifying destination prefixes, the DefaultRouter, and settings for generating ICMP unreachable messages or blocking route advertisement. Additionally, it configures the aggregator’s IP address and ASN for efficient route management. (see [below for nested schema](#nestedatt--items--spec))
-
 Read-Only:
 
 - `alarms` (Attributes) (see [below for nested schema](#nestedatt--items--alarms))
@@ -46,20 +42,8 @@ Read-Only:
 - `deviations` (Attributes) (see [below for nested schema](#nestedatt--items--deviations))
 - `kind` (String)
 - `metadata` (Attributes) (see [below for nested schema](#nestedatt--items--metadata))
+- `spec` (Attributes) DefaultAggregateRoute allows the configuration of aggregate routes on a DefaultRouter. It includes specifying destination prefixes, the DefaultRouter, and settings for generating ICMP unreachable messages or blocking route advertisement. Additionally, it configures the aggregator’s IP address and ASN for efficient route management. (see [below for nested schema](#nestedatt--items--spec))
 - `status` (Attributes) DefaultAggregateRouteStatus defines the observed state of DefaultAggregateRoute (see [below for nested schema](#nestedatt--items--status))
-
-<a id="nestedatt--items--spec"></a>
-### Nested Schema for `items.spec`
-
-Optional:
-
-- `aggregator_asn` (Number) Specifies the aggregator's ASN.
-- `aggregator_ip` (String) Specifies the aggregator's IP address.
-- `default_router` (String) Reference to a Default Router on which to configure the aggregate routes.  If no Nodes are provided then the aggregate routes will be provisioned on all Nodes on which the Router is provisioned.
-- `generate_icmp` (Boolean) When set to true the router generares ICMP unreachable messages for packets matching the aggregate route (and not a more specific route).
-- `prefixes` (List of String) List of destination prefixes for the aggregate routes.
-- `summary_only` (Boolean) When set to true the router blocks the advertisement of all contributing routes of this aggregate route in dynamic protocols such as BGP.
-
 
 <a id="nestedatt--items--alarms"></a>
 ### Nested Schema for `items.alarms`
@@ -89,6 +73,19 @@ Read-Only:
 - `labels` (Map of String)
 - `name` (String)
 - `namespace` (String)
+
+
+<a id="nestedatt--items--spec"></a>
+### Nested Schema for `items.spec`
+
+Read-Only:
+
+- `aggregator_asn` (Number) Specifies the aggregator's ASN.
+- `aggregator_ip` (String) Specifies the aggregator's IP address.
+- `default_router` (String) Reference to a Default Router on which to configure the aggregate routes.  If no Nodes are provided then the aggregate routes will be provisioned on all Nodes on which the Router is provisioned.
+- `generate_icmp` (Boolean) When set to true the router generares ICMP unreachable messages for packets matching the aggregate route (and not a more specific route).
+- `prefixes` (List of String) List of destination prefixes for the aggregate routes.
+- `summary_only` (Boolean) When set to true the router blocks the advertisement of all contributing routes of this aggregate route in dynamic protocols such as BGP.
 
 
 <a id="nestedatt--items--status"></a>

@@ -35,10 +35,6 @@ description: |-
 <a id="nestedatt--items"></a>
 ### Nested Schema for `items`
 
-Optional:
-
-- `spec` (Attributes) The AggregateRoute enables the configuration of aggregated routes on a specified Router. This resource allows for the definition of destination prefixes, the selection of a router, and optionally, specific nodes where the aggregate routes should be configured. Advanced options include the ability to generate ICMP unreachable messages for packets matching the aggregate route, and the ability to block the advertisement of all contributing routes in dynamic protocols like BGP. (see [below for nested schema](#nestedatt--items--spec))
-
 Read-Only:
 
 - `alarms` (Attributes) (see [below for nested schema](#nestedatt--items--alarms))
@@ -46,21 +42,8 @@ Read-Only:
 - `deviations` (Attributes) (see [below for nested schema](#nestedatt--items--deviations))
 - `kind` (String)
 - `metadata` (Attributes) (see [below for nested schema](#nestedatt--items--metadata))
+- `spec` (Attributes) The AggregateRoute enables the configuration of aggregated routes on a specified Router. This resource allows for the definition of destination prefixes, the selection of a router, and optionally, specific nodes where the aggregate routes should be configured. Advanced options include the ability to generate ICMP unreachable messages for packets matching the aggregate route, and the ability to block the advertisement of all contributing routes in dynamic protocols like BGP. (see [below for nested schema](#nestedatt--items--spec))
 - `status` (Attributes) AggregateRouteStatus defines the observed state of AggregateRoute (see [below for nested schema](#nestedatt--items--status))
-
-<a id="nestedatt--items--spec"></a>
-### Nested Schema for `items.spec`
-
-Optional:
-
-- `aggregator_asn` (Number) Specifies the aggregator's ASN.
-- `aggregator_ip` (String) Specifies the aggregator's IP address.
-- `generate_icmp` (Boolean) When set to true the router generares ICMP unreachable messages for packets matching the aggregate route (and not a more specific route).
-- `nodes` (List of String) List of nodes on which to configure the aggregate routes. An AND operation is executed against the nodes in this list and the nodes on which the Router is configured to determine the Nodes on which to configure the aggregate routes.
-- `prefixes` (List of String) List of destination prefixes for the aggregate routes.
-- `router` (String) Reference to a Router on which to configure the aggregate routes.  If no Nodes are provided then the aggregate routes will be provisioned on all Nodes on which the Router is provisioned.
-- `summary_only` (Boolean) When set to true the router blocks the advertisement of all contributing routes of this aggregate route in dynamic protocols such as BGP.
-
 
 <a id="nestedatt--items--alarms"></a>
 ### Nested Schema for `items.alarms`
@@ -90,6 +73,20 @@ Read-Only:
 - `labels` (Map of String)
 - `name` (String)
 - `namespace` (String)
+
+
+<a id="nestedatt--items--spec"></a>
+### Nested Schema for `items.spec`
+
+Read-Only:
+
+- `aggregator_asn` (Number) Specifies the aggregator's ASN.
+- `aggregator_ip` (String) Specifies the aggregator's IP address.
+- `generate_icmp` (Boolean) When set to true the router generares ICMP unreachable messages for packets matching the aggregate route (and not a more specific route).
+- `nodes` (List of String) List of nodes on which to configure the aggregate routes. An AND operation is executed against the nodes in this list and the nodes on which the Router is configured to determine the Nodes on which to configure the aggregate routes.
+- `prefixes` (List of String) List of destination prefixes for the aggregate routes.
+- `router` (String) Reference to a Router on which to configure the aggregate routes.  If no Nodes are provided then the aggregate routes will be provisioned on all Nodes on which the Router is provisioned.
+- `summary_only` (Boolean) When set to true the router blocks the advertisement of all contributing routes of this aggregate route in dynamic protocols such as BGP.
 
 
 <a id="nestedatt--items--status"></a>

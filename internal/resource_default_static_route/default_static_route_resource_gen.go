@@ -5,6 +5,7 @@ package resource_default_static_route
 import (
 	"context"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -127,6 +128,7 @@ func DefaultStaticRouteResourceSchema(ctx context.Context) schema.Schema {
 				Attributes: map[string]schema.Attribute{
 					"configured_name": schema.StringAttribute{
 						Optional:            true,
+						Computed:            true,
 						Description:         "The name of the static route to configure on the device.",
 						MarkdownDescription: "The name of the static route to configure on the device.",
 					},
@@ -148,6 +150,7 @@ func DefaultStaticRouteResourceSchema(ctx context.Context) schema.Schema {
 									},
 									"local_address": schema.StringAttribute{
 										Optional:            true,
+										Computed:            true,
 										Description:         "Defines the local address to use when establishing the BFD session with the nexthop.",
 										MarkdownDescription: "Defines the local address to use when establishing the BFD session with the nexthop.",
 									},
@@ -158,6 +161,7 @@ func DefaultStaticRouteResourceSchema(ctx context.Context) schema.Schema {
 									},
 								},
 								Optional:            true,
+								Computed:            true,
 								Description:         "Enables BFD to the next-hops in the group. Local and Remote discriminator parameters have been deprecated at this level. Use Nexthop to set these parameters.",
 								MarkdownDescription: "Enables BFD to the next-hops in the group. Local and Remote discriminator parameters have been deprecated at this level. Use Nexthop to set these parameters.",
 							},
@@ -170,6 +174,7 @@ func DefaultStaticRouteResourceSchema(ctx context.Context) schema.Schema {
 							},
 							"blackhole_send_icmp": schema.BoolAttribute{
 								Optional:            true,
+								Computed:            true,
 								Description:         "When enabled, the router will generate ICMP Unreachable messages for packets destined to the blackhole route.",
 								MarkdownDescription: "When enabled, the router will generate ICMP Unreachable messages for packets destined to the blackhole route.",
 							},
@@ -192,6 +197,7 @@ func DefaultStaticRouteResourceSchema(ctx context.Context) schema.Schema {
 									},
 								},
 								Optional:            true,
+								Computed:            true,
 								Description:         "Follow the resolution of another route. This setting is mutually exclusive with all other settings in the group.",
 								MarkdownDescription: "Follow the resolution of another route. This setting is mutually exclusive with all other settings in the group.",
 							},
@@ -209,16 +215,19 @@ func DefaultStaticRouteResourceSchema(ctx context.Context) schema.Schema {
 												},
 												"local_address": schema.StringAttribute{
 													Optional:            true,
+													Computed:            true,
 													Description:         "Defines the local address to use when establishing the BFD session with the nexthop.",
 													MarkdownDescription: "Defines the local address to use when establishing the BFD session with the nexthop.",
 												},
 												"local_discriminator": schema.Int64Attribute{
 													Optional:            true,
+													Computed:            true,
 													Description:         "Defines the local discriminator.",
 													MarkdownDescription: "Defines the local discriminator.",
 												},
 												"remote_discriminator": schema.Int64Attribute{
 													Optional:            true,
+													Computed:            true,
 													Description:         "Defines the remote discriminator.",
 													MarkdownDescription: "Defines the remote discriminator.",
 												},
@@ -229,6 +238,7 @@ func DefaultStaticRouteResourceSchema(ctx context.Context) schema.Schema {
 												},
 											},
 											Optional:            true,
+											Computed:            true,
 											Description:         "Enables BFD to the next-hops in the group. This overrides the configuration at the group.",
 											MarkdownDescription: "Enables BFD to the next-hops in the group. This overrides the configuration at the group.",
 										},
@@ -252,6 +262,7 @@ func DefaultStaticRouteResourceSchema(ctx context.Context) schema.Schema {
 									},
 								},
 								Optional:            true,
+								Computed:            true,
 								Description:         "Ordered list of nexthops.",
 								MarkdownDescription: "Ordered list of nexthops.",
 							},
@@ -274,6 +285,7 @@ func DefaultStaticRouteResourceSchema(ctx context.Context) schema.Schema {
 					},
 					"preference": schema.Int64Attribute{
 						Optional:            true,
+						Computed:            true,
 						Description:         "Defines the route preference.",
 						MarkdownDescription: "Defines the route preference.",
 					},
@@ -300,6 +312,9 @@ func DefaultStaticRouteResourceSchema(ctx context.Context) schema.Schema {
 						Computed:            true,
 						Description:         "Indicates the health score of the static routes.",
 						MarkdownDescription: "Indicates the health score of the static routes.",
+						Validators: []validator.Int64{
+							int64validator.AtMost(100),
+						},
 					},
 					"health_score_reason": schema.StringAttribute{
 						Optional:            true,

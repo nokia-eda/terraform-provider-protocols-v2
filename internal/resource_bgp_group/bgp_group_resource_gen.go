@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -176,6 +177,7 @@ func BgpGroupResourceSchema(ctx context.Context) schema.Schema {
 									},
 								},
 								Optional:            true,
+								Computed:            true,
 								Description:         "Options for removing private AS numbers (2-byte and 4-byte) from the advertised AS path towards all peers.",
 								MarkdownDescription: "Options for removing private AS numbers (2-byte and 4-byte) from the advertised AS path towards all peers.",
 							},
@@ -186,42 +188,50 @@ func BgpGroupResourceSchema(ctx context.Context) schema.Schema {
 							},
 						},
 						Optional:            true,
+						Computed:            true,
 						Description:         "AS Path Options",
 						MarkdownDescription: "AS Path Options",
 					},
 					"bfd": schema.BoolAttribute{
 						Optional:            true,
+						Computed:            true,
 						Description:         "Enable or disable Bi-forward Forwarding Detection (BFD) with fast failover.",
 						MarkdownDescription: "Enable or disable Bi-forward Forwarding Detection (BFD) with fast failover.",
 					},
 					"client": schema.BoolAttribute{
 						Optional:            true,
+						Computed:            true,
 						Description:         "When set to true, all configured and dynamic BGP peers are considered RR clients.",
 						MarkdownDescription: "When set to true, all configured and dynamic BGP peers are considered RR clients.",
 					},
 					"cluster_id": schema.StringAttribute{
 						Optional:            true,
+						Computed:            true,
 						Description:         "Enables route reflect client and sets the cluster ID.",
 						MarkdownDescription: "Enables route reflect client and sets the cluster ID.",
 					},
 					"configured_name": schema.StringAttribute{
 						Optional:            true,
+						Computed:            true,
 						Description:         "Configures the group name on the device.",
 						MarkdownDescription: "Configures the group name on the device.",
 					},
 					"description": schema.StringAttribute{
 						Optional:            true,
+						Computed:            true,
 						Description:         "Sets the description on the BGP group.",
 						MarkdownDescription: "Sets the description on the BGP group.",
 					},
 					"export_policies": schema.ListAttribute{
 						ElementType:         types.StringType,
 						Optional:            true,
+						Computed:            true,
 						Description:         "Reference to a Policy CR that will be used to filter routes advertised to peers.",
 						MarkdownDescription: "Reference to a Policy CR that will be used to filter routes advertised to peers.",
 					},
 					"gr_stale_route_time_seconds": schema.Int64Attribute{
 						Optional:            true,
+						Computed:            true,
 						Description:         "Enables Graceful Restart on the peer and sets the stale route time in seconds.",
 						MarkdownDescription: "Enables Graceful Restart on the peer and sets the stale route time in seconds.",
 						Validators: []validator.Int64{
@@ -231,6 +241,7 @@ func BgpGroupResourceSchema(ctx context.Context) schema.Schema {
 					"import_policies": schema.ListAttribute{
 						ElementType:         types.StringType,
 						Optional:            true,
+						Computed:            true,
 						Description:         "Reference to a Policy CR that will be used to filter routes received from peers.",
 						MarkdownDescription: "Reference to a Policy CR that will be used to filter routes received from peers.",
 					},
@@ -238,13 +249,35 @@ func BgpGroupResourceSchema(ctx context.Context) schema.Schema {
 						Attributes: map[string]schema.Attribute{
 							"advertise_ipv6_next_hops": schema.BoolAttribute{
 								Optional:            true,
+								Computed:            true,
 								Description:         "Enables advertisement of IPv4 Unicast routes with IPv6 next-hops to peers.",
 								MarkdownDescription: "Enables advertisement of IPv4 Unicast routes with IPv6 next-hops to peers.",
 							},
 							"enabled": schema.BoolAttribute{
 								Optional:            true,
+								Computed:            true,
 								Description:         "Enables the IPv4 unicast AFISAFI.",
 								MarkdownDescription: "Enables the IPv4 unicast AFISAFI.",
+							},
+							"export_policies": schema.ListAttribute{
+								ElementType:         types.StringType,
+								Optional:            true,
+								Computed:            true,
+								Description:         "Reference to a Policy resource for route exports for this address family.",
+								MarkdownDescription: "Reference to a Policy resource for route exports for this address family.",
+								Validators: []validator.List{
+									listvalidator.SizeBetween(1, 5),
+								},
+							},
+							"import_policies": schema.ListAttribute{
+								ElementType:         types.StringType,
+								Optional:            true,
+								Computed:            true,
+								Description:         "Reference to a Policy resource for route imports for this address family.",
+								MarkdownDescription: "Reference to a Policy resource for route imports for this address family.",
+								Validators: []validator.List{
+									listvalidator.SizeBetween(1, 5),
+								},
 							},
 							"prefix_limit": schema.SingleNestedAttribute{
 								Attributes: map[string]schema.Attribute{
@@ -252,19 +285,22 @@ func BgpGroupResourceSchema(ctx context.Context) schema.Schema {
 										Attributes: map[string]schema.Attribute{
 											"log_only": schema.BoolAttribute{
 												Optional:            true,
+												Computed:            true,
 												Description:         "Defines the action to take when the maximum number of prefixes is exceeded. Session is reset if set to false, otherwise only a warning is logged.",
 												MarkdownDescription: "Defines the action to take when the maximum number of prefixes is exceeded. Session is reset if set to false, otherwise only a warning is logged.",
 											},
 											"max_received_routes": schema.Int64Attribute{
 												Optional:            true,
+												Computed:            true,
 												Description:         "Maximum number of prefixes allowed to be received from the neighbor, counting only accepted routes.",
 												MarkdownDescription: "Maximum number of prefixes allowed to be received from the neighbor, counting only accepted routes.",
 												Validators: []validator.Int64{
-													int64validator.Between(1, 4294967295),
+													int64validator.AtLeast(1),
 												},
 											},
 											"warning_threshold_percent": schema.Int64Attribute{
 												Optional:            true,
+												Computed:            true,
 												Description:         "A percentage of the maximum number of prefixes that can be accepted before a warning is logged.",
 												MarkdownDescription: "A percentage of the maximum number of prefixes that can be accepted before a warning is logged.",
 												Validators: []validator.Int64{
@@ -278,6 +314,7 @@ func BgpGroupResourceSchema(ctx context.Context) schema.Schema {
 											},
 										},
 										Optional:            true,
+										Computed:            true,
 										Description:         "Configuration of the maximum number of prefixes that can be accepted from a BGP peer.",
 										MarkdownDescription: "Configuration of the maximum number of prefixes that can be accepted from a BGP peer.",
 									},
@@ -285,19 +322,22 @@ func BgpGroupResourceSchema(ctx context.Context) schema.Schema {
 										Attributes: map[string]schema.Attribute{
 											"log_only": schema.BoolAttribute{
 												Optional:            true,
+												Computed:            true,
 												Description:         "Defines the action to take when the maximum number of prefixes is exceeded. Session is reset if set to false, otherwise only a warning is logged.",
 												MarkdownDescription: "Defines the action to take when the maximum number of prefixes is exceeded. Session is reset if set to false, otherwise only a warning is logged.",
 											},
 											"max_received_routes": schema.Int64Attribute{
 												Optional:            true,
+												Computed:            true,
 												Description:         "Maximum number of prefixes allowed to be received from the neighbor, counting all routes (accepted and rejected by import policies).",
 												MarkdownDescription: "Maximum number of prefixes allowed to be received from the neighbor, counting all routes (accepted and rejected by import policies).",
 												Validators: []validator.Int64{
-													int64validator.Between(1, 4294967295),
+													int64validator.AtLeast(1),
 												},
 											},
 											"warning_threshold_percent": schema.Int64Attribute{
 												Optional:            true,
+												Computed:            true,
 												Description:         "A percentage of the maximum number of prefixes that can be received before a warning is logged.",
 												MarkdownDescription: "A percentage of the maximum number of prefixes that can be received before a warning is logged.",
 												Validators: []validator.Int64{
@@ -311,6 +351,7 @@ func BgpGroupResourceSchema(ctx context.Context) schema.Schema {
 											},
 										},
 										Optional:            true,
+										Computed:            true,
 										Description:         "Configuration of the maximum number of prefixes that can be received from a BGP peer.",
 										MarkdownDescription: "Configuration of the maximum number of prefixes that can be received from a BGP peer.",
 									},
@@ -321,11 +362,13 @@ func BgpGroupResourceSchema(ctx context.Context) schema.Schema {
 									},
 								},
 								Optional:            true,
+								Computed:            true,
 								Description:         "Configures the maximum number of IPv4 unicast prefixes that can be received from a BGP peer.",
 								MarkdownDescription: "Configures the maximum number of IPv4 unicast prefixes that can be received from a BGP peer.",
 							},
 							"receive_ipv6_next_hops": schema.BoolAttribute{
 								Optional:            true,
+								Computed:            true,
 								Description:         "Enables the advertisement of the RFC 5549 capability to receive IPv4 routes with IPv6 next-hops.",
 								MarkdownDescription: "Enables the advertisement of the RFC 5549 capability to receive IPv4 routes with IPv6 next-hops.",
 							},
@@ -336,6 +379,7 @@ func BgpGroupResourceSchema(ctx context.Context) schema.Schema {
 							},
 						},
 						Optional:            true,
+						Computed:            true,
 						Description:         "Parameters relating to the IPv4 unicast AFI/SAFI.",
 						MarkdownDescription: "Parameters relating to the IPv4 unicast AFI/SAFI.",
 					},
@@ -343,8 +387,29 @@ func BgpGroupResourceSchema(ctx context.Context) schema.Schema {
 						Attributes: map[string]schema.Attribute{
 							"enabled": schema.BoolAttribute{
 								Optional:            true,
+								Computed:            true,
 								Description:         "Enables the IPv6 unicast AFISAFI",
 								MarkdownDescription: "Enables the IPv6 unicast AFISAFI",
+							},
+							"export_policies": schema.ListAttribute{
+								ElementType:         types.StringType,
+								Optional:            true,
+								Computed:            true,
+								Description:         "Reference to a Policy resource for route exports for this address family.",
+								MarkdownDescription: "Reference to a Policy resource for route exports for this address family.",
+								Validators: []validator.List{
+									listvalidator.SizeBetween(1, 5),
+								},
+							},
+							"import_policies": schema.ListAttribute{
+								ElementType:         types.StringType,
+								Optional:            true,
+								Computed:            true,
+								Description:         "Reference to a Policy resource for route imports for this address family.",
+								MarkdownDescription: "Reference to a Policy resource for route imports for this address family.",
+								Validators: []validator.List{
+									listvalidator.SizeBetween(1, 5),
+								},
 							},
 							"prefix_limit": schema.SingleNestedAttribute{
 								Attributes: map[string]schema.Attribute{
@@ -352,19 +417,22 @@ func BgpGroupResourceSchema(ctx context.Context) schema.Schema {
 										Attributes: map[string]schema.Attribute{
 											"log_only": schema.BoolAttribute{
 												Optional:            true,
+												Computed:            true,
 												Description:         "Defines the action to take when the maximum number of prefixes is exceeded. Session is reset if set to false, otherwise only a warning is logged.",
 												MarkdownDescription: "Defines the action to take when the maximum number of prefixes is exceeded. Session is reset if set to false, otherwise only a warning is logged.",
 											},
 											"max_received_routes": schema.Int64Attribute{
 												Optional:            true,
+												Computed:            true,
 												Description:         "Maximum number of prefixes allowed to be received from the neighbor, counting only accepted routes.",
 												MarkdownDescription: "Maximum number of prefixes allowed to be received from the neighbor, counting only accepted routes.",
 												Validators: []validator.Int64{
-													int64validator.Between(1, 4294967295),
+													int64validator.AtLeast(1),
 												},
 											},
 											"warning_threshold_percent": schema.Int64Attribute{
 												Optional:            true,
+												Computed:            true,
 												Description:         "A percentage of the maximum number of prefixes that can be accepted before a warning is logged.",
 												MarkdownDescription: "A percentage of the maximum number of prefixes that can be accepted before a warning is logged.",
 												Validators: []validator.Int64{
@@ -378,6 +446,7 @@ func BgpGroupResourceSchema(ctx context.Context) schema.Schema {
 											},
 										},
 										Optional:            true,
+										Computed:            true,
 										Description:         "Configuration of the maximum number of prefixes that can be accepted from a BGP peer.",
 										MarkdownDescription: "Configuration of the maximum number of prefixes that can be accepted from a BGP peer.",
 									},
@@ -385,19 +454,22 @@ func BgpGroupResourceSchema(ctx context.Context) schema.Schema {
 										Attributes: map[string]schema.Attribute{
 											"log_only": schema.BoolAttribute{
 												Optional:            true,
+												Computed:            true,
 												Description:         "Defines the action to take when the maximum number of prefixes is exceeded. Session is reset if set to false, otherwise only a warning is logged.",
 												MarkdownDescription: "Defines the action to take when the maximum number of prefixes is exceeded. Session is reset if set to false, otherwise only a warning is logged.",
 											},
 											"max_received_routes": schema.Int64Attribute{
 												Optional:            true,
+												Computed:            true,
 												Description:         "Maximum number of prefixes allowed to be received from the neighbor, counting all routes (accepted and rejected by import policies).",
 												MarkdownDescription: "Maximum number of prefixes allowed to be received from the neighbor, counting all routes (accepted and rejected by import policies).",
 												Validators: []validator.Int64{
-													int64validator.Between(1, 4294967295),
+													int64validator.AtLeast(1),
 												},
 											},
 											"warning_threshold_percent": schema.Int64Attribute{
 												Optional:            true,
+												Computed:            true,
 												Description:         "A percentage of the maximum number of prefixes that can be received before a warning is logged.",
 												MarkdownDescription: "A percentage of the maximum number of prefixes that can be received before a warning is logged.",
 												Validators: []validator.Int64{
@@ -411,6 +483,7 @@ func BgpGroupResourceSchema(ctx context.Context) schema.Schema {
 											},
 										},
 										Optional:            true,
+										Computed:            true,
 										Description:         "Configuration of the maximum number of prefixes that can be received from a BGP peer.",
 										MarkdownDescription: "Configuration of the maximum number of prefixes that can be received from a BGP peer.",
 									},
@@ -421,6 +494,7 @@ func BgpGroupResourceSchema(ctx context.Context) schema.Schema {
 									},
 								},
 								Optional:            true,
+								Computed:            true,
 								Description:         "Enables advertisement of IPv6 Unicast routes with IPv4 next-hops to peers.",
 								MarkdownDescription: "Enables advertisement of IPv6 Unicast routes with IPv4 next-hops to peers.",
 							},
@@ -431,11 +505,13 @@ func BgpGroupResourceSchema(ctx context.Context) schema.Schema {
 							},
 						},
 						Optional:            true,
+						Computed:            true,
 						Description:         "Parameters relating to the IPv6 unicast AFI/SAFI.",
 						MarkdownDescription: "Parameters relating to the IPv6 unicast AFI/SAFI.",
 					},
 					"keychain": schema.StringAttribute{
 						Optional:            true,
+						Computed:            true,
 						Description:         "Reference to a Keychain resource that will be used for authentication with the BGP peer.",
 						MarkdownDescription: "Reference to a Keychain resource that will be used for authentication with the BGP peer.",
 					},
@@ -451,11 +527,13 @@ func BgpGroupResourceSchema(ctx context.Context) schema.Schema {
 							},
 							"prepend_global_as": schema.BoolAttribute{
 								Optional:            true,
+								Computed:            true,
 								Description:         "When set to true, the global ASN value is prepended to the AS path in outbound routes towards each BGP peer.",
 								MarkdownDescription: "When set to true, the global ASN value is prepended to the AS path in outbound routes towards each BGP peer.",
 							},
 							"prepend_local_as": schema.BoolAttribute{
 								Optional:            true,
+								Computed:            true,
 								Description:         "When set to true, the local AS value is prepended to the AS path of inbound routes from each EBGP peer.",
 								MarkdownDescription: "When set to true, the local AS value is prepended to the AS path of inbound routes from each EBGP peer.",
 							},
@@ -466,19 +544,22 @@ func BgpGroupResourceSchema(ctx context.Context) schema.Schema {
 							},
 						},
 						Optional:            true,
+						Computed:            true,
 						Description:         "The local autonomous system number advertised to peers.",
 						MarkdownDescription: "The local autonomous system number advertised to peers.",
 					},
 					"local_preference": schema.Int64Attribute{
 						Optional:            true,
+						Computed:            true,
 						Description:         "Local Preference attribute added to received routes from the BGP peers, also sets local preference for generated routes.",
 						MarkdownDescription: "Local Preference attribute added to received routes from the BGP peers, also sets local preference for generated routes.",
 						Validators: []validator.Int64{
-							int64validator.Between(0, 4294967295),
+							int64validator.AtLeast(0),
 						},
 					},
 					"multi_hop_max_hop": schema.Int64Attribute{
 						Optional:            true,
+						Computed:            true,
 						Description:         "Enable multihop for eBGP peers and sets the maximum number of hops allowed.",
 						MarkdownDescription: "Enable multihop for eBGP peers and sets the maximum number of hops allowed.",
 						Validators: []validator.Int64{
@@ -487,6 +568,7 @@ func BgpGroupResourceSchema(ctx context.Context) schema.Schema {
 					},
 					"next_hop_self": schema.BoolAttribute{
 						Optional:            true,
+						Computed:            true,
 						Description:         "When set to true, the next-hop in all IPv4-unicast, IPv6-unicast and EVPN BGP routes advertised to the peer is set to the local-address.",
 						MarkdownDescription: "When set to true, the next-hop in all IPv4-unicast, IPv6-unicast and EVPN BGP routes advertised to the peer is set to the local-address.",
 					},
@@ -507,16 +589,19 @@ func BgpGroupResourceSchema(ctx context.Context) schema.Schema {
 							},
 						},
 						Optional:            true,
+						Computed:            true,
 						Description:         "The autonomous system number expected from peers.",
 						MarkdownDescription: "The autonomous system number expected from peers.",
 					},
 					"send_community_large": schema.BoolAttribute{
 						Optional:            true,
+						Computed:            true,
 						Description:         "When false, all large (12 byte) BGP communities from all outbound routes advertised to the peer are stripped.",
 						MarkdownDescription: "When false, all large (12 byte) BGP communities from all outbound routes advertised to the peer are stripped.",
 					},
 					"send_community_standard": schema.BoolAttribute{
 						Optional:            true,
+						Computed:            true,
 						Description:         "When false, all standard (4 byte) communities from all outbound routes advertised to the peer are stripped.",
 						MarkdownDescription: "When false, all standard (4 byte) communities from all outbound routes advertised to the peer are stripped.",
 					},
@@ -530,6 +615,7 @@ func BgpGroupResourceSchema(ctx context.Context) schema.Schema {
 							},
 							"export_policy": schema.StringAttribute{
 								Optional:            true,
+								Computed:            true,
 								Description:         "Reference to a Policy that should be applied to the advertised default routes, in order to set their attributes to non-default values.",
 								MarkdownDescription: "Reference to a Policy that should be applied to the advertised default routes, in order to set their attributes to non-default values.",
 							},
@@ -540,6 +626,7 @@ func BgpGroupResourceSchema(ctx context.Context) schema.Schema {
 							},
 						},
 						Optional:            true,
+						Computed:            true,
 						Description:         "Options for controlling the generation of default routes towards BGP peers.",
 						MarkdownDescription: "Options for controlling the generation of default routes towards BGP peers.",
 					},
@@ -547,6 +634,7 @@ func BgpGroupResourceSchema(ctx context.Context) schema.Schema {
 						Attributes: map[string]schema.Attribute{
 							"connect_retry_seconds": schema.Int64Attribute{
 								Optional:            true,
+								Computed:            true,
 								Description:         "The time interval in seconds between successive attempts to establish a session with a peer.",
 								MarkdownDescription: "The time interval in seconds between successive attempts to establish a session with a peer.",
 								Validators: []validator.Int64{
@@ -555,6 +643,7 @@ func BgpGroupResourceSchema(ctx context.Context) schema.Schema {
 							},
 							"hold_time_seconds": schema.Int64Attribute{
 								Optional:            true,
+								Computed:            true,
 								Description:         "The hold-time interval in seconds that the router proposes to the peer in its OPEN message.",
 								MarkdownDescription: "The hold-time interval in seconds that the router proposes to the peer in its OPEN message.",
 								Validators: []validator.Int64{
@@ -563,6 +652,7 @@ func BgpGroupResourceSchema(ctx context.Context) schema.Schema {
 							},
 							"keep_alive_seconds": schema.Int64Attribute{
 								Optional:            true,
+								Computed:            true,
 								Description:         "The interval in seconds between successive keepalive messages sent to the peer.",
 								MarkdownDescription: "The interval in seconds between successive keepalive messages sent to the peer.",
 								Validators: []validator.Int64{
@@ -571,6 +661,7 @@ func BgpGroupResourceSchema(ctx context.Context) schema.Schema {
 							},
 							"minimum_advertisement_interval_seconds": schema.Int64Attribute{
 								Optional:            true,
+								Computed:            true,
 								Description:         "The value assigned to the MinRouteAdvertisementIntervalTimer of RFC 4271, for both EBGP and IBGP sessions, in seconds.",
 								MarkdownDescription: "The value assigned to the MinRouteAdvertisementIntervalTimer of RFC 4271, for both EBGP and IBGP sessions, in seconds.",
 								Validators: []validator.Int64{
@@ -584,6 +675,7 @@ func BgpGroupResourceSchema(ctx context.Context) schema.Schema {
 							},
 						},
 						Optional:            true,
+						Computed:            true,
 						Description:         "Timer configurations",
 						MarkdownDescription: "Timer configurations",
 					},
@@ -604,6 +696,9 @@ func BgpGroupResourceSchema(ctx context.Context) schema.Schema {
 						Computed:            true,
 						Description:         "Indicates the health score of the BGP group.",
 						MarkdownDescription: "Indicates the health score of the BGP group.",
+						Validators: []validator.Int64{
+							int64validator.AtMost(100),
+						},
 					},
 					"health_score_reason": schema.StringAttribute{
 						Optional:            true,
@@ -4678,6 +4773,42 @@ func (t Ipv4UnicastType) ValueFromObject(ctx context.Context, in basetypes.Objec
 			fmt.Sprintf(`enabled expected to be basetypes.BoolValue, was: %T`, enabledAttribute))
 	}
 
+	exportPoliciesAttribute, ok := attributes["export_policies"]
+
+	if !ok {
+		diags.AddError(
+			"Attribute Missing",
+			`export_policies is missing from object`)
+
+		return nil, diags
+	}
+
+	exportPoliciesVal, ok := exportPoliciesAttribute.(basetypes.ListValue)
+
+	if !ok {
+		diags.AddError(
+			"Attribute Wrong Type",
+			fmt.Sprintf(`export_policies expected to be basetypes.ListValue, was: %T`, exportPoliciesAttribute))
+	}
+
+	importPoliciesAttribute, ok := attributes["import_policies"]
+
+	if !ok {
+		diags.AddError(
+			"Attribute Missing",
+			`import_policies is missing from object`)
+
+		return nil, diags
+	}
+
+	importPoliciesVal, ok := importPoliciesAttribute.(basetypes.ListValue)
+
+	if !ok {
+		diags.AddError(
+			"Attribute Wrong Type",
+			fmt.Sprintf(`import_policies expected to be basetypes.ListValue, was: %T`, importPoliciesAttribute))
+	}
+
 	prefixLimitAttribute, ok := attributes["prefix_limit"]
 
 	if !ok {
@@ -4721,6 +4852,8 @@ func (t Ipv4UnicastType) ValueFromObject(ctx context.Context, in basetypes.Objec
 	return Ipv4UnicastValue{
 		AdvertiseIpv6NextHops: advertiseIpv6NextHopsVal,
 		Enabled:               enabledVal,
+		ExportPolicies:        exportPoliciesVal,
+		ImportPolicies:        importPoliciesVal,
 		PrefixLimit:           prefixLimitVal,
 		ReceiveIpv6NextHops:   receiveIpv6NextHopsVal,
 		state:                 attr.ValueStateKnown,
@@ -4826,6 +4959,42 @@ func NewIpv4UnicastValue(attributeTypes map[string]attr.Type, attributes map[str
 			fmt.Sprintf(`enabled expected to be basetypes.BoolValue, was: %T`, enabledAttribute))
 	}
 
+	exportPoliciesAttribute, ok := attributes["export_policies"]
+
+	if !ok {
+		diags.AddError(
+			"Attribute Missing",
+			`export_policies is missing from object`)
+
+		return NewIpv4UnicastValueUnknown(), diags
+	}
+
+	exportPoliciesVal, ok := exportPoliciesAttribute.(basetypes.ListValue)
+
+	if !ok {
+		diags.AddError(
+			"Attribute Wrong Type",
+			fmt.Sprintf(`export_policies expected to be basetypes.ListValue, was: %T`, exportPoliciesAttribute))
+	}
+
+	importPoliciesAttribute, ok := attributes["import_policies"]
+
+	if !ok {
+		diags.AddError(
+			"Attribute Missing",
+			`import_policies is missing from object`)
+
+		return NewIpv4UnicastValueUnknown(), diags
+	}
+
+	importPoliciesVal, ok := importPoliciesAttribute.(basetypes.ListValue)
+
+	if !ok {
+		diags.AddError(
+			"Attribute Wrong Type",
+			fmt.Sprintf(`import_policies expected to be basetypes.ListValue, was: %T`, importPoliciesAttribute))
+	}
+
 	prefixLimitAttribute, ok := attributes["prefix_limit"]
 
 	if !ok {
@@ -4869,6 +5038,8 @@ func NewIpv4UnicastValue(attributeTypes map[string]attr.Type, attributes map[str
 	return Ipv4UnicastValue{
 		AdvertiseIpv6NextHops: advertiseIpv6NextHopsVal,
 		Enabled:               enabledVal,
+		ExportPolicies:        exportPoliciesVal,
+		ImportPolicies:        importPoliciesVal,
 		PrefixLimit:           prefixLimitVal,
 		ReceiveIpv6NextHops:   receiveIpv6NextHopsVal,
 		state:                 attr.ValueStateKnown,
@@ -4945,19 +5116,27 @@ var _ basetypes.ObjectValuable = Ipv4UnicastValue{}
 type Ipv4UnicastValue struct {
 	AdvertiseIpv6NextHops basetypes.BoolValue   `tfsdk:"advertise_ipv6_next_hops"`
 	Enabled               basetypes.BoolValue   `tfsdk:"enabled"`
+	ExportPolicies        basetypes.ListValue   `tfsdk:"export_policies"`
+	ImportPolicies        basetypes.ListValue   `tfsdk:"import_policies"`
 	PrefixLimit           basetypes.ObjectValue `tfsdk:"prefix_limit"`
 	ReceiveIpv6NextHops   basetypes.BoolValue   `tfsdk:"receive_ipv6_next_hops"`
 	state                 attr.ValueState
 }
 
 func (v Ipv4UnicastValue) ToTerraformValue(ctx context.Context) (tftypes.Value, error) {
-	attrTypes := make(map[string]tftypes.Type, 4)
+	attrTypes := make(map[string]tftypes.Type, 6)
 
 	var val tftypes.Value
 	var err error
 
 	attrTypes["advertise_ipv6_next_hops"] = basetypes.BoolType{}.TerraformType(ctx)
 	attrTypes["enabled"] = basetypes.BoolType{}.TerraformType(ctx)
+	attrTypes["export_policies"] = basetypes.ListType{
+		ElemType: types.StringType,
+	}.TerraformType(ctx)
+	attrTypes["import_policies"] = basetypes.ListType{
+		ElemType: types.StringType,
+	}.TerraformType(ctx)
 	attrTypes["prefix_limit"] = basetypes.ObjectType{
 		AttrTypes: PrefixLimitValue{}.AttributeTypes(ctx),
 	}.TerraformType(ctx)
@@ -4967,7 +5146,7 @@ func (v Ipv4UnicastValue) ToTerraformValue(ctx context.Context) (tftypes.Value, 
 
 	switch v.state {
 	case attr.ValueStateKnown:
-		vals := make(map[string]tftypes.Value, 4)
+		vals := make(map[string]tftypes.Value, 6)
 
 		val, err = v.AdvertiseIpv6NextHops.ToTerraformValue(ctx)
 
@@ -4984,6 +5163,22 @@ func (v Ipv4UnicastValue) ToTerraformValue(ctx context.Context) (tftypes.Value, 
 		}
 
 		vals["enabled"] = val
+
+		val, err = v.ExportPolicies.ToTerraformValue(ctx)
+
+		if err != nil {
+			return tftypes.NewValue(objectType, tftypes.UnknownValue), err
+		}
+
+		vals["export_policies"] = val
+
+		val, err = v.ImportPolicies.ToTerraformValue(ctx)
+
+		if err != nil {
+			return tftypes.NewValue(objectType, tftypes.UnknownValue), err
+		}
+
+		vals["import_policies"] = val
 
 		val, err = v.PrefixLimit.ToTerraformValue(ctx)
 
@@ -5051,9 +5246,73 @@ func (v Ipv4UnicastValue) ToObjectValue(ctx context.Context) (basetypes.ObjectVa
 		)
 	}
 
+	var exportPoliciesVal basetypes.ListValue
+	switch {
+	case v.ExportPolicies.IsUnknown():
+		exportPoliciesVal = types.ListUnknown(types.StringType)
+	case v.ExportPolicies.IsNull():
+		exportPoliciesVal = types.ListNull(types.StringType)
+	default:
+		var d diag.Diagnostics
+		exportPoliciesVal, d = types.ListValue(types.StringType, v.ExportPolicies.Elements())
+		diags.Append(d...)
+	}
+
+	if diags.HasError() {
+		return types.ObjectUnknown(map[string]attr.Type{
+			"advertise_ipv6_next_hops": basetypes.BoolType{},
+			"enabled":                  basetypes.BoolType{},
+			"export_policies": basetypes.ListType{
+				ElemType: types.StringType,
+			},
+			"import_policies": basetypes.ListType{
+				ElemType: types.StringType,
+			},
+			"prefix_limit": basetypes.ObjectType{
+				AttrTypes: PrefixLimitValue{}.AttributeTypes(ctx),
+			},
+			"receive_ipv6_next_hops": basetypes.BoolType{},
+		}), diags
+	}
+
+	var importPoliciesVal basetypes.ListValue
+	switch {
+	case v.ImportPolicies.IsUnknown():
+		importPoliciesVal = types.ListUnknown(types.StringType)
+	case v.ImportPolicies.IsNull():
+		importPoliciesVal = types.ListNull(types.StringType)
+	default:
+		var d diag.Diagnostics
+		importPoliciesVal, d = types.ListValue(types.StringType, v.ImportPolicies.Elements())
+		diags.Append(d...)
+	}
+
+	if diags.HasError() {
+		return types.ObjectUnknown(map[string]attr.Type{
+			"advertise_ipv6_next_hops": basetypes.BoolType{},
+			"enabled":                  basetypes.BoolType{},
+			"export_policies": basetypes.ListType{
+				ElemType: types.StringType,
+			},
+			"import_policies": basetypes.ListType{
+				ElemType: types.StringType,
+			},
+			"prefix_limit": basetypes.ObjectType{
+				AttrTypes: PrefixLimitValue{}.AttributeTypes(ctx),
+			},
+			"receive_ipv6_next_hops": basetypes.BoolType{},
+		}), diags
+	}
+
 	attributeTypes := map[string]attr.Type{
 		"advertise_ipv6_next_hops": basetypes.BoolType{},
 		"enabled":                  basetypes.BoolType{},
+		"export_policies": basetypes.ListType{
+			ElemType: types.StringType,
+		},
+		"import_policies": basetypes.ListType{
+			ElemType: types.StringType,
+		},
 		"prefix_limit": basetypes.ObjectType{
 			AttrTypes: PrefixLimitValue{}.AttributeTypes(ctx),
 		},
@@ -5073,6 +5332,8 @@ func (v Ipv4UnicastValue) ToObjectValue(ctx context.Context) (basetypes.ObjectVa
 		map[string]attr.Value{
 			"advertise_ipv6_next_hops": v.AdvertiseIpv6NextHops,
 			"enabled":                  v.Enabled,
+			"export_policies":          exportPoliciesVal,
+			"import_policies":          importPoliciesVal,
 			"prefix_limit":             prefixLimit,
 			"receive_ipv6_next_hops":   v.ReceiveIpv6NextHops,
 		})
@@ -5103,6 +5364,14 @@ func (v Ipv4UnicastValue) Equal(o attr.Value) bool {
 		return false
 	}
 
+	if !v.ExportPolicies.Equal(other.ExportPolicies) {
+		return false
+	}
+
+	if !v.ImportPolicies.Equal(other.ImportPolicies) {
+		return false
+	}
+
 	if !v.PrefixLimit.Equal(other.PrefixLimit) {
 		return false
 	}
@@ -5126,6 +5395,12 @@ func (v Ipv4UnicastValue) AttributeTypes(ctx context.Context) map[string]attr.Ty
 	return map[string]attr.Type{
 		"advertise_ipv6_next_hops": basetypes.BoolType{},
 		"enabled":                  basetypes.BoolType{},
+		"export_policies": basetypes.ListType{
+			ElemType: types.StringType,
+		},
+		"import_policies": basetypes.ListType{
+			ElemType: types.StringType,
+		},
 		"prefix_limit": basetypes.ObjectType{
 			AttrTypes: PrefixLimitValue{}.AttributeTypes(ctx),
 		},
@@ -6477,6 +6752,42 @@ func (t Ipv6UnicastType) ValueFromObject(ctx context.Context, in basetypes.Objec
 			fmt.Sprintf(`enabled expected to be basetypes.BoolValue, was: %T`, enabledAttribute))
 	}
 
+	exportPoliciesAttribute, ok := attributes["export_policies"]
+
+	if !ok {
+		diags.AddError(
+			"Attribute Missing",
+			`export_policies is missing from object`)
+
+		return nil, diags
+	}
+
+	exportPoliciesVal, ok := exportPoliciesAttribute.(basetypes.ListValue)
+
+	if !ok {
+		diags.AddError(
+			"Attribute Wrong Type",
+			fmt.Sprintf(`export_policies expected to be basetypes.ListValue, was: %T`, exportPoliciesAttribute))
+	}
+
+	importPoliciesAttribute, ok := attributes["import_policies"]
+
+	if !ok {
+		diags.AddError(
+			"Attribute Missing",
+			`import_policies is missing from object`)
+
+		return nil, diags
+	}
+
+	importPoliciesVal, ok := importPoliciesAttribute.(basetypes.ListValue)
+
+	if !ok {
+		diags.AddError(
+			"Attribute Wrong Type",
+			fmt.Sprintf(`import_policies expected to be basetypes.ListValue, was: %T`, importPoliciesAttribute))
+	}
+
 	prefixLimit1Attribute, ok := attributes["prefix_limit"]
 
 	if !ok {
@@ -6500,9 +6811,11 @@ func (t Ipv6UnicastType) ValueFromObject(ctx context.Context, in basetypes.Objec
 	}
 
 	return Ipv6UnicastValue{
-		Enabled:      enabledVal,
-		PrefixLimit1: prefixLimit1Val,
-		state:        attr.ValueStateKnown,
+		Enabled:        enabledVal,
+		ExportPolicies: exportPoliciesVal,
+		ImportPolicies: importPoliciesVal,
+		PrefixLimit1:   prefixLimit1Val,
+		state:          attr.ValueStateKnown,
 	}, diags
 }
 
@@ -6587,6 +6900,42 @@ func NewIpv6UnicastValue(attributeTypes map[string]attr.Type, attributes map[str
 			fmt.Sprintf(`enabled expected to be basetypes.BoolValue, was: %T`, enabledAttribute))
 	}
 
+	exportPoliciesAttribute, ok := attributes["export_policies"]
+
+	if !ok {
+		diags.AddError(
+			"Attribute Missing",
+			`export_policies is missing from object`)
+
+		return NewIpv6UnicastValueUnknown(), diags
+	}
+
+	exportPoliciesVal, ok := exportPoliciesAttribute.(basetypes.ListValue)
+
+	if !ok {
+		diags.AddError(
+			"Attribute Wrong Type",
+			fmt.Sprintf(`export_policies expected to be basetypes.ListValue, was: %T`, exportPoliciesAttribute))
+	}
+
+	importPoliciesAttribute, ok := attributes["import_policies"]
+
+	if !ok {
+		diags.AddError(
+			"Attribute Missing",
+			`import_policies is missing from object`)
+
+		return NewIpv6UnicastValueUnknown(), diags
+	}
+
+	importPoliciesVal, ok := importPoliciesAttribute.(basetypes.ListValue)
+
+	if !ok {
+		diags.AddError(
+			"Attribute Wrong Type",
+			fmt.Sprintf(`import_policies expected to be basetypes.ListValue, was: %T`, importPoliciesAttribute))
+	}
+
 	prefixLimit1Attribute, ok := attributes["prefix_limit"]
 
 	if !ok {
@@ -6610,9 +6959,11 @@ func NewIpv6UnicastValue(attributeTypes map[string]attr.Type, attributes map[str
 	}
 
 	return Ipv6UnicastValue{
-		Enabled:      enabledVal,
-		PrefixLimit1: prefixLimit1Val,
-		state:        attr.ValueStateKnown,
+		Enabled:        enabledVal,
+		ExportPolicies: exportPoliciesVal,
+		ImportPolicies: importPoliciesVal,
+		PrefixLimit1:   prefixLimit1Val,
+		state:          attr.ValueStateKnown,
 	}, diags
 }
 
@@ -6684,18 +7035,26 @@ func (t Ipv6UnicastType) ValueType(ctx context.Context) attr.Value {
 var _ basetypes.ObjectValuable = Ipv6UnicastValue{}
 
 type Ipv6UnicastValue struct {
-	Enabled      basetypes.BoolValue   `tfsdk:"enabled"`
-	PrefixLimit1 basetypes.ObjectValue `tfsdk:"prefix_limit"`
-	state        attr.ValueState
+	Enabled        basetypes.BoolValue   `tfsdk:"enabled"`
+	ExportPolicies basetypes.ListValue   `tfsdk:"export_policies"`
+	ImportPolicies basetypes.ListValue   `tfsdk:"import_policies"`
+	PrefixLimit1   basetypes.ObjectValue `tfsdk:"prefix_limit"`
+	state          attr.ValueState
 }
 
 func (v Ipv6UnicastValue) ToTerraformValue(ctx context.Context) (tftypes.Value, error) {
-	attrTypes := make(map[string]tftypes.Type, 2)
+	attrTypes := make(map[string]tftypes.Type, 4)
 
 	var val tftypes.Value
 	var err error
 
 	attrTypes["enabled"] = basetypes.BoolType{}.TerraformType(ctx)
+	attrTypes["export_policies"] = basetypes.ListType{
+		ElemType: types.StringType,
+	}.TerraformType(ctx)
+	attrTypes["import_policies"] = basetypes.ListType{
+		ElemType: types.StringType,
+	}.TerraformType(ctx)
 	attrTypes["prefix_limit"] = basetypes.ObjectType{
 		AttrTypes: PrefixLimit1Value{}.AttributeTypes(ctx),
 	}.TerraformType(ctx)
@@ -6704,7 +7063,7 @@ func (v Ipv6UnicastValue) ToTerraformValue(ctx context.Context) (tftypes.Value, 
 
 	switch v.state {
 	case attr.ValueStateKnown:
-		vals := make(map[string]tftypes.Value, 2)
+		vals := make(map[string]tftypes.Value, 4)
 
 		val, err = v.Enabled.ToTerraformValue(ctx)
 
@@ -6713,6 +7072,22 @@ func (v Ipv6UnicastValue) ToTerraformValue(ctx context.Context) (tftypes.Value, 
 		}
 
 		vals["enabled"] = val
+
+		val, err = v.ExportPolicies.ToTerraformValue(ctx)
+
+		if err != nil {
+			return tftypes.NewValue(objectType, tftypes.UnknownValue), err
+		}
+
+		vals["export_policies"] = val
+
+		val, err = v.ImportPolicies.ToTerraformValue(ctx)
+
+		if err != nil {
+			return tftypes.NewValue(objectType, tftypes.UnknownValue), err
+		}
+
+		vals["import_policies"] = val
 
 		val, err = v.PrefixLimit1.ToTerraformValue(ctx)
 
@@ -6772,8 +7147,68 @@ func (v Ipv6UnicastValue) ToObjectValue(ctx context.Context) (basetypes.ObjectVa
 		)
 	}
 
+	var exportPoliciesVal basetypes.ListValue
+	switch {
+	case v.ExportPolicies.IsUnknown():
+		exportPoliciesVal = types.ListUnknown(types.StringType)
+	case v.ExportPolicies.IsNull():
+		exportPoliciesVal = types.ListNull(types.StringType)
+	default:
+		var d diag.Diagnostics
+		exportPoliciesVal, d = types.ListValue(types.StringType, v.ExportPolicies.Elements())
+		diags.Append(d...)
+	}
+
+	if diags.HasError() {
+		return types.ObjectUnknown(map[string]attr.Type{
+			"enabled": basetypes.BoolType{},
+			"export_policies": basetypes.ListType{
+				ElemType: types.StringType,
+			},
+			"import_policies": basetypes.ListType{
+				ElemType: types.StringType,
+			},
+			"prefix_limit": basetypes.ObjectType{
+				AttrTypes: PrefixLimit1Value{}.AttributeTypes(ctx),
+			},
+		}), diags
+	}
+
+	var importPoliciesVal basetypes.ListValue
+	switch {
+	case v.ImportPolicies.IsUnknown():
+		importPoliciesVal = types.ListUnknown(types.StringType)
+	case v.ImportPolicies.IsNull():
+		importPoliciesVal = types.ListNull(types.StringType)
+	default:
+		var d diag.Diagnostics
+		importPoliciesVal, d = types.ListValue(types.StringType, v.ImportPolicies.Elements())
+		diags.Append(d...)
+	}
+
+	if diags.HasError() {
+		return types.ObjectUnknown(map[string]attr.Type{
+			"enabled": basetypes.BoolType{},
+			"export_policies": basetypes.ListType{
+				ElemType: types.StringType,
+			},
+			"import_policies": basetypes.ListType{
+				ElemType: types.StringType,
+			},
+			"prefix_limit": basetypes.ObjectType{
+				AttrTypes: PrefixLimit1Value{}.AttributeTypes(ctx),
+			},
+		}), diags
+	}
+
 	attributeTypes := map[string]attr.Type{
 		"enabled": basetypes.BoolType{},
+		"export_policies": basetypes.ListType{
+			ElemType: types.StringType,
+		},
+		"import_policies": basetypes.ListType{
+			ElemType: types.StringType,
+		},
 		"prefix_limit": basetypes.ObjectType{
 			AttrTypes: PrefixLimit1Value{}.AttributeTypes(ctx),
 		},
@@ -6790,8 +7225,10 @@ func (v Ipv6UnicastValue) ToObjectValue(ctx context.Context) (basetypes.ObjectVa
 	objVal, diags := types.ObjectValue(
 		attributeTypes,
 		map[string]attr.Value{
-			"enabled":      v.Enabled,
-			"prefix_limit": prefixLimit1,
+			"enabled":         v.Enabled,
+			"export_policies": exportPoliciesVal,
+			"import_policies": importPoliciesVal,
+			"prefix_limit":    prefixLimit1,
 		})
 
 	return objVal, diags
@@ -6816,6 +7253,14 @@ func (v Ipv6UnicastValue) Equal(o attr.Value) bool {
 		return false
 	}
 
+	if !v.ExportPolicies.Equal(other.ExportPolicies) {
+		return false
+	}
+
+	if !v.ImportPolicies.Equal(other.ImportPolicies) {
+		return false
+	}
+
 	if !v.PrefixLimit1.Equal(other.PrefixLimit1) {
 		return false
 	}
@@ -6834,6 +7279,12 @@ func (v Ipv6UnicastValue) Type(ctx context.Context) attr.Type {
 func (v Ipv6UnicastValue) AttributeTypes(ctx context.Context) map[string]attr.Type {
 	return map[string]attr.Type{
 		"enabled": basetypes.BoolType{},
+		"export_policies": basetypes.ListType{
+			ElemType: types.StringType,
+		},
+		"import_policies": basetypes.ListType{
+			ElemType: types.StringType,
+		},
 		"prefix_limit": basetypes.ObjectType{
 			AttrTypes: PrefixLimit1Value{}.AttributeTypes(ctx),
 		},

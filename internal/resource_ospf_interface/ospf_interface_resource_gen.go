@@ -137,11 +137,13 @@ func OspfInterfaceResourceSchema(ctx context.Context) schema.Schema {
 							},
 							"strict_mode": schema.BoolAttribute{
 								Optional:            true,
+								Computed:            true,
 								Description:         "Enables BFD Strict Mode on the OSPF interface.",
 								MarkdownDescription: "Enables BFD Strict Mode on the OSPF interface.",
 							},
 							"strict_mode_hold_down_seconds": schema.Int64Attribute{
 								Optional:            true,
+								Computed:            true,
 								Description:         "Enables Hold Down Timer for BFD Strict Mode, in seconds.",
 								MarkdownDescription: "Enables Hold Down Timer for BFD Strict Mode, in seconds.",
 								Validators: []validator.Int64{
@@ -155,11 +157,13 @@ func OspfInterfaceResourceSchema(ctx context.Context) schema.Schema {
 							},
 						},
 						Optional:            true,
+						Computed:            true,
 						Description:         "Configure BFD on the OSPF interface.",
 						MarkdownDescription: "Configure BFD on the OSPF interface.",
 					},
 					"dead_interval_seconds": schema.Int64Attribute{
 						Optional:            true,
+						Computed:            true,
 						Description:         "Dead Interval in seconds.",
 						MarkdownDescription: "Dead Interval in seconds.",
 						Validators: []validator.Int64{
@@ -168,6 +172,7 @@ func OspfInterfaceResourceSchema(ctx context.Context) schema.Schema {
 					},
 					"hello_interval_seconds": schema.Int64Attribute{
 						Optional:            true,
+						Computed:            true,
 						Description:         "Hello Interval in seconds.",
 						MarkdownDescription: "Hello Interval in seconds.",
 						Validators: []validator.Int64{
@@ -191,8 +196,15 @@ func OspfInterfaceResourceSchema(ctx context.Context) schema.Schema {
 						},
 						Default: stringdefault.StaticString("RoutedInterface"),
 					},
+					"keychain": schema.StringAttribute{
+						Optional:            true,
+						Computed:            true,
+						Description:         "Reference to a Keychain resource that will be used for authentication with the OSPF peer interface.",
+						MarkdownDescription: "Reference to a Keychain resource that will be used for authentication with the OSPF peer interface.",
+					},
 					"metric": schema.Int64Attribute{
 						Optional:            true,
+						Computed:            true,
 						Description:         "Interface metric.",
 						MarkdownDescription: "Interface metric.",
 						Validators: []validator.Int64{
@@ -201,6 +213,7 @@ func OspfInterfaceResourceSchema(ctx context.Context) schema.Schema {
 					},
 					"mtu": schema.Int64Attribute{
 						Optional:            true,
+						Computed:            true,
 						Description:         "OSPF interface MTU",
 						MarkdownDescription: "OSPF interface MTU",
 						Validators: []validator.Int64{
@@ -219,6 +232,7 @@ func OspfInterfaceResourceSchema(ctx context.Context) schema.Schema {
 					},
 					"passive": schema.BoolAttribute{
 						Optional:            true,
+						Computed:            true,
 						Description:         "Configure the OSPF interface as passive.",
 						MarkdownDescription: "Configure the OSPF interface as passive.",
 					},
@@ -252,6 +266,9 @@ func OspfInterfaceResourceSchema(ctx context.Context) schema.Schema {
 						Computed:            true,
 						Description:         "Indicates the health score of the OSPF interface.",
 						MarkdownDescription: "Indicates the health score of the OSPF interface.",
+						Validators: []validator.Int64{
+							int64validator.AtMost(100),
+						},
 					},
 					"health_score_reason": schema.StringAttribute{
 						Optional:            true,
@@ -273,6 +290,18 @@ func OspfInterfaceResourceSchema(ctx context.Context) schema.Schema {
 									Computed:            true,
 									Description:         "Adjacency state of the OSPF neighbor.",
 									MarkdownDescription: "Adjacency state of the OSPF neighbor.",
+								},
+								"local_ip_address": schema.StringAttribute{
+									Optional:            true,
+									Computed:            true,
+									Description:         "Local IP address (IPv4 or IPv6).",
+									MarkdownDescription: "Local IP address (IPv4 or IPv6).",
+								},
+								"neighbor_ip_address": schema.StringAttribute{
+									Optional:            true,
+									Computed:            true,
+									Description:         "Neighbor IP address (IPv4 or IPv6).",
+									MarkdownDescription: "Neighbor IP address (IPv4 or IPv6).",
 								},
 								"neighbor_router_id": schema.StringAttribute{
 									Optional:            true,
@@ -1818,6 +1847,24 @@ func (t SpecType) ValueFromObject(ctx context.Context, in basetypes.ObjectValue)
 			fmt.Sprintf(`interface_kind expected to be basetypes.StringValue, was: %T`, interfaceKindAttribute))
 	}
 
+	keychainAttribute, ok := attributes["keychain"]
+
+	if !ok {
+		diags.AddError(
+			"Attribute Missing",
+			`keychain is missing from object`)
+
+		return nil, diags
+	}
+
+	keychainVal, ok := keychainAttribute.(basetypes.StringValue)
+
+	if !ok {
+		diags.AddError(
+			"Attribute Wrong Type",
+			fmt.Sprintf(`keychain expected to be basetypes.StringValue, was: %T`, keychainAttribute))
+	}
+
 	metricAttribute, ok := attributes["metric"]
 
 	if !ok {
@@ -1936,6 +1983,7 @@ func (t SpecType) ValueFromObject(ctx context.Context, in basetypes.ObjectValue)
 		HelloIntervalSeconds: helloIntervalSecondsVal,
 		Interface:            interfaceVal,
 		InterfaceKind:        interfaceKindVal,
+		Keychain:             keychainVal,
 		Metric:               metricVal,
 		Mtu:                  mtuVal,
 		OspfArea:             ospfAreaVal,
@@ -2099,6 +2147,24 @@ func NewSpecValue(attributeTypes map[string]attr.Type, attributes map[string]att
 			fmt.Sprintf(`interface_kind expected to be basetypes.StringValue, was: %T`, interfaceKindAttribute))
 	}
 
+	keychainAttribute, ok := attributes["keychain"]
+
+	if !ok {
+		diags.AddError(
+			"Attribute Missing",
+			`keychain is missing from object`)
+
+		return NewSpecValueUnknown(), diags
+	}
+
+	keychainVal, ok := keychainAttribute.(basetypes.StringValue)
+
+	if !ok {
+		diags.AddError(
+			"Attribute Wrong Type",
+			fmt.Sprintf(`keychain expected to be basetypes.StringValue, was: %T`, keychainAttribute))
+	}
+
 	metricAttribute, ok := attributes["metric"]
 
 	if !ok {
@@ -2217,6 +2283,7 @@ func NewSpecValue(attributeTypes map[string]attr.Type, attributes map[string]att
 		HelloIntervalSeconds: helloIntervalSecondsVal,
 		Interface:            interfaceVal,
 		InterfaceKind:        interfaceKindVal,
+		Keychain:             keychainVal,
 		Metric:               metricVal,
 		Mtu:                  mtuVal,
 		OspfArea:             ospfAreaVal,
@@ -2300,6 +2367,7 @@ type SpecValue struct {
 	HelloIntervalSeconds basetypes.Int64Value  `tfsdk:"hello_interval_seconds"`
 	Interface            basetypes.StringValue `tfsdk:"interface"`
 	InterfaceKind        basetypes.StringValue `tfsdk:"interface_kind"`
+	Keychain             basetypes.StringValue `tfsdk:"keychain"`
 	Metric               basetypes.Int64Value  `tfsdk:"metric"`
 	Mtu                  basetypes.Int64Value  `tfsdk:"mtu"`
 	OspfArea             basetypes.StringValue `tfsdk:"ospf_area"`
@@ -2310,7 +2378,7 @@ type SpecValue struct {
 }
 
 func (v SpecValue) ToTerraformValue(ctx context.Context) (tftypes.Value, error) {
-	attrTypes := make(map[string]tftypes.Type, 11)
+	attrTypes := make(map[string]tftypes.Type, 12)
 
 	var val tftypes.Value
 	var err error
@@ -2322,6 +2390,7 @@ func (v SpecValue) ToTerraformValue(ctx context.Context) (tftypes.Value, error) 
 	attrTypes["hello_interval_seconds"] = basetypes.Int64Type{}.TerraformType(ctx)
 	attrTypes["interface"] = basetypes.StringType{}.TerraformType(ctx)
 	attrTypes["interface_kind"] = basetypes.StringType{}.TerraformType(ctx)
+	attrTypes["keychain"] = basetypes.StringType{}.TerraformType(ctx)
 	attrTypes["metric"] = basetypes.Int64Type{}.TerraformType(ctx)
 	attrTypes["mtu"] = basetypes.Int64Type{}.TerraformType(ctx)
 	attrTypes["ospf_area"] = basetypes.StringType{}.TerraformType(ctx)
@@ -2333,7 +2402,7 @@ func (v SpecValue) ToTerraformValue(ctx context.Context) (tftypes.Value, error) 
 
 	switch v.state {
 	case attr.ValueStateKnown:
-		vals := make(map[string]tftypes.Value, 11)
+		vals := make(map[string]tftypes.Value, 12)
 
 		val, err = v.Bfd.ToTerraformValue(ctx)
 
@@ -2374,6 +2443,14 @@ func (v SpecValue) ToTerraformValue(ctx context.Context) (tftypes.Value, error) 
 		}
 
 		vals["interface_kind"] = val
+
+		val, err = v.Keychain.ToTerraformValue(ctx)
+
+		if err != nil {
+			return tftypes.NewValue(objectType, tftypes.UnknownValue), err
+		}
+
+		vals["keychain"] = val
 
 		val, err = v.Metric.ToTerraformValue(ctx)
 
@@ -2481,6 +2558,7 @@ func (v SpecValue) ToObjectValue(ctx context.Context) (basetypes.ObjectValue, di
 		"hello_interval_seconds": basetypes.Int64Type{},
 		"interface":              basetypes.StringType{},
 		"interface_kind":         basetypes.StringType{},
+		"keychain":               basetypes.StringType{},
 		"metric":                 basetypes.Int64Type{},
 		"mtu":                    basetypes.Int64Type{},
 		"ospf_area":              basetypes.StringType{},
@@ -2505,6 +2583,7 @@ func (v SpecValue) ToObjectValue(ctx context.Context) (basetypes.ObjectValue, di
 			"hello_interval_seconds": v.HelloIntervalSeconds,
 			"interface":              v.Interface,
 			"interface_kind":         v.InterfaceKind,
+			"keychain":               v.Keychain,
 			"metric":                 v.Metric,
 			"mtu":                    v.Mtu,
 			"ospf_area":              v.OspfArea,
@@ -2548,6 +2627,10 @@ func (v SpecValue) Equal(o attr.Value) bool {
 	}
 
 	if !v.InterfaceKind.Equal(other.InterfaceKind) {
+		return false
+	}
+
+	if !v.Keychain.Equal(other.Keychain) {
 		return false
 	}
 
@@ -2595,6 +2678,7 @@ func (v SpecValue) AttributeTypes(ctx context.Context) map[string]attr.Type {
 		"hello_interval_seconds": basetypes.Int64Type{},
 		"interface":              basetypes.StringType{},
 		"interface_kind":         basetypes.StringType{},
+		"keychain":               basetypes.StringType{},
 		"metric":                 basetypes.Int64Type{},
 		"mtu":                    basetypes.Int64Type{},
 		"ospf_area":              basetypes.StringType{},
@@ -3715,6 +3799,42 @@ func (t NeighborsType) ValueFromObject(ctx context.Context, in basetypes.ObjectV
 			fmt.Sprintf(`adjacency_state expected to be basetypes.StringValue, was: %T`, adjacencyStateAttribute))
 	}
 
+	localIpAddressAttribute, ok := attributes["local_ip_address"]
+
+	if !ok {
+		diags.AddError(
+			"Attribute Missing",
+			`local_ip_address is missing from object`)
+
+		return nil, diags
+	}
+
+	localIpAddressVal, ok := localIpAddressAttribute.(basetypes.StringValue)
+
+	if !ok {
+		diags.AddError(
+			"Attribute Wrong Type",
+			fmt.Sprintf(`local_ip_address expected to be basetypes.StringValue, was: %T`, localIpAddressAttribute))
+	}
+
+	neighborIpAddressAttribute, ok := attributes["neighbor_ip_address"]
+
+	if !ok {
+		diags.AddError(
+			"Attribute Missing",
+			`neighbor_ip_address is missing from object`)
+
+		return nil, diags
+	}
+
+	neighborIpAddressVal, ok := neighborIpAddressAttribute.(basetypes.StringValue)
+
+	if !ok {
+		diags.AddError(
+			"Attribute Wrong Type",
+			fmt.Sprintf(`neighbor_ip_address expected to be basetypes.StringValue, was: %T`, neighborIpAddressAttribute))
+	}
+
 	neighborRouterIdAttribute, ok := attributes["neighbor_router_id"]
 
 	if !ok {
@@ -3738,9 +3858,11 @@ func (t NeighborsType) ValueFromObject(ctx context.Context, in basetypes.ObjectV
 	}
 
 	return NeighborsValue{
-		AdjacencyState:   adjacencyStateVal,
-		NeighborRouterId: neighborRouterIdVal,
-		state:            attr.ValueStateKnown,
+		AdjacencyState:    adjacencyStateVal,
+		LocalIpAddress:    localIpAddressVal,
+		NeighborIpAddress: neighborIpAddressVal,
+		NeighborRouterId:  neighborRouterIdVal,
+		state:             attr.ValueStateKnown,
 	}, diags
 }
 
@@ -3825,6 +3947,42 @@ func NewNeighborsValue(attributeTypes map[string]attr.Type, attributes map[strin
 			fmt.Sprintf(`adjacency_state expected to be basetypes.StringValue, was: %T`, adjacencyStateAttribute))
 	}
 
+	localIpAddressAttribute, ok := attributes["local_ip_address"]
+
+	if !ok {
+		diags.AddError(
+			"Attribute Missing",
+			`local_ip_address is missing from object`)
+
+		return NewNeighborsValueUnknown(), diags
+	}
+
+	localIpAddressVal, ok := localIpAddressAttribute.(basetypes.StringValue)
+
+	if !ok {
+		diags.AddError(
+			"Attribute Wrong Type",
+			fmt.Sprintf(`local_ip_address expected to be basetypes.StringValue, was: %T`, localIpAddressAttribute))
+	}
+
+	neighborIpAddressAttribute, ok := attributes["neighbor_ip_address"]
+
+	if !ok {
+		diags.AddError(
+			"Attribute Missing",
+			`neighbor_ip_address is missing from object`)
+
+		return NewNeighborsValueUnknown(), diags
+	}
+
+	neighborIpAddressVal, ok := neighborIpAddressAttribute.(basetypes.StringValue)
+
+	if !ok {
+		diags.AddError(
+			"Attribute Wrong Type",
+			fmt.Sprintf(`neighbor_ip_address expected to be basetypes.StringValue, was: %T`, neighborIpAddressAttribute))
+	}
+
 	neighborRouterIdAttribute, ok := attributes["neighbor_router_id"]
 
 	if !ok {
@@ -3848,9 +4006,11 @@ func NewNeighborsValue(attributeTypes map[string]attr.Type, attributes map[strin
 	}
 
 	return NeighborsValue{
-		AdjacencyState:   adjacencyStateVal,
-		NeighborRouterId: neighborRouterIdVal,
-		state:            attr.ValueStateKnown,
+		AdjacencyState:    adjacencyStateVal,
+		LocalIpAddress:    localIpAddressVal,
+		NeighborIpAddress: neighborIpAddressVal,
+		NeighborRouterId:  neighborRouterIdVal,
+		state:             attr.ValueStateKnown,
 	}, diags
 }
 
@@ -3922,25 +4082,29 @@ func (t NeighborsType) ValueType(ctx context.Context) attr.Value {
 var _ basetypes.ObjectValuable = NeighborsValue{}
 
 type NeighborsValue struct {
-	AdjacencyState   basetypes.StringValue `tfsdk:"adjacency_state"`
-	NeighborRouterId basetypes.StringValue `tfsdk:"neighbor_router_id"`
-	state            attr.ValueState
+	AdjacencyState    basetypes.StringValue `tfsdk:"adjacency_state"`
+	LocalIpAddress    basetypes.StringValue `tfsdk:"local_ip_address"`
+	NeighborIpAddress basetypes.StringValue `tfsdk:"neighbor_ip_address"`
+	NeighborRouterId  basetypes.StringValue `tfsdk:"neighbor_router_id"`
+	state             attr.ValueState
 }
 
 func (v NeighborsValue) ToTerraformValue(ctx context.Context) (tftypes.Value, error) {
-	attrTypes := make(map[string]tftypes.Type, 2)
+	attrTypes := make(map[string]tftypes.Type, 4)
 
 	var val tftypes.Value
 	var err error
 
 	attrTypes["adjacency_state"] = basetypes.StringType{}.TerraformType(ctx)
+	attrTypes["local_ip_address"] = basetypes.StringType{}.TerraformType(ctx)
+	attrTypes["neighbor_ip_address"] = basetypes.StringType{}.TerraformType(ctx)
 	attrTypes["neighbor_router_id"] = basetypes.StringType{}.TerraformType(ctx)
 
 	objectType := tftypes.Object{AttributeTypes: attrTypes}
 
 	switch v.state {
 	case attr.ValueStateKnown:
-		vals := make(map[string]tftypes.Value, 2)
+		vals := make(map[string]tftypes.Value, 4)
 
 		val, err = v.AdjacencyState.ToTerraformValue(ctx)
 
@@ -3949,6 +4113,22 @@ func (v NeighborsValue) ToTerraformValue(ctx context.Context) (tftypes.Value, er
 		}
 
 		vals["adjacency_state"] = val
+
+		val, err = v.LocalIpAddress.ToTerraformValue(ctx)
+
+		if err != nil {
+			return tftypes.NewValue(objectType, tftypes.UnknownValue), err
+		}
+
+		vals["local_ip_address"] = val
+
+		val, err = v.NeighborIpAddress.ToTerraformValue(ctx)
+
+		if err != nil {
+			return tftypes.NewValue(objectType, tftypes.UnknownValue), err
+		}
+
+		vals["neighbor_ip_address"] = val
 
 		val, err = v.NeighborRouterId.ToTerraformValue(ctx)
 
@@ -3988,8 +4168,10 @@ func (v NeighborsValue) ToObjectValue(ctx context.Context) (basetypes.ObjectValu
 	var diags diag.Diagnostics
 
 	attributeTypes := map[string]attr.Type{
-		"adjacency_state":    basetypes.StringType{},
-		"neighbor_router_id": basetypes.StringType{},
+		"adjacency_state":     basetypes.StringType{},
+		"local_ip_address":    basetypes.StringType{},
+		"neighbor_ip_address": basetypes.StringType{},
+		"neighbor_router_id":  basetypes.StringType{},
 	}
 
 	if v.IsNull() {
@@ -4003,8 +4185,10 @@ func (v NeighborsValue) ToObjectValue(ctx context.Context) (basetypes.ObjectValu
 	objVal, diags := types.ObjectValue(
 		attributeTypes,
 		map[string]attr.Value{
-			"adjacency_state":    v.AdjacencyState,
-			"neighbor_router_id": v.NeighborRouterId,
+			"adjacency_state":     v.AdjacencyState,
+			"local_ip_address":    v.LocalIpAddress,
+			"neighbor_ip_address": v.NeighborIpAddress,
+			"neighbor_router_id":  v.NeighborRouterId,
 		})
 
 	return objVal, diags
@@ -4029,6 +4213,14 @@ func (v NeighborsValue) Equal(o attr.Value) bool {
 		return false
 	}
 
+	if !v.LocalIpAddress.Equal(other.LocalIpAddress) {
+		return false
+	}
+
+	if !v.NeighborIpAddress.Equal(other.NeighborIpAddress) {
+		return false
+	}
+
 	if !v.NeighborRouterId.Equal(other.NeighborRouterId) {
 		return false
 	}
@@ -4046,7 +4238,9 @@ func (v NeighborsValue) Type(ctx context.Context) attr.Type {
 
 func (v NeighborsValue) AttributeTypes(ctx context.Context) map[string]attr.Type {
 	return map[string]attr.Type{
-		"adjacency_state":    basetypes.StringType{},
-		"neighbor_router_id": basetypes.StringType{},
+		"adjacency_state":     basetypes.StringType{},
+		"local_ip_address":    basetypes.StringType{},
+		"neighbor_ip_address": basetypes.StringType{},
+		"neighbor_router_id":  basetypes.StringType{},
 	}
 }

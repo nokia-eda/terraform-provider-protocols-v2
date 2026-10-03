@@ -5,6 +5,7 @@ package resource_default_ospf_area
 import (
 	"context"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -165,6 +166,9 @@ func DefaultOspfAreaResourceSchema(ctx context.Context) schema.Schema {
 						Computed:            true,
 						Description:         "Indicates the health score of the OSPF area.",
 						MarkdownDescription: "Indicates the health score of the OSPF area.",
+						Validators: []validator.Int64{
+							int64validator.AtMost(100),
+						},
 					},
 					"health_score_reason": schema.StringAttribute{
 						Optional:            true,

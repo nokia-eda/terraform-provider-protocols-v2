@@ -23,7 +23,6 @@ description: |-
 ### Optional
 
 - `hash` (String) resource content will be returned as it was at the time of this git hash
-- `spec` (Attributes) DefaultAggregateRoute allows the configuration of aggregate routes on a DefaultRouter. It includes specifying destination prefixes, the DefaultRouter, and settings for generating ICMP unreachable messages or blocking route advertisement. Additionally, it configures the aggregator’s IP address and ASN for efficient route management. (see [below for nested schema](#nestedatt--spec))
 
 ### Read-Only
 
@@ -32,20 +31,8 @@ description: |-
 - `deviations` (Attributes) (see [below for nested schema](#nestedatt--deviations))
 - `kind` (String)
 - `metadata` (Attributes) (see [below for nested schema](#nestedatt--metadata))
+- `spec` (Attributes) DefaultAggregateRoute allows the configuration of aggregate routes on a DefaultRouter. It includes specifying destination prefixes, the DefaultRouter, and settings for generating ICMP unreachable messages or blocking route advertisement. Additionally, it configures the aggregator’s IP address and ASN for efficient route management. (see [below for nested schema](#nestedatt--spec))
 - `status` (Attributes) DefaultAggregateRouteStatus defines the observed state of DefaultAggregateRoute (see [below for nested schema](#nestedatt--status))
-
-<a id="nestedatt--spec"></a>
-### Nested Schema for `spec`
-
-Optional:
-
-- `aggregator_asn` (Number) Specifies the aggregator's ASN.
-- `aggregator_ip` (String) Specifies the aggregator's IP address.
-- `default_router` (String) Reference to a Default Router on which to configure the aggregate routes.  If no Nodes are provided then the aggregate routes will be provisioned on all Nodes on which the Router is provisioned.
-- `generate_icmp` (Boolean) When set to true the router generares ICMP unreachable messages for packets matching the aggregate route (and not a more specific route).
-- `prefixes` (List of String) List of destination prefixes for the aggregate routes.
-- `summary_only` (Boolean) When set to true the router blocks the advertisement of all contributing routes of this aggregate route in dynamic protocols such as BGP.
-
 
 <a id="nestedatt--alarms"></a>
 ### Nested Schema for `alarms`
@@ -75,6 +62,19 @@ Read-Only:
 - `labels` (Map of String)
 - `name` (String)
 - `namespace` (String)
+
+
+<a id="nestedatt--spec"></a>
+### Nested Schema for `spec`
+
+Read-Only:
+
+- `aggregator_asn` (Number) Specifies the aggregator's ASN.
+- `aggregator_ip` (String) Specifies the aggregator's IP address.
+- `default_router` (String) Reference to a Default Router on which to configure the aggregate routes.  If no Nodes are provided then the aggregate routes will be provisioned on all Nodes on which the Router is provisioned.
+- `generate_icmp` (Boolean) When set to true the router generares ICMP unreachable messages for packets matching the aggregate route (and not a more specific route).
+- `prefixes` (List of String) List of destination prefixes for the aggregate routes.
+- `summary_only` (Boolean) When set to true the router blocks the advertisement of all contributing routes of this aggregate route in dynamic protocols such as BGP.
 
 
 <a id="nestedatt--status"></a>

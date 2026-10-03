@@ -104,12 +104,12 @@ func OspfAreaListDataSourceSchema(ctx context.Context) schema.Schema {
 						"spec": schema.SingleNestedAttribute{
 							Attributes: map[string]schema.Attribute{
 								"area_id": schema.StringAttribute{
-									Optional:            true,
+									Computed:            true,
 									Description:         "Area ID. 32-bit in the dotted-quad notation (e.g., \"0.0.0.0\").",
 									MarkdownDescription: "Area ID. 32-bit in the dotted-quad notation (e.g., \"0.0.0.0\").",
 								},
 								"area_type": schema.StringAttribute{
-									Optional:            true,
+									Computed:            true,
 									Description:         "Area type. Normal is assumed if not specified.",
 									MarkdownDescription: "Area type. Normal is assumed if not specified.",
 								},
@@ -119,7 +119,7 @@ func OspfAreaListDataSourceSchema(ctx context.Context) schema.Schema {
 									AttrTypes: SpecValue{}.AttributeTypes(ctx),
 								},
 							},
-							Optional:            true,
+							Computed:            true,
 							Description:         "OSPFAreaSpec defines the desired state of OSPFArea",
 							MarkdownDescription: "OSPFAreaSpec defines the desired state of OSPFArea",
 						},

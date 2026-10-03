@@ -20,10 +20,6 @@ description: |-
 - `name` (String) name of the CheckDefaultBgpPeers
 - `namespace` (String) the namespace scope in which to operate
 
-### Optional
-
-- `spec` (Attributes) CheckDefaultBgpPeersSpec defines the desired state of CheckDefaultBgpPeers (see [below for nested schema](#nestedatt--spec))
-
 ### Read-Only
 
 - `alarms` (Attributes) (see [below for nested schema](#nestedatt--alarms))
@@ -31,16 +27,8 @@ description: |-
 - `deviations` (Attributes) (see [below for nested schema](#nestedatt--deviations))
 - `kind` (String)
 - `metadata` (Attributes) (see [below for nested schema](#nestedatt--metadata))
+- `spec` (Attributes) CheckDefaultBgpPeersSpec defines the desired state of CheckDefaultBgpPeers (see [below for nested schema](#nestedatt--spec))
 - `status` (Attributes) CheckDefaultBgpPeersStatus defines the observed state of CheckDefaultBgpPeers (see [below for nested schema](#nestedatt--status))
-
-<a id="nestedatt--spec"></a>
-### Nested Schema for `spec`
-
-Optional:
-
-- `node_selectors` (List of String)
-- `nodes` (List of String)
-
 
 <a id="nestedatt--alarms"></a>
 ### Nested Schema for `alarms`
@@ -70,6 +58,15 @@ Read-Only:
 - `labels` (Map of String)
 - `name` (String)
 - `namespace` (String)
+
+
+<a id="nestedatt--spec"></a>
+### Nested Schema for `spec`
+
+Read-Only:
+
+- `node_selectors` (List of String)
+- `nodes` (List of String)
 
 
 <a id="nestedatt--status"></a>

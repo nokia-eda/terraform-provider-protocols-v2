@@ -102,29 +102,46 @@ func OspfInstanceDataSourceSchema(ctx context.Context) schema.Schema {
 			"spec": schema.SingleNestedAttribute{
 				Attributes: map[string]schema.Attribute{
 					"address_family": schema.StringAttribute{
-						Optional:            true,
+						Computed:            true,
 						Description:         "Selects an address family for OSPFv3. It is mandatory to specify at least one address family when OSPFv3 is selected.",
 						MarkdownDescription: "Selects an address family for OSPFv3. It is mandatory to specify at least one address family when OSPFv3 is selected.",
 					},
 					"enabled": schema.BoolAttribute{
-						Optional:            true,
+						Computed:            true,
 						Description:         "Enables OSPF instance.",
 						MarkdownDescription: "Enables OSPF instance.",
 					},
+					"lfa": schema.SingleNestedAttribute{
+						Attributes: map[string]schema.Attribute{
+							"enabled": schema.BoolAttribute{
+								Computed:            true,
+								Description:         "Enables OSPF LFA (Loop-Free Alternate) functionality.",
+								MarkdownDescription: "Enables OSPF LFA (Loop-Free Alternate) functionality.",
+							},
+						},
+						CustomType: LfaType{
+							ObjectType: types.ObjectType{
+								AttrTypes: LfaValue{}.AttributeTypes(ctx),
+							},
+						},
+						Computed:            true,
+						Description:         "LFA (Loop-Free Alternate) functionality.",
+						MarkdownDescription: "LFA (Loop-Free Alternate) functionality.",
+					},
 					"max_ecmp": schema.Int64Attribute{
-						Optional:            true,
+						Computed:            true,
 						Description:         "The maximum number of ECMP paths (next-hops).",
 						MarkdownDescription: "The maximum number of ECMP paths (next-hops).",
 					},
 					"max_metric": schema.SingleNestedAttribute{
 						Attributes: map[string]schema.Attribute{
 							"on_boot": schema.Int64Attribute{
-								Optional:            true,
+								Computed:            true,
 								Description:         "Set Max Metric on boot for the fixed period of time (in seconds).",
 								MarkdownDescription: "Set Max Metric on boot for the fixed period of time (in seconds).",
 							},
 							"overload": schema.BoolAttribute{
-								Optional:            true,
+								Computed:            true,
 								Description:         "Enable Max Link Metric on all interfaces.",
 								MarkdownDescription: "Enable Max Link Metric on all interfaces.",
 							},
@@ -134,41 +151,85 @@ func OspfInstanceDataSourceSchema(ctx context.Context) schema.Schema {
 								AttrTypes: MaxMetricValue{}.AttributeTypes(ctx),
 							},
 						},
-						Optional:            true,
+						Computed:            true,
 						Description:         "Configuration related to OSPF Max Metric / Overload.",
 						MarkdownDescription: "Configuration related to OSPF Max Metric / Overload.",
 					},
+					"redistribution": schema.SingleNestedAttribute{
+						Attributes: map[string]schema.Attribute{
+							"export_policy": schema.StringAttribute{
+								Computed:            true,
+								Description:         "Export policy to use for redistributing routes into OSPF.",
+								MarkdownDescription: "Export policy to use for redistributing routes into OSPF.",
+							},
+							"external_route_tag": schema.StringAttribute{
+								Computed:            true,
+								Description:         "ExternalRouteTag to attach to the redistributed routes.",
+								MarkdownDescription: "ExternalRouteTag to attach to the redistributed routes.",
+							},
+						},
+						CustomType: RedistributionType{
+							ObjectType: types.ObjectType{
+								AttrTypes: RedistributionValue{}.AttributeTypes(ctx),
+							},
+						},
+						Computed:            true,
+						Description:         "Redistribution settings.",
+						MarkdownDescription: "Redistribution settings.",
+					},
 					"reference_bandwidth_gbps": schema.Int64Attribute{
-						Optional:            true,
+						Computed:            true,
 						Description:         "Reference bandwidth (in Gbps) for automatic metric calculation.",
 						MarkdownDescription: "Reference bandwidth (in Gbps) for automatic metric calculation.",
+					},
+					"route_preference": schema.SingleNestedAttribute{
+						Attributes: map[string]schema.Attribute{
+							"external": schema.Int64Attribute{
+								Computed:            true,
+								Description:         "RTM Route Preference (Administrative Distance) for external routes.",
+								MarkdownDescription: "RTM Route Preference (Administrative Distance) for external routes.",
+							},
+							"internal": schema.Int64Attribute{
+								Computed:            true,
+								Description:         "RTM Route Preference (Administrative Distance) for internal routes.",
+								MarkdownDescription: "RTM Route Preference (Administrative Distance) for internal routes.",
+							},
+						},
+						CustomType: RoutePreferenceType{
+							ObjectType: types.ObjectType{
+								AttrTypes: RoutePreferenceValue{}.AttributeTypes(ctx),
+							},
+						},
+						Computed:            true,
+						Description:         "Route preference configuration.",
+						MarkdownDescription: "Route preference configuration.",
 					},
 					"timers": schema.SingleNestedAttribute{
 						Attributes: map[string]schema.Attribute{
 							"lsa_timers": schema.SingleNestedAttribute{
 								Attributes: map[string]schema.Attribute{
 									"accumulate_ms": schema.Int64Attribute{
-										Optional:            true,
+										Computed:            true,
 										Description:         "Delay (in milliseconds) to gather LSAs before advertising to neighbors",
 										MarkdownDescription: "Delay (in milliseconds) to gather LSAs before advertising to neighbors",
 									},
 									"arrival_ms": schema.Int64Attribute{
-										Optional:            true,
+										Computed:            true,
 										Description:         "Minimum interval (in milliseconds) to accept an identical LSA.",
 										MarkdownDescription: "Minimum interval (in milliseconds) to accept an identical LSA.",
 									},
 									"gen_hold_interval_ms": schema.Int64Attribute{
-										Optional:            true,
+										Computed:            true,
 										Description:         "Hold interval (in milliseconds) for subsequent LSA regeneration.",
 										MarkdownDescription: "Hold interval (in milliseconds) for subsequent LSA regeneration.",
 									},
 									"gen_initial_delay_ms": schema.Int64Attribute{
-										Optional:            true,
+										Computed:            true,
 										Description:         "Initial delay (in milliseconds) to generate the first instance of LSAs.",
 										MarkdownDescription: "Initial delay (in milliseconds) to generate the first instance of LSAs.",
 									},
 									"gen_max_delay_ms": schema.Int64Attribute{
-										Optional:            true,
+										Computed:            true,
 										Description:         "Maximum interval (in milliseconds) between two consecutive regenerations (of the same LSA).",
 										MarkdownDescription: "Maximum interval (in milliseconds) between two consecutive regenerations (of the same LSA).",
 									},
@@ -178,29 +239,29 @@ func OspfInstanceDataSourceSchema(ctx context.Context) schema.Schema {
 										AttrTypes: LsaTimersValue{}.AttributeTypes(ctx),
 									},
 								},
-								Optional:            true,
+								Computed:            true,
 								Description:         "LSA Timers configuration.",
 								MarkdownDescription: "LSA Timers configuration.",
 							},
 							"spf_timers": schema.SingleNestedAttribute{
 								Attributes: map[string]schema.Attribute{
 									"hold_interval_ms": schema.Int64Attribute{
-										Optional:            true,
+										Computed:            true,
 										Description:         "Hold interval for subsequent SPF calculations.",
 										MarkdownDescription: "Hold interval for subsequent SPF calculations.",
 									},
 									"incremental_spf_delay_ms": schema.Int64Attribute{
-										Optional:            true,
+										Computed:            true,
 										Description:         "Delay (in milliseconds) before an incremental SPF calculation starts.",
 										MarkdownDescription: "Delay (in milliseconds) before an incremental SPF calculation starts.",
 									},
 									"initial_delay_ms": schema.Int64Attribute{
-										Optional:            true,
+										Computed:            true,
 										Description:         "Initial SPF calculation delay (in milliseconds).",
 										MarkdownDescription: "Initial SPF calculation delay (in milliseconds).",
 									},
 									"max_delay_ms": schema.Int64Attribute{
-										Optional:            true,
+										Computed:            true,
 										Description:         "Maximum interval (in milliseconds) between two consecutive SPF calculations.",
 										MarkdownDescription: "Maximum interval (in milliseconds) between two consecutive SPF calculations.",
 									},
@@ -210,7 +271,7 @@ func OspfInstanceDataSourceSchema(ctx context.Context) schema.Schema {
 										AttrTypes: SpfTimersValue{}.AttributeTypes(ctx),
 									},
 								},
-								Optional:            true,
+								Computed:            true,
 								Description:         "SPF Timers configuration.",
 								MarkdownDescription: "SPF Timers configuration.",
 							},
@@ -220,12 +281,12 @@ func OspfInstanceDataSourceSchema(ctx context.Context) schema.Schema {
 								AttrTypes: TimersValue{}.AttributeTypes(ctx),
 							},
 						},
-						Optional:            true,
+						Computed:            true,
 						Description:         "Configures OSPF timers.",
 						MarkdownDescription: "Configures OSPF timers.",
 					},
 					"version": schema.StringAttribute{
-						Optional:            true,
+						Computed:            true,
 						Description:         "OSPF version to use. OSPFv2 is supported over IPv4-enabled interfaces, OSPFv3 over IPv6-enabled interfaces.",
 						MarkdownDescription: "OSPF version to use. OSPFv2 is supported over IPv4-enabled interfaces, OSPFv3 over IPv6-enabled interfaces.",
 					},
@@ -235,7 +296,7 @@ func OspfInstanceDataSourceSchema(ctx context.Context) schema.Schema {
 						AttrTypes: SpecValue{}.AttributeTypes(ctx),
 					},
 				},
-				Optional:            true,
+				Computed:            true,
 				Description:         "OSPFInstanceSpec defines the desired state of OSPFInstance",
 				MarkdownDescription: "OSPFInstanceSpec defines the desired state of OSPFInstance",
 			},
@@ -1713,6 +1774,24 @@ func (t SpecType) ValueFromObject(ctx context.Context, in basetypes.ObjectValue)
 			fmt.Sprintf(`enabled expected to be basetypes.BoolValue, was: %T`, enabledAttribute))
 	}
 
+	lfaAttribute, ok := attributes["lfa"]
+
+	if !ok {
+		diags.AddError(
+			"Attribute Missing",
+			`lfa is missing from object`)
+
+		return nil, diags
+	}
+
+	lfaVal, ok := lfaAttribute.(basetypes.ObjectValue)
+
+	if !ok {
+		diags.AddError(
+			"Attribute Wrong Type",
+			fmt.Sprintf(`lfa expected to be basetypes.ObjectValue, was: %T`, lfaAttribute))
+	}
+
 	maxEcmpAttribute, ok := attributes["max_ecmp"]
 
 	if !ok {
@@ -1749,6 +1828,24 @@ func (t SpecType) ValueFromObject(ctx context.Context, in basetypes.ObjectValue)
 			fmt.Sprintf(`max_metric expected to be basetypes.ObjectValue, was: %T`, maxMetricAttribute))
 	}
 
+	redistributionAttribute, ok := attributes["redistribution"]
+
+	if !ok {
+		diags.AddError(
+			"Attribute Missing",
+			`redistribution is missing from object`)
+
+		return nil, diags
+	}
+
+	redistributionVal, ok := redistributionAttribute.(basetypes.ObjectValue)
+
+	if !ok {
+		diags.AddError(
+			"Attribute Wrong Type",
+			fmt.Sprintf(`redistribution expected to be basetypes.ObjectValue, was: %T`, redistributionAttribute))
+	}
+
 	referenceBandwidthGbpsAttribute, ok := attributes["reference_bandwidth_gbps"]
 
 	if !ok {
@@ -1765,6 +1862,24 @@ func (t SpecType) ValueFromObject(ctx context.Context, in basetypes.ObjectValue)
 		diags.AddError(
 			"Attribute Wrong Type",
 			fmt.Sprintf(`reference_bandwidth_gbps expected to be basetypes.Int64Value, was: %T`, referenceBandwidthGbpsAttribute))
+	}
+
+	routePreferenceAttribute, ok := attributes["route_preference"]
+
+	if !ok {
+		diags.AddError(
+			"Attribute Missing",
+			`route_preference is missing from object`)
+
+		return nil, diags
+	}
+
+	routePreferenceVal, ok := routePreferenceAttribute.(basetypes.ObjectValue)
+
+	if !ok {
+		diags.AddError(
+			"Attribute Wrong Type",
+			fmt.Sprintf(`route_preference expected to be basetypes.ObjectValue, was: %T`, routePreferenceAttribute))
 	}
 
 	timersAttribute, ok := attributes["timers"]
@@ -1810,9 +1925,12 @@ func (t SpecType) ValueFromObject(ctx context.Context, in basetypes.ObjectValue)
 	return SpecValue{
 		AddressFamily:          addressFamilyVal,
 		Enabled:                enabledVal,
+		Lfa:                    lfaVal,
 		MaxEcmp:                maxEcmpVal,
 		MaxMetric:              maxMetricVal,
+		Redistribution:         redistributionVal,
 		ReferenceBandwidthGbps: referenceBandwidthGbpsVal,
+		RoutePreference:        routePreferenceVal,
 		Timers:                 timersVal,
 		Version:                versionVal,
 		state:                  attr.ValueStateKnown,
@@ -1918,6 +2036,24 @@ func NewSpecValue(attributeTypes map[string]attr.Type, attributes map[string]att
 			fmt.Sprintf(`enabled expected to be basetypes.BoolValue, was: %T`, enabledAttribute))
 	}
 
+	lfaAttribute, ok := attributes["lfa"]
+
+	if !ok {
+		diags.AddError(
+			"Attribute Missing",
+			`lfa is missing from object`)
+
+		return NewSpecValueUnknown(), diags
+	}
+
+	lfaVal, ok := lfaAttribute.(basetypes.ObjectValue)
+
+	if !ok {
+		diags.AddError(
+			"Attribute Wrong Type",
+			fmt.Sprintf(`lfa expected to be basetypes.ObjectValue, was: %T`, lfaAttribute))
+	}
+
 	maxEcmpAttribute, ok := attributes["max_ecmp"]
 
 	if !ok {
@@ -1954,6 +2090,24 @@ func NewSpecValue(attributeTypes map[string]attr.Type, attributes map[string]att
 			fmt.Sprintf(`max_metric expected to be basetypes.ObjectValue, was: %T`, maxMetricAttribute))
 	}
 
+	redistributionAttribute, ok := attributes["redistribution"]
+
+	if !ok {
+		diags.AddError(
+			"Attribute Missing",
+			`redistribution is missing from object`)
+
+		return NewSpecValueUnknown(), diags
+	}
+
+	redistributionVal, ok := redistributionAttribute.(basetypes.ObjectValue)
+
+	if !ok {
+		diags.AddError(
+			"Attribute Wrong Type",
+			fmt.Sprintf(`redistribution expected to be basetypes.ObjectValue, was: %T`, redistributionAttribute))
+	}
+
 	referenceBandwidthGbpsAttribute, ok := attributes["reference_bandwidth_gbps"]
 
 	if !ok {
@@ -1970,6 +2124,24 @@ func NewSpecValue(attributeTypes map[string]attr.Type, attributes map[string]att
 		diags.AddError(
 			"Attribute Wrong Type",
 			fmt.Sprintf(`reference_bandwidth_gbps expected to be basetypes.Int64Value, was: %T`, referenceBandwidthGbpsAttribute))
+	}
+
+	routePreferenceAttribute, ok := attributes["route_preference"]
+
+	if !ok {
+		diags.AddError(
+			"Attribute Missing",
+			`route_preference is missing from object`)
+
+		return NewSpecValueUnknown(), diags
+	}
+
+	routePreferenceVal, ok := routePreferenceAttribute.(basetypes.ObjectValue)
+
+	if !ok {
+		diags.AddError(
+			"Attribute Wrong Type",
+			fmt.Sprintf(`route_preference expected to be basetypes.ObjectValue, was: %T`, routePreferenceAttribute))
 	}
 
 	timersAttribute, ok := attributes["timers"]
@@ -2015,9 +2187,12 @@ func NewSpecValue(attributeTypes map[string]attr.Type, attributes map[string]att
 	return SpecValue{
 		AddressFamily:          addressFamilyVal,
 		Enabled:                enabledVal,
+		Lfa:                    lfaVal,
 		MaxEcmp:                maxEcmpVal,
 		MaxMetric:              maxMetricVal,
+		Redistribution:         redistributionVal,
 		ReferenceBandwidthGbps: referenceBandwidthGbpsVal,
+		RoutePreference:        routePreferenceVal,
 		Timers:                 timersVal,
 		Version:                versionVal,
 		state:                  attr.ValueStateKnown,
@@ -2094,27 +2269,39 @@ var _ basetypes.ObjectValuable = SpecValue{}
 type SpecValue struct {
 	AddressFamily          basetypes.StringValue `tfsdk:"address_family"`
 	Enabled                basetypes.BoolValue   `tfsdk:"enabled"`
+	Lfa                    basetypes.ObjectValue `tfsdk:"lfa"`
 	MaxEcmp                basetypes.Int64Value  `tfsdk:"max_ecmp"`
 	MaxMetric              basetypes.ObjectValue `tfsdk:"max_metric"`
+	Redistribution         basetypes.ObjectValue `tfsdk:"redistribution"`
 	ReferenceBandwidthGbps basetypes.Int64Value  `tfsdk:"reference_bandwidth_gbps"`
+	RoutePreference        basetypes.ObjectValue `tfsdk:"route_preference"`
 	Timers                 basetypes.ObjectValue `tfsdk:"timers"`
 	Version                basetypes.StringValue `tfsdk:"version"`
 	state                  attr.ValueState
 }
 
 func (v SpecValue) ToTerraformValue(ctx context.Context) (tftypes.Value, error) {
-	attrTypes := make(map[string]tftypes.Type, 7)
+	attrTypes := make(map[string]tftypes.Type, 10)
 
 	var val tftypes.Value
 	var err error
 
 	attrTypes["address_family"] = basetypes.StringType{}.TerraformType(ctx)
 	attrTypes["enabled"] = basetypes.BoolType{}.TerraformType(ctx)
+	attrTypes["lfa"] = basetypes.ObjectType{
+		AttrTypes: LfaValue{}.AttributeTypes(ctx),
+	}.TerraformType(ctx)
 	attrTypes["max_ecmp"] = basetypes.Int64Type{}.TerraformType(ctx)
 	attrTypes["max_metric"] = basetypes.ObjectType{
 		AttrTypes: MaxMetricValue{}.AttributeTypes(ctx),
 	}.TerraformType(ctx)
+	attrTypes["redistribution"] = basetypes.ObjectType{
+		AttrTypes: RedistributionValue{}.AttributeTypes(ctx),
+	}.TerraformType(ctx)
 	attrTypes["reference_bandwidth_gbps"] = basetypes.Int64Type{}.TerraformType(ctx)
+	attrTypes["route_preference"] = basetypes.ObjectType{
+		AttrTypes: RoutePreferenceValue{}.AttributeTypes(ctx),
+	}.TerraformType(ctx)
 	attrTypes["timers"] = basetypes.ObjectType{
 		AttrTypes: TimersValue{}.AttributeTypes(ctx),
 	}.TerraformType(ctx)
@@ -2124,7 +2311,7 @@ func (v SpecValue) ToTerraformValue(ctx context.Context) (tftypes.Value, error) 
 
 	switch v.state {
 	case attr.ValueStateKnown:
-		vals := make(map[string]tftypes.Value, 7)
+		vals := make(map[string]tftypes.Value, 10)
 
 		val, err = v.AddressFamily.ToTerraformValue(ctx)
 
@@ -2142,6 +2329,14 @@ func (v SpecValue) ToTerraformValue(ctx context.Context) (tftypes.Value, error) 
 
 		vals["enabled"] = val
 
+		val, err = v.Lfa.ToTerraformValue(ctx)
+
+		if err != nil {
+			return tftypes.NewValue(objectType, tftypes.UnknownValue), err
+		}
+
+		vals["lfa"] = val
+
 		val, err = v.MaxEcmp.ToTerraformValue(ctx)
 
 		if err != nil {
@@ -2158,6 +2353,14 @@ func (v SpecValue) ToTerraformValue(ctx context.Context) (tftypes.Value, error) 
 
 		vals["max_metric"] = val
 
+		val, err = v.Redistribution.ToTerraformValue(ctx)
+
+		if err != nil {
+			return tftypes.NewValue(objectType, tftypes.UnknownValue), err
+		}
+
+		vals["redistribution"] = val
+
 		val, err = v.ReferenceBandwidthGbps.ToTerraformValue(ctx)
 
 		if err != nil {
@@ -2165,6 +2368,14 @@ func (v SpecValue) ToTerraformValue(ctx context.Context) (tftypes.Value, error) 
 		}
 
 		vals["reference_bandwidth_gbps"] = val
+
+		val, err = v.RoutePreference.ToTerraformValue(ctx)
+
+		if err != nil {
+			return tftypes.NewValue(objectType, tftypes.UnknownValue), err
+		}
+
+		vals["route_preference"] = val
 
 		val, err = v.Timers.ToTerraformValue(ctx)
 
@@ -2211,6 +2422,27 @@ func (v SpecValue) String() string {
 func (v SpecValue) ToObjectValue(ctx context.Context) (basetypes.ObjectValue, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	var lfa basetypes.ObjectValue
+
+	if v.Lfa.IsNull() {
+		lfa = types.ObjectNull(
+			LfaValue{}.AttributeTypes(ctx),
+		)
+	}
+
+	if v.Lfa.IsUnknown() {
+		lfa = types.ObjectUnknown(
+			LfaValue{}.AttributeTypes(ctx),
+		)
+	}
+
+	if !v.Lfa.IsNull() && !v.Lfa.IsUnknown() {
+		lfa = types.ObjectValueMust(
+			LfaValue{}.AttributeTypes(ctx),
+			v.Lfa.Attributes(),
+		)
+	}
+
 	var maxMetric basetypes.ObjectValue
 
 	if v.MaxMetric.IsNull() {
@@ -2229,6 +2461,48 @@ func (v SpecValue) ToObjectValue(ctx context.Context) (basetypes.ObjectValue, di
 		maxMetric = types.ObjectValueMust(
 			MaxMetricValue{}.AttributeTypes(ctx),
 			v.MaxMetric.Attributes(),
+		)
+	}
+
+	var redistribution basetypes.ObjectValue
+
+	if v.Redistribution.IsNull() {
+		redistribution = types.ObjectNull(
+			RedistributionValue{}.AttributeTypes(ctx),
+		)
+	}
+
+	if v.Redistribution.IsUnknown() {
+		redistribution = types.ObjectUnknown(
+			RedistributionValue{}.AttributeTypes(ctx),
+		)
+	}
+
+	if !v.Redistribution.IsNull() && !v.Redistribution.IsUnknown() {
+		redistribution = types.ObjectValueMust(
+			RedistributionValue{}.AttributeTypes(ctx),
+			v.Redistribution.Attributes(),
+		)
+	}
+
+	var routePreference basetypes.ObjectValue
+
+	if v.RoutePreference.IsNull() {
+		routePreference = types.ObjectNull(
+			RoutePreferenceValue{}.AttributeTypes(ctx),
+		)
+	}
+
+	if v.RoutePreference.IsUnknown() {
+		routePreference = types.ObjectUnknown(
+			RoutePreferenceValue{}.AttributeTypes(ctx),
+		)
+	}
+
+	if !v.RoutePreference.IsNull() && !v.RoutePreference.IsUnknown() {
+		routePreference = types.ObjectValueMust(
+			RoutePreferenceValue{}.AttributeTypes(ctx),
+			v.RoutePreference.Attributes(),
 		)
 	}
 
@@ -2256,11 +2530,20 @@ func (v SpecValue) ToObjectValue(ctx context.Context) (basetypes.ObjectValue, di
 	attributeTypes := map[string]attr.Type{
 		"address_family": basetypes.StringType{},
 		"enabled":        basetypes.BoolType{},
-		"max_ecmp":       basetypes.Int64Type{},
+		"lfa": basetypes.ObjectType{
+			AttrTypes: LfaValue{}.AttributeTypes(ctx),
+		},
+		"max_ecmp": basetypes.Int64Type{},
 		"max_metric": basetypes.ObjectType{
 			AttrTypes: MaxMetricValue{}.AttributeTypes(ctx),
 		},
+		"redistribution": basetypes.ObjectType{
+			AttrTypes: RedistributionValue{}.AttributeTypes(ctx),
+		},
 		"reference_bandwidth_gbps": basetypes.Int64Type{},
+		"route_preference": basetypes.ObjectType{
+			AttrTypes: RoutePreferenceValue{}.AttributeTypes(ctx),
+		},
 		"timers": basetypes.ObjectType{
 			AttrTypes: TimersValue{}.AttributeTypes(ctx),
 		},
@@ -2280,9 +2563,12 @@ func (v SpecValue) ToObjectValue(ctx context.Context) (basetypes.ObjectValue, di
 		map[string]attr.Value{
 			"address_family":           v.AddressFamily,
 			"enabled":                  v.Enabled,
+			"lfa":                      lfa,
 			"max_ecmp":                 v.MaxEcmp,
 			"max_metric":               maxMetric,
+			"redistribution":           redistribution,
 			"reference_bandwidth_gbps": v.ReferenceBandwidthGbps,
+			"route_preference":         routePreference,
 			"timers":                   timers,
 			"version":                  v.Version,
 		})
@@ -2313,6 +2599,10 @@ func (v SpecValue) Equal(o attr.Value) bool {
 		return false
 	}
 
+	if !v.Lfa.Equal(other.Lfa) {
+		return false
+	}
+
 	if !v.MaxEcmp.Equal(other.MaxEcmp) {
 		return false
 	}
@@ -2321,7 +2611,15 @@ func (v SpecValue) Equal(o attr.Value) bool {
 		return false
 	}
 
+	if !v.Redistribution.Equal(other.Redistribution) {
+		return false
+	}
+
 	if !v.ReferenceBandwidthGbps.Equal(other.ReferenceBandwidthGbps) {
+		return false
+	}
+
+	if !v.RoutePreference.Equal(other.RoutePreference) {
 		return false
 	}
 
@@ -2348,15 +2646,348 @@ func (v SpecValue) AttributeTypes(ctx context.Context) map[string]attr.Type {
 	return map[string]attr.Type{
 		"address_family": basetypes.StringType{},
 		"enabled":        basetypes.BoolType{},
-		"max_ecmp":       basetypes.Int64Type{},
+		"lfa": basetypes.ObjectType{
+			AttrTypes: LfaValue{}.AttributeTypes(ctx),
+		},
+		"max_ecmp": basetypes.Int64Type{},
 		"max_metric": basetypes.ObjectType{
 			AttrTypes: MaxMetricValue{}.AttributeTypes(ctx),
 		},
+		"redistribution": basetypes.ObjectType{
+			AttrTypes: RedistributionValue{}.AttributeTypes(ctx),
+		},
 		"reference_bandwidth_gbps": basetypes.Int64Type{},
+		"route_preference": basetypes.ObjectType{
+			AttrTypes: RoutePreferenceValue{}.AttributeTypes(ctx),
+		},
 		"timers": basetypes.ObjectType{
 			AttrTypes: TimersValue{}.AttributeTypes(ctx),
 		},
 		"version": basetypes.StringType{},
+	}
+}
+
+var _ basetypes.ObjectTypable = LfaType{}
+
+type LfaType struct {
+	basetypes.ObjectType
+}
+
+func (t LfaType) Equal(o attr.Type) bool {
+	other, ok := o.(LfaType)
+
+	if !ok {
+		return false
+	}
+
+	return t.ObjectType.Equal(other.ObjectType)
+}
+
+func (t LfaType) String() string {
+	return "LfaType"
+}
+
+func (t LfaType) ValueFromObject(ctx context.Context, in basetypes.ObjectValue) (basetypes.ObjectValuable, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	attributes := in.Attributes()
+
+	enabledAttribute, ok := attributes["enabled"]
+
+	if !ok {
+		diags.AddError(
+			"Attribute Missing",
+			`enabled is missing from object`)
+
+		return nil, diags
+	}
+
+	enabledVal, ok := enabledAttribute.(basetypes.BoolValue)
+
+	if !ok {
+		diags.AddError(
+			"Attribute Wrong Type",
+			fmt.Sprintf(`enabled expected to be basetypes.BoolValue, was: %T`, enabledAttribute))
+	}
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	return LfaValue{
+		Enabled: enabledVal,
+		state:   attr.ValueStateKnown,
+	}, diags
+}
+
+func NewLfaValueNull() LfaValue {
+	return LfaValue{
+		state: attr.ValueStateNull,
+	}
+}
+
+func NewLfaValueUnknown() LfaValue {
+	return LfaValue{
+		state: attr.ValueStateUnknown,
+	}
+}
+
+func NewLfaValue(attributeTypes map[string]attr.Type, attributes map[string]attr.Value) (LfaValue, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	// Reference: https://github.com/hashicorp/terraform-plugin-framework/issues/521
+	ctx := context.Background()
+
+	for name, attributeType := range attributeTypes {
+		attribute, ok := attributes[name]
+
+		if !ok {
+			diags.AddError(
+				"Missing LfaValue Attribute Value",
+				"While creating a LfaValue value, a missing attribute value was detected. "+
+					"A LfaValue must contain values for all attributes, even if null or unknown. "+
+					"This is always an issue with the provider and should be reported to the provider developers.\n\n"+
+					fmt.Sprintf("LfaValue Attribute Name (%s) Expected Type: %s", name, attributeType.String()),
+			)
+
+			continue
+		}
+
+		if !attributeType.Equal(attribute.Type(ctx)) {
+			diags.AddError(
+				"Invalid LfaValue Attribute Type",
+				"While creating a LfaValue value, an invalid attribute value was detected. "+
+					"A LfaValue must use a matching attribute type for the value. "+
+					"This is always an issue with the provider and should be reported to the provider developers.\n\n"+
+					fmt.Sprintf("LfaValue Attribute Name (%s) Expected Type: %s\n", name, attributeType.String())+
+					fmt.Sprintf("LfaValue Attribute Name (%s) Given Type: %s", name, attribute.Type(ctx)),
+			)
+		}
+	}
+
+	for name := range attributes {
+		_, ok := attributeTypes[name]
+
+		if !ok {
+			diags.AddError(
+				"Extra LfaValue Attribute Value",
+				"While creating a LfaValue value, an extra attribute value was detected. "+
+					"A LfaValue must not contain values beyond the expected attribute types. "+
+					"This is always an issue with the provider and should be reported to the provider developers.\n\n"+
+					fmt.Sprintf("Extra LfaValue Attribute Name: %s", name),
+			)
+		}
+	}
+
+	if diags.HasError() {
+		return NewLfaValueUnknown(), diags
+	}
+
+	enabledAttribute, ok := attributes["enabled"]
+
+	if !ok {
+		diags.AddError(
+			"Attribute Missing",
+			`enabled is missing from object`)
+
+		return NewLfaValueUnknown(), diags
+	}
+
+	enabledVal, ok := enabledAttribute.(basetypes.BoolValue)
+
+	if !ok {
+		diags.AddError(
+			"Attribute Wrong Type",
+			fmt.Sprintf(`enabled expected to be basetypes.BoolValue, was: %T`, enabledAttribute))
+	}
+
+	if diags.HasError() {
+		return NewLfaValueUnknown(), diags
+	}
+
+	return LfaValue{
+		Enabled: enabledVal,
+		state:   attr.ValueStateKnown,
+	}, diags
+}
+
+func NewLfaValueMust(attributeTypes map[string]attr.Type, attributes map[string]attr.Value) LfaValue {
+	object, diags := NewLfaValue(attributeTypes, attributes)
+
+	if diags.HasError() {
+		// This could potentially be added to the diag package.
+		diagsStrings := make([]string, 0, len(diags))
+
+		for _, diagnostic := range diags {
+			diagsStrings = append(diagsStrings, fmt.Sprintf(
+				"%s | %s | %s",
+				diagnostic.Severity(),
+				diagnostic.Summary(),
+				diagnostic.Detail()))
+		}
+
+		panic("NewLfaValueMust received error(s): " + strings.Join(diagsStrings, "\n"))
+	}
+
+	return object
+}
+
+func (t LfaType) ValueFromTerraform(ctx context.Context, in tftypes.Value) (attr.Value, error) {
+	if in.Type() == nil {
+		return NewLfaValueNull(), nil
+	}
+
+	if !in.Type().Equal(t.TerraformType(ctx)) {
+		return nil, fmt.Errorf("expected %s, got %s", t.TerraformType(ctx), in.Type())
+	}
+
+	if !in.IsKnown() {
+		return NewLfaValueUnknown(), nil
+	}
+
+	if in.IsNull() {
+		return NewLfaValueNull(), nil
+	}
+
+	attributes := map[string]attr.Value{}
+
+	val := map[string]tftypes.Value{}
+
+	err := in.As(&val)
+
+	if err != nil {
+		return nil, err
+	}
+
+	for k, v := range val {
+		a, err := t.AttrTypes[k].ValueFromTerraform(ctx, v)
+
+		if err != nil {
+			return nil, err
+		}
+
+		attributes[k] = a
+	}
+
+	return NewLfaValueMust(LfaValue{}.AttributeTypes(ctx), attributes), nil
+}
+
+func (t LfaType) ValueType(ctx context.Context) attr.Value {
+	return LfaValue{}
+}
+
+var _ basetypes.ObjectValuable = LfaValue{}
+
+type LfaValue struct {
+	Enabled basetypes.BoolValue `tfsdk:"enabled"`
+	state   attr.ValueState
+}
+
+func (v LfaValue) ToTerraformValue(ctx context.Context) (tftypes.Value, error) {
+	attrTypes := make(map[string]tftypes.Type, 1)
+
+	var val tftypes.Value
+	var err error
+
+	attrTypes["enabled"] = basetypes.BoolType{}.TerraformType(ctx)
+
+	objectType := tftypes.Object{AttributeTypes: attrTypes}
+
+	switch v.state {
+	case attr.ValueStateKnown:
+		vals := make(map[string]tftypes.Value, 1)
+
+		val, err = v.Enabled.ToTerraformValue(ctx)
+
+		if err != nil {
+			return tftypes.NewValue(objectType, tftypes.UnknownValue), err
+		}
+
+		vals["enabled"] = val
+
+		if err := tftypes.ValidateValue(objectType, vals); err != nil {
+			return tftypes.NewValue(objectType, tftypes.UnknownValue), err
+		}
+
+		return tftypes.NewValue(objectType, vals), nil
+	case attr.ValueStateNull:
+		return tftypes.NewValue(objectType, nil), nil
+	case attr.ValueStateUnknown:
+		return tftypes.NewValue(objectType, tftypes.UnknownValue), nil
+	default:
+		panic(fmt.Sprintf("unhandled Object state in ToTerraformValue: %s", v.state))
+	}
+}
+
+func (v LfaValue) IsNull() bool {
+	return v.state == attr.ValueStateNull
+}
+
+func (v LfaValue) IsUnknown() bool {
+	return v.state == attr.ValueStateUnknown
+}
+
+func (v LfaValue) String() string {
+	return "LfaValue"
+}
+
+func (v LfaValue) ToObjectValue(ctx context.Context) (basetypes.ObjectValue, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	attributeTypes := map[string]attr.Type{
+		"enabled": basetypes.BoolType{},
+	}
+
+	if v.IsNull() {
+		return types.ObjectNull(attributeTypes), diags
+	}
+
+	if v.IsUnknown() {
+		return types.ObjectUnknown(attributeTypes), diags
+	}
+
+	objVal, diags := types.ObjectValue(
+		attributeTypes,
+		map[string]attr.Value{
+			"enabled": v.Enabled,
+		})
+
+	return objVal, diags
+}
+
+func (v LfaValue) Equal(o attr.Value) bool {
+	other, ok := o.(LfaValue)
+
+	if !ok {
+		return false
+	}
+
+	if v.state != other.state {
+		return false
+	}
+
+	if v.state != attr.ValueStateKnown {
+		return true
+	}
+
+	if !v.Enabled.Equal(other.Enabled) {
+		return false
+	}
+
+	return true
+}
+
+func (v LfaValue) Type(ctx context.Context) attr.Type {
+	return LfaType{
+		basetypes.ObjectType{
+			AttrTypes: v.AttributeTypes(ctx),
+		},
+	}
+}
+
+func (v LfaValue) AttributeTypes(ctx context.Context) map[string]attr.Type {
+	return map[string]attr.Type{
+		"enabled": basetypes.BoolType{},
 	}
 }
 
@@ -2736,6 +3367,764 @@ func (v MaxMetricValue) AttributeTypes(ctx context.Context) map[string]attr.Type
 	return map[string]attr.Type{
 		"on_boot":  basetypes.Int64Type{},
 		"overload": basetypes.BoolType{},
+	}
+}
+
+var _ basetypes.ObjectTypable = RedistributionType{}
+
+type RedistributionType struct {
+	basetypes.ObjectType
+}
+
+func (t RedistributionType) Equal(o attr.Type) bool {
+	other, ok := o.(RedistributionType)
+
+	if !ok {
+		return false
+	}
+
+	return t.ObjectType.Equal(other.ObjectType)
+}
+
+func (t RedistributionType) String() string {
+	return "RedistributionType"
+}
+
+func (t RedistributionType) ValueFromObject(ctx context.Context, in basetypes.ObjectValue) (basetypes.ObjectValuable, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	attributes := in.Attributes()
+
+	exportPolicyAttribute, ok := attributes["export_policy"]
+
+	if !ok {
+		diags.AddError(
+			"Attribute Missing",
+			`export_policy is missing from object`)
+
+		return nil, diags
+	}
+
+	exportPolicyVal, ok := exportPolicyAttribute.(basetypes.StringValue)
+
+	if !ok {
+		diags.AddError(
+			"Attribute Wrong Type",
+			fmt.Sprintf(`export_policy expected to be basetypes.StringValue, was: %T`, exportPolicyAttribute))
+	}
+
+	externalRouteTagAttribute, ok := attributes["external_route_tag"]
+
+	if !ok {
+		diags.AddError(
+			"Attribute Missing",
+			`external_route_tag is missing from object`)
+
+		return nil, diags
+	}
+
+	externalRouteTagVal, ok := externalRouteTagAttribute.(basetypes.StringValue)
+
+	if !ok {
+		diags.AddError(
+			"Attribute Wrong Type",
+			fmt.Sprintf(`external_route_tag expected to be basetypes.StringValue, was: %T`, externalRouteTagAttribute))
+	}
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	return RedistributionValue{
+		ExportPolicy:     exportPolicyVal,
+		ExternalRouteTag: externalRouteTagVal,
+		state:            attr.ValueStateKnown,
+	}, diags
+}
+
+func NewRedistributionValueNull() RedistributionValue {
+	return RedistributionValue{
+		state: attr.ValueStateNull,
+	}
+}
+
+func NewRedistributionValueUnknown() RedistributionValue {
+	return RedistributionValue{
+		state: attr.ValueStateUnknown,
+	}
+}
+
+func NewRedistributionValue(attributeTypes map[string]attr.Type, attributes map[string]attr.Value) (RedistributionValue, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	// Reference: https://github.com/hashicorp/terraform-plugin-framework/issues/521
+	ctx := context.Background()
+
+	for name, attributeType := range attributeTypes {
+		attribute, ok := attributes[name]
+
+		if !ok {
+			diags.AddError(
+				"Missing RedistributionValue Attribute Value",
+				"While creating a RedistributionValue value, a missing attribute value was detected. "+
+					"A RedistributionValue must contain values for all attributes, even if null or unknown. "+
+					"This is always an issue with the provider and should be reported to the provider developers.\n\n"+
+					fmt.Sprintf("RedistributionValue Attribute Name (%s) Expected Type: %s", name, attributeType.String()),
+			)
+
+			continue
+		}
+
+		if !attributeType.Equal(attribute.Type(ctx)) {
+			diags.AddError(
+				"Invalid RedistributionValue Attribute Type",
+				"While creating a RedistributionValue value, an invalid attribute value was detected. "+
+					"A RedistributionValue must use a matching attribute type for the value. "+
+					"This is always an issue with the provider and should be reported to the provider developers.\n\n"+
+					fmt.Sprintf("RedistributionValue Attribute Name (%s) Expected Type: %s\n", name, attributeType.String())+
+					fmt.Sprintf("RedistributionValue Attribute Name (%s) Given Type: %s", name, attribute.Type(ctx)),
+			)
+		}
+	}
+
+	for name := range attributes {
+		_, ok := attributeTypes[name]
+
+		if !ok {
+			diags.AddError(
+				"Extra RedistributionValue Attribute Value",
+				"While creating a RedistributionValue value, an extra attribute value was detected. "+
+					"A RedistributionValue must not contain values beyond the expected attribute types. "+
+					"This is always an issue with the provider and should be reported to the provider developers.\n\n"+
+					fmt.Sprintf("Extra RedistributionValue Attribute Name: %s", name),
+			)
+		}
+	}
+
+	if diags.HasError() {
+		return NewRedistributionValueUnknown(), diags
+	}
+
+	exportPolicyAttribute, ok := attributes["export_policy"]
+
+	if !ok {
+		diags.AddError(
+			"Attribute Missing",
+			`export_policy is missing from object`)
+
+		return NewRedistributionValueUnknown(), diags
+	}
+
+	exportPolicyVal, ok := exportPolicyAttribute.(basetypes.StringValue)
+
+	if !ok {
+		diags.AddError(
+			"Attribute Wrong Type",
+			fmt.Sprintf(`export_policy expected to be basetypes.StringValue, was: %T`, exportPolicyAttribute))
+	}
+
+	externalRouteTagAttribute, ok := attributes["external_route_tag"]
+
+	if !ok {
+		diags.AddError(
+			"Attribute Missing",
+			`external_route_tag is missing from object`)
+
+		return NewRedistributionValueUnknown(), diags
+	}
+
+	externalRouteTagVal, ok := externalRouteTagAttribute.(basetypes.StringValue)
+
+	if !ok {
+		diags.AddError(
+			"Attribute Wrong Type",
+			fmt.Sprintf(`external_route_tag expected to be basetypes.StringValue, was: %T`, externalRouteTagAttribute))
+	}
+
+	if diags.HasError() {
+		return NewRedistributionValueUnknown(), diags
+	}
+
+	return RedistributionValue{
+		ExportPolicy:     exportPolicyVal,
+		ExternalRouteTag: externalRouteTagVal,
+		state:            attr.ValueStateKnown,
+	}, diags
+}
+
+func NewRedistributionValueMust(attributeTypes map[string]attr.Type, attributes map[string]attr.Value) RedistributionValue {
+	object, diags := NewRedistributionValue(attributeTypes, attributes)
+
+	if diags.HasError() {
+		// This could potentially be added to the diag package.
+		diagsStrings := make([]string, 0, len(diags))
+
+		for _, diagnostic := range diags {
+			diagsStrings = append(diagsStrings, fmt.Sprintf(
+				"%s | %s | %s",
+				diagnostic.Severity(),
+				diagnostic.Summary(),
+				diagnostic.Detail()))
+		}
+
+		panic("NewRedistributionValueMust received error(s): " + strings.Join(diagsStrings, "\n"))
+	}
+
+	return object
+}
+
+func (t RedistributionType) ValueFromTerraform(ctx context.Context, in tftypes.Value) (attr.Value, error) {
+	if in.Type() == nil {
+		return NewRedistributionValueNull(), nil
+	}
+
+	if !in.Type().Equal(t.TerraformType(ctx)) {
+		return nil, fmt.Errorf("expected %s, got %s", t.TerraformType(ctx), in.Type())
+	}
+
+	if !in.IsKnown() {
+		return NewRedistributionValueUnknown(), nil
+	}
+
+	if in.IsNull() {
+		return NewRedistributionValueNull(), nil
+	}
+
+	attributes := map[string]attr.Value{}
+
+	val := map[string]tftypes.Value{}
+
+	err := in.As(&val)
+
+	if err != nil {
+		return nil, err
+	}
+
+	for k, v := range val {
+		a, err := t.AttrTypes[k].ValueFromTerraform(ctx, v)
+
+		if err != nil {
+			return nil, err
+		}
+
+		attributes[k] = a
+	}
+
+	return NewRedistributionValueMust(RedistributionValue{}.AttributeTypes(ctx), attributes), nil
+}
+
+func (t RedistributionType) ValueType(ctx context.Context) attr.Value {
+	return RedistributionValue{}
+}
+
+var _ basetypes.ObjectValuable = RedistributionValue{}
+
+type RedistributionValue struct {
+	ExportPolicy     basetypes.StringValue `tfsdk:"export_policy"`
+	ExternalRouteTag basetypes.StringValue `tfsdk:"external_route_tag"`
+	state            attr.ValueState
+}
+
+func (v RedistributionValue) ToTerraformValue(ctx context.Context) (tftypes.Value, error) {
+	attrTypes := make(map[string]tftypes.Type, 2)
+
+	var val tftypes.Value
+	var err error
+
+	attrTypes["export_policy"] = basetypes.StringType{}.TerraformType(ctx)
+	attrTypes["external_route_tag"] = basetypes.StringType{}.TerraformType(ctx)
+
+	objectType := tftypes.Object{AttributeTypes: attrTypes}
+
+	switch v.state {
+	case attr.ValueStateKnown:
+		vals := make(map[string]tftypes.Value, 2)
+
+		val, err = v.ExportPolicy.ToTerraformValue(ctx)
+
+		if err != nil {
+			return tftypes.NewValue(objectType, tftypes.UnknownValue), err
+		}
+
+		vals["export_policy"] = val
+
+		val, err = v.ExternalRouteTag.ToTerraformValue(ctx)
+
+		if err != nil {
+			return tftypes.NewValue(objectType, tftypes.UnknownValue), err
+		}
+
+		vals["external_route_tag"] = val
+
+		if err := tftypes.ValidateValue(objectType, vals); err != nil {
+			return tftypes.NewValue(objectType, tftypes.UnknownValue), err
+		}
+
+		return tftypes.NewValue(objectType, vals), nil
+	case attr.ValueStateNull:
+		return tftypes.NewValue(objectType, nil), nil
+	case attr.ValueStateUnknown:
+		return tftypes.NewValue(objectType, tftypes.UnknownValue), nil
+	default:
+		panic(fmt.Sprintf("unhandled Object state in ToTerraformValue: %s", v.state))
+	}
+}
+
+func (v RedistributionValue) IsNull() bool {
+	return v.state == attr.ValueStateNull
+}
+
+func (v RedistributionValue) IsUnknown() bool {
+	return v.state == attr.ValueStateUnknown
+}
+
+func (v RedistributionValue) String() string {
+	return "RedistributionValue"
+}
+
+func (v RedistributionValue) ToObjectValue(ctx context.Context) (basetypes.ObjectValue, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	attributeTypes := map[string]attr.Type{
+		"export_policy":      basetypes.StringType{},
+		"external_route_tag": basetypes.StringType{},
+	}
+
+	if v.IsNull() {
+		return types.ObjectNull(attributeTypes), diags
+	}
+
+	if v.IsUnknown() {
+		return types.ObjectUnknown(attributeTypes), diags
+	}
+
+	objVal, diags := types.ObjectValue(
+		attributeTypes,
+		map[string]attr.Value{
+			"export_policy":      v.ExportPolicy,
+			"external_route_tag": v.ExternalRouteTag,
+		})
+
+	return objVal, diags
+}
+
+func (v RedistributionValue) Equal(o attr.Value) bool {
+	other, ok := o.(RedistributionValue)
+
+	if !ok {
+		return false
+	}
+
+	if v.state != other.state {
+		return false
+	}
+
+	if v.state != attr.ValueStateKnown {
+		return true
+	}
+
+	if !v.ExportPolicy.Equal(other.ExportPolicy) {
+		return false
+	}
+
+	if !v.ExternalRouteTag.Equal(other.ExternalRouteTag) {
+		return false
+	}
+
+	return true
+}
+
+func (v RedistributionValue) Type(ctx context.Context) attr.Type {
+	return RedistributionType{
+		basetypes.ObjectType{
+			AttrTypes: v.AttributeTypes(ctx),
+		},
+	}
+}
+
+func (v RedistributionValue) AttributeTypes(ctx context.Context) map[string]attr.Type {
+	return map[string]attr.Type{
+		"export_policy":      basetypes.StringType{},
+		"external_route_tag": basetypes.StringType{},
+	}
+}
+
+var _ basetypes.ObjectTypable = RoutePreferenceType{}
+
+type RoutePreferenceType struct {
+	basetypes.ObjectType
+}
+
+func (t RoutePreferenceType) Equal(o attr.Type) bool {
+	other, ok := o.(RoutePreferenceType)
+
+	if !ok {
+		return false
+	}
+
+	return t.ObjectType.Equal(other.ObjectType)
+}
+
+func (t RoutePreferenceType) String() string {
+	return "RoutePreferenceType"
+}
+
+func (t RoutePreferenceType) ValueFromObject(ctx context.Context, in basetypes.ObjectValue) (basetypes.ObjectValuable, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	attributes := in.Attributes()
+
+	externalAttribute, ok := attributes["external"]
+
+	if !ok {
+		diags.AddError(
+			"Attribute Missing",
+			`external is missing from object`)
+
+		return nil, diags
+	}
+
+	externalVal, ok := externalAttribute.(basetypes.Int64Value)
+
+	if !ok {
+		diags.AddError(
+			"Attribute Wrong Type",
+			fmt.Sprintf(`external expected to be basetypes.Int64Value, was: %T`, externalAttribute))
+	}
+
+	internalAttribute, ok := attributes["internal"]
+
+	if !ok {
+		diags.AddError(
+			"Attribute Missing",
+			`internal is missing from object`)
+
+		return nil, diags
+	}
+
+	internalVal, ok := internalAttribute.(basetypes.Int64Value)
+
+	if !ok {
+		diags.AddError(
+			"Attribute Wrong Type",
+			fmt.Sprintf(`internal expected to be basetypes.Int64Value, was: %T`, internalAttribute))
+	}
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	return RoutePreferenceValue{
+		External: externalVal,
+		Internal: internalVal,
+		state:    attr.ValueStateKnown,
+	}, diags
+}
+
+func NewRoutePreferenceValueNull() RoutePreferenceValue {
+	return RoutePreferenceValue{
+		state: attr.ValueStateNull,
+	}
+}
+
+func NewRoutePreferenceValueUnknown() RoutePreferenceValue {
+	return RoutePreferenceValue{
+		state: attr.ValueStateUnknown,
+	}
+}
+
+func NewRoutePreferenceValue(attributeTypes map[string]attr.Type, attributes map[string]attr.Value) (RoutePreferenceValue, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	// Reference: https://github.com/hashicorp/terraform-plugin-framework/issues/521
+	ctx := context.Background()
+
+	for name, attributeType := range attributeTypes {
+		attribute, ok := attributes[name]
+
+		if !ok {
+			diags.AddError(
+				"Missing RoutePreferenceValue Attribute Value",
+				"While creating a RoutePreferenceValue value, a missing attribute value was detected. "+
+					"A RoutePreferenceValue must contain values for all attributes, even if null or unknown. "+
+					"This is always an issue with the provider and should be reported to the provider developers.\n\n"+
+					fmt.Sprintf("RoutePreferenceValue Attribute Name (%s) Expected Type: %s", name, attributeType.String()),
+			)
+
+			continue
+		}
+
+		if !attributeType.Equal(attribute.Type(ctx)) {
+			diags.AddError(
+				"Invalid RoutePreferenceValue Attribute Type",
+				"While creating a RoutePreferenceValue value, an invalid attribute value was detected. "+
+					"A RoutePreferenceValue must use a matching attribute type for the value. "+
+					"This is always an issue with the provider and should be reported to the provider developers.\n\n"+
+					fmt.Sprintf("RoutePreferenceValue Attribute Name (%s) Expected Type: %s\n", name, attributeType.String())+
+					fmt.Sprintf("RoutePreferenceValue Attribute Name (%s) Given Type: %s", name, attribute.Type(ctx)),
+			)
+		}
+	}
+
+	for name := range attributes {
+		_, ok := attributeTypes[name]
+
+		if !ok {
+			diags.AddError(
+				"Extra RoutePreferenceValue Attribute Value",
+				"While creating a RoutePreferenceValue value, an extra attribute value was detected. "+
+					"A RoutePreferenceValue must not contain values beyond the expected attribute types. "+
+					"This is always an issue with the provider and should be reported to the provider developers.\n\n"+
+					fmt.Sprintf("Extra RoutePreferenceValue Attribute Name: %s", name),
+			)
+		}
+	}
+
+	if diags.HasError() {
+		return NewRoutePreferenceValueUnknown(), diags
+	}
+
+	externalAttribute, ok := attributes["external"]
+
+	if !ok {
+		diags.AddError(
+			"Attribute Missing",
+			`external is missing from object`)
+
+		return NewRoutePreferenceValueUnknown(), diags
+	}
+
+	externalVal, ok := externalAttribute.(basetypes.Int64Value)
+
+	if !ok {
+		diags.AddError(
+			"Attribute Wrong Type",
+			fmt.Sprintf(`external expected to be basetypes.Int64Value, was: %T`, externalAttribute))
+	}
+
+	internalAttribute, ok := attributes["internal"]
+
+	if !ok {
+		diags.AddError(
+			"Attribute Missing",
+			`internal is missing from object`)
+
+		return NewRoutePreferenceValueUnknown(), diags
+	}
+
+	internalVal, ok := internalAttribute.(basetypes.Int64Value)
+
+	if !ok {
+		diags.AddError(
+			"Attribute Wrong Type",
+			fmt.Sprintf(`internal expected to be basetypes.Int64Value, was: %T`, internalAttribute))
+	}
+
+	if diags.HasError() {
+		return NewRoutePreferenceValueUnknown(), diags
+	}
+
+	return RoutePreferenceValue{
+		External: externalVal,
+		Internal: internalVal,
+		state:    attr.ValueStateKnown,
+	}, diags
+}
+
+func NewRoutePreferenceValueMust(attributeTypes map[string]attr.Type, attributes map[string]attr.Value) RoutePreferenceValue {
+	object, diags := NewRoutePreferenceValue(attributeTypes, attributes)
+
+	if diags.HasError() {
+		// This could potentially be added to the diag package.
+		diagsStrings := make([]string, 0, len(diags))
+
+		for _, diagnostic := range diags {
+			diagsStrings = append(diagsStrings, fmt.Sprintf(
+				"%s | %s | %s",
+				diagnostic.Severity(),
+				diagnostic.Summary(),
+				diagnostic.Detail()))
+		}
+
+		panic("NewRoutePreferenceValueMust received error(s): " + strings.Join(diagsStrings, "\n"))
+	}
+
+	return object
+}
+
+func (t RoutePreferenceType) ValueFromTerraform(ctx context.Context, in tftypes.Value) (attr.Value, error) {
+	if in.Type() == nil {
+		return NewRoutePreferenceValueNull(), nil
+	}
+
+	if !in.Type().Equal(t.TerraformType(ctx)) {
+		return nil, fmt.Errorf("expected %s, got %s", t.TerraformType(ctx), in.Type())
+	}
+
+	if !in.IsKnown() {
+		return NewRoutePreferenceValueUnknown(), nil
+	}
+
+	if in.IsNull() {
+		return NewRoutePreferenceValueNull(), nil
+	}
+
+	attributes := map[string]attr.Value{}
+
+	val := map[string]tftypes.Value{}
+
+	err := in.As(&val)
+
+	if err != nil {
+		return nil, err
+	}
+
+	for k, v := range val {
+		a, err := t.AttrTypes[k].ValueFromTerraform(ctx, v)
+
+		if err != nil {
+			return nil, err
+		}
+
+		attributes[k] = a
+	}
+
+	return NewRoutePreferenceValueMust(RoutePreferenceValue{}.AttributeTypes(ctx), attributes), nil
+}
+
+func (t RoutePreferenceType) ValueType(ctx context.Context) attr.Value {
+	return RoutePreferenceValue{}
+}
+
+var _ basetypes.ObjectValuable = RoutePreferenceValue{}
+
+type RoutePreferenceValue struct {
+	External basetypes.Int64Value `tfsdk:"external"`
+	Internal basetypes.Int64Value `tfsdk:"internal"`
+	state    attr.ValueState
+}
+
+func (v RoutePreferenceValue) ToTerraformValue(ctx context.Context) (tftypes.Value, error) {
+	attrTypes := make(map[string]tftypes.Type, 2)
+
+	var val tftypes.Value
+	var err error
+
+	attrTypes["external"] = basetypes.Int64Type{}.TerraformType(ctx)
+	attrTypes["internal"] = basetypes.Int64Type{}.TerraformType(ctx)
+
+	objectType := tftypes.Object{AttributeTypes: attrTypes}
+
+	switch v.state {
+	case attr.ValueStateKnown:
+		vals := make(map[string]tftypes.Value, 2)
+
+		val, err = v.External.ToTerraformValue(ctx)
+
+		if err != nil {
+			return tftypes.NewValue(objectType, tftypes.UnknownValue), err
+		}
+
+		vals["external"] = val
+
+		val, err = v.Internal.ToTerraformValue(ctx)
+
+		if err != nil {
+			return tftypes.NewValue(objectType, tftypes.UnknownValue), err
+		}
+
+		vals["internal"] = val
+
+		if err := tftypes.ValidateValue(objectType, vals); err != nil {
+			return tftypes.NewValue(objectType, tftypes.UnknownValue), err
+		}
+
+		return tftypes.NewValue(objectType, vals), nil
+	case attr.ValueStateNull:
+		return tftypes.NewValue(objectType, nil), nil
+	case attr.ValueStateUnknown:
+		return tftypes.NewValue(objectType, tftypes.UnknownValue), nil
+	default:
+		panic(fmt.Sprintf("unhandled Object state in ToTerraformValue: %s", v.state))
+	}
+}
+
+func (v RoutePreferenceValue) IsNull() bool {
+	return v.state == attr.ValueStateNull
+}
+
+func (v RoutePreferenceValue) IsUnknown() bool {
+	return v.state == attr.ValueStateUnknown
+}
+
+func (v RoutePreferenceValue) String() string {
+	return "RoutePreferenceValue"
+}
+
+func (v RoutePreferenceValue) ToObjectValue(ctx context.Context) (basetypes.ObjectValue, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	attributeTypes := map[string]attr.Type{
+		"external": basetypes.Int64Type{},
+		"internal": basetypes.Int64Type{},
+	}
+
+	if v.IsNull() {
+		return types.ObjectNull(attributeTypes), diags
+	}
+
+	if v.IsUnknown() {
+		return types.ObjectUnknown(attributeTypes), diags
+	}
+
+	objVal, diags := types.ObjectValue(
+		attributeTypes,
+		map[string]attr.Value{
+			"external": v.External,
+			"internal": v.Internal,
+		})
+
+	return objVal, diags
+}
+
+func (v RoutePreferenceValue) Equal(o attr.Value) bool {
+	other, ok := o.(RoutePreferenceValue)
+
+	if !ok {
+		return false
+	}
+
+	if v.state != other.state {
+		return false
+	}
+
+	if v.state != attr.ValueStateKnown {
+		return true
+	}
+
+	if !v.External.Equal(other.External) {
+		return false
+	}
+
+	if !v.Internal.Equal(other.Internal) {
+		return false
+	}
+
+	return true
+}
+
+func (v RoutePreferenceValue) Type(ctx context.Context) attr.Type {
+	return RoutePreferenceType{
+		basetypes.ObjectType{
+			AttrTypes: v.AttributeTypes(ctx),
+		},
+	}
+}
+
+func (v RoutePreferenceValue) AttributeTypes(ctx context.Context) map[string]attr.Type {
+	return map[string]attr.Type{
+		"external": basetypes.Int64Type{},
+		"internal": basetypes.Int64Type{},
 	}
 }
 

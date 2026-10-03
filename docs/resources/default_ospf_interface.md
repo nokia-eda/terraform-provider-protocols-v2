@@ -59,6 +59,7 @@ Optional:
 - `dead_interval_seconds` (Number) Dead Interval in seconds.
 - `hello_interval_seconds` (Number) Hello Interval in seconds.
 - `interface_kind` (String) Reference to the Kind of interface to enable OSPF on.
+- `keychain` (String) Reference to a Keychain resource that will be used for authentication with the OSPF peer interface.
 - `metric` (Number) Interface metric.
 - `mtu` (Number) OSPF interface MTU
 - `passive` (Boolean) Configure the OSPF interface as passive.
@@ -112,4 +113,6 @@ Optional:
 Optional:
 
 - `adjacency_state` (String) Adjacency state of the OSPF neighbor.
+- `local_ip_address` (String) Local IP address (IPv4 or IPv6).
+- `neighbor_ip_address` (String) Neighbor IP address (IPv4 or IPv6).
 - `neighbor_router_id` (String) Router ID of the OSPF neighbor.

@@ -102,39 +102,39 @@ func AggregateRouteDataSourceSchema(ctx context.Context) schema.Schema {
 			"spec": schema.SingleNestedAttribute{
 				Attributes: map[string]schema.Attribute{
 					"aggregator_asn": schema.Int64Attribute{
-						Optional:            true,
+						Computed:            true,
 						Description:         "Specifies the aggregator's ASN.",
 						MarkdownDescription: "Specifies the aggregator's ASN.",
 					},
 					"aggregator_ip": schema.StringAttribute{
-						Optional:            true,
+						Computed:            true,
 						Description:         "Specifies the aggregator's IP address.",
 						MarkdownDescription: "Specifies the aggregator's IP address.",
 					},
 					"generate_icmp": schema.BoolAttribute{
-						Optional:            true,
+						Computed:            true,
 						Description:         "When set to true the router generares ICMP unreachable messages for packets matching the aggregate route (and not a more specific route).",
 						MarkdownDescription: "When set to true the router generares ICMP unreachable messages for packets matching the aggregate route (and not a more specific route).",
 					},
 					"nodes": schema.ListAttribute{
 						ElementType:         types.StringType,
-						Optional:            true,
+						Computed:            true,
 						Description:         "List of nodes on which to configure the aggregate routes. An AND operation is executed against the nodes in this list and the nodes on which the Router is configured to determine the Nodes on which to configure the aggregate routes.",
 						MarkdownDescription: "List of nodes on which to configure the aggregate routes. An AND operation is executed against the nodes in this list and the nodes on which the Router is configured to determine the Nodes on which to configure the aggregate routes.",
 					},
 					"prefixes": schema.ListAttribute{
 						ElementType:         types.StringType,
-						Optional:            true,
+						Computed:            true,
 						Description:         "List of destination prefixes for the aggregate routes.",
 						MarkdownDescription: "List of destination prefixes for the aggregate routes.",
 					},
 					"router": schema.StringAttribute{
-						Optional:            true,
+						Computed:            true,
 						Description:         "Reference to a Router on which to configure the aggregate routes.  If no Nodes are provided then the aggregate routes will be provisioned on all Nodes on which the Router is provisioned.",
 						MarkdownDescription: "Reference to a Router on which to configure the aggregate routes.  If no Nodes are provided then the aggregate routes will be provisioned on all Nodes on which the Router is provisioned.",
 					},
 					"summary_only": schema.BoolAttribute{
-						Optional:            true,
+						Computed:            true,
 						Description:         "When set to true the router blocks the advertisement of all contributing routes of this aggregate route in dynamic protocols such as BGP.",
 						MarkdownDescription: "When set to true the router blocks the advertisement of all contributing routes of this aggregate route in dynamic protocols such as BGP.",
 					},
@@ -144,7 +144,7 @@ func AggregateRouteDataSourceSchema(ctx context.Context) schema.Schema {
 						AttrTypes: SpecValue{}.AttributeTypes(ctx),
 					},
 				},
-				Optional:            true,
+				Computed:            true,
 				Description:         "The AggregateRoute enables the configuration of aggregated routes on a specified Router. This resource allows for the definition of destination prefixes, the selection of a router, and optionally, specific nodes where the aggregate routes should be configured. Advanced options include the ability to generate ICMP unreachable messages for packets matching the aggregate route, and the ability to block the advertisement of all contributing routes in dynamic protocols like BGP.",
 				MarkdownDescription: "The AggregateRoute enables the configuration of aggregated routes on a specified Router. This resource allows for the definition of destination prefixes, the selection of a router, and optionally, specific nodes where the aggregate routes should be configured. Advanced options include the ability to generate ICMP unreachable messages for packets matching the aggregate route, and the ability to block the advertisement of all contributing routes in dynamic protocols like BGP.",
 			},

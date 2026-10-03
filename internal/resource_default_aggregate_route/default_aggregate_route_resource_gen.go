@@ -5,6 +5,7 @@ package resource_default_aggregate_route
 import (
 	"context"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -126,11 +127,16 @@ func DefaultAggregateRouteResourceSchema(ctx context.Context) schema.Schema {
 				Attributes: map[string]schema.Attribute{
 					"aggregator_asn": schema.Int64Attribute{
 						Optional:            true,
+						Computed:            true,
 						Description:         "Specifies the aggregator's ASN.",
 						MarkdownDescription: "Specifies the aggregator's ASN.",
+						Validators: []validator.Int64{
+							int64validator.Between(1, 4294967295),
+						},
 					},
 					"aggregator_ip": schema.StringAttribute{
 						Optional:            true,
+						Computed:            true,
 						Description:         "Specifies the aggregator's IP address.",
 						MarkdownDescription: "Specifies the aggregator's IP address.",
 					},
@@ -141,6 +147,7 @@ func DefaultAggregateRouteResourceSchema(ctx context.Context) schema.Schema {
 					},
 					"generate_icmp": schema.BoolAttribute{
 						Optional:            true,
+						Computed:            true,
 						Description:         "When set to true the router generares ICMP unreachable messages for packets matching the aggregate route (and not a more specific route).",
 						MarkdownDescription: "When set to true the router generares ICMP unreachable messages for packets matching the aggregate route (and not a more specific route).",
 					},
@@ -152,6 +159,7 @@ func DefaultAggregateRouteResourceSchema(ctx context.Context) schema.Schema {
 					},
 					"summary_only": schema.BoolAttribute{
 						Optional:            true,
+						Computed:            true,
 						Description:         "When set to true the router blocks the advertisement of all contributing routes of this aggregate route in dynamic protocols such as BGP.",
 						MarkdownDescription: "When set to true the router blocks the advertisement of all contributing routes of this aggregate route in dynamic protocols such as BGP.",
 					},

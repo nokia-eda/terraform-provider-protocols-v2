@@ -35,10 +35,6 @@ description: |-
 <a id="nestedatt--items"></a>
 ### Nested Schema for `items`
 
-Optional:
-
-- `spec` (Attributes) OSPFInterfaceSpec defines the desired state of OSPFInterface (see [below for nested schema](#nestedatt--items--spec))
-
 Read-Only:
 
 - `alarms` (Attributes) (see [below for nested schema](#nestedatt--items--alarms))
@@ -46,35 +42,8 @@ Read-Only:
 - `deviations` (Attributes) (see [below for nested schema](#nestedatt--items--deviations))
 - `kind` (String)
 - `metadata` (Attributes) (see [below for nested schema](#nestedatt--items--metadata))
+- `spec` (Attributes) OSPFInterfaceSpec defines the desired state of OSPFInterface (see [below for nested schema](#nestedatt--items--spec))
 - `status` (Attributes) OSPFInterfaceStatus defines the observed state of OSPFInterface (see [below for nested schema](#nestedatt--items--status))
-
-<a id="nestedatt--items--spec"></a>
-### Nested Schema for `items.spec`
-
-Optional:
-
-- `bfd` (Attributes) Configure BFD on the OSPF interface. (see [below for nested schema](#nestedatt--items--spec--bfd))
-- `dead_interval_seconds` (Number) Dead Interval in seconds.
-- `hello_interval_seconds` (Number) Hello Interval in seconds.
-- `interface` (String) Reference to a RoutedInterface.
-- `interface_kind` (String) Reference to the Kind of interface to enable OSPF on.
-- `metric` (Number) Interface metric.
-- `mtu` (Number) OSPF interface MTU
-- `ospf_area` (String) Reference to a OSPFArea.
-- `ospf_instance` (String) Reference to a OSPF Instance on which the OSPF area is configured.
-- `passive` (Boolean) Configure the OSPF interface as passive.
-- `type` (String) OSPF interface type.
-
-<a id="nestedatt--items--spec--bfd"></a>
-### Nested Schema for `items.spec.bfd`
-
-Optional:
-
-- `enabled` (Boolean) Enables BFD on the OSPF interface.
-- `strict_mode` (Boolean) Enables BFD Strict Mode on the OSPF interface.
-- `strict_mode_hold_down_seconds` (Number) Enables Hold Down Timer for BFD Strict Mode, in seconds.
-
-
 
 <a id="nestedatt--items--alarms"></a>
 ### Nested Schema for `items.alarms`
@@ -106,6 +75,35 @@ Read-Only:
 - `namespace` (String)
 
 
+<a id="nestedatt--items--spec"></a>
+### Nested Schema for `items.spec`
+
+Read-Only:
+
+- `bfd` (Attributes) Configure BFD on the OSPF interface. (see [below for nested schema](#nestedatt--items--spec--bfd))
+- `dead_interval_seconds` (Number) Dead Interval in seconds.
+- `hello_interval_seconds` (Number) Hello Interval in seconds.
+- `interface` (String) Reference to a RoutedInterface.
+- `interface_kind` (String) Reference to the Kind of interface to enable OSPF on.
+- `keychain` (String) Reference to a Keychain resource that will be used for authentication with the OSPF peer interface.
+- `metric` (Number) Interface metric.
+- `mtu` (Number) OSPF interface MTU
+- `ospf_area` (String) Reference to a OSPFArea.
+- `ospf_instance` (String) Reference to a OSPF Instance on which the OSPF area is configured.
+- `passive` (Boolean) Configure the OSPF interface as passive.
+- `type` (String) OSPF interface type.
+
+<a id="nestedatt--items--spec--bfd"></a>
+### Nested Schema for `items.spec.bfd`
+
+Read-Only:
+
+- `enabled` (Boolean) Enables BFD on the OSPF interface.
+- `strict_mode` (Boolean) Enables BFD Strict Mode on the OSPF interface.
+- `strict_mode_hold_down_seconds` (Number) Enables Hold Down Timer for BFD Strict Mode, in seconds.
+
+
+
 <a id="nestedatt--items--status"></a>
 ### Nested Schema for `items.status`
 
@@ -124,4 +122,6 @@ Read-Only:
 Read-Only:
 
 - `adjacency_state` (String) Adjacency state of the OSPF neighbor.
+- `local_ip_address` (String) Local IP address (IPv4 or IPv6).
+- `neighbor_ip_address` (String) Neighbor IP address (IPv4 or IPv6).
 - `neighbor_router_id` (String) Router ID of the OSPF neighbor.

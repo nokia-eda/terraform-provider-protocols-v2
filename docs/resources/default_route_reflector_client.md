@@ -102,6 +102,8 @@ Optional:
 
 - `advertise_ipv6_next_hops` (Boolean) Enables advertisement of IPv4 Unicast routes with IPv6 next-hops to peers.
 - `enabled` (Boolean) Enables the IPv4 unicast AFISAFI.
+- `export_policies` (List of String) Reference to a Policy resource for route exports for this address family.
+- `import_policies` (List of String) Reference to a Policy resource for route imports for this address family.
 - `prefix_limit` (Attributes) Configures the maximum number of IPv4 unicast prefixes that can be received from a BGP peer. (see [below for nested schema](#nestedatt--spec--ipv4_unicast--prefix_limit))
 - `receive_ipv6_next_hops` (Boolean) Enables the advertisement of the RFC 5549 capability to receive IPv4 routes with IPv6 next-hops.
 
@@ -141,6 +143,8 @@ Optional:
 Optional:
 
 - `enabled` (Boolean) Enables the IPv6 unicast AFISAFI
+- `export_policies` (List of String) Reference to a Policy resource for route exports for this address family.
+- `import_policies` (List of String) Reference to a Policy resource for route imports for this address family.
 - `prefix_limit` (Attributes) Enables advertisement of IPv6 Unicast routes with IPv4 next-hops to peers. (see [below for nested schema](#nestedatt--spec--ipv6_unicast--prefix_limit))
 
 <a id="nestedatt--spec--ipv6_unicast--prefix_limit"></a>
@@ -180,6 +184,8 @@ Optional:
 
 - `advertise_ipv6_next_hops` (Boolean) Enables advertisement of EVPN routes with IPv6 next-hops to peers.
 - `enabled` (Boolean) Enables the L2VPN EVPN AFISAFI.
+- `export_policies` (List of String) Reference to a Policy resource for route exports for this address family.
+- `import_policies` (List of String) Reference to a Policy resource for route imports for this address family.
 - `prefix_limit` (Attributes) Configures the maximum number of EVPN prefixes that can be received from a BGP peer. (see [below for nested schema](#nestedatt--spec--l2_vpn_evpn--prefix_limit))
 
 <a id="nestedatt--spec--l2_vpn_evpn--prefix_limit"></a>
@@ -240,6 +246,8 @@ Optional:
 
 - `advertise_default_route` (Boolean) Enables advertisement of a Default RTC Route to the BGP peers to receive all VPN routes.
 - `enabled` (Boolean) Enables the Route Target Constraints SAFI.
+- `export_policies` (List of String) Reference to a Policy resource for route exports for this address family.
+- `import_policies` (List of String) Reference to a Policy resource for route imports for this address family.
 
 
 <a id="nestedatt--spec--send_default_route"></a>
@@ -275,6 +283,8 @@ Required:
 Optional:
 
 - `advertise_ipv6_next_hops` (Boolean) Enables advertisement of VPN IPv4 routes with IPv6 next-hops to peers.
+- `export_policies` (List of String) Reference to a Policy resource for route exports for this address family.
+- `import_policies` (List of String) Reference to a Policy resource for route imports for this address family.
 - `prefix_limit` (Attributes) Prefix Limit parameters for the VPN IPv4 Unicast AFI/SAFI. (see [below for nested schema](#nestedatt--spec--vpn_ipv4_unicast--prefix_limit))
 - `receive_ipv6_next_hops` (Boolean) Enables advertisement of the Extended Next Hop Encoding Capability (RFC 8950) to peers.
 
@@ -317,6 +327,8 @@ Required:
 
 Optional:
 
+- `export_policies` (List of String) Reference to a Policy resource for route exports for this address family.
+- `import_policies` (List of String) Reference to a Policy resource for route imports for this address family.
 - `prefix_limit` (Attributes) Prefix Limit parameters for the VPN IPv6 Unicast AFI/SAFI. (see [below for nested schema](#nestedatt--spec--vpn_ipv6_unicast--prefix_limit))
 
 <a id="nestedatt--spec--vpn_ipv6_unicast--prefix_limit"></a>

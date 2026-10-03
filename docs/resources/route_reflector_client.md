@@ -99,6 +99,8 @@ Optional:
 
 - `advertise_ipv6_next_hops` (Boolean) Enables advertisement of IPv4 Unicast routes with IPv6 next-hops to peers.
 - `enabled` (Boolean) Enables the IPv4 unicast AFISAFI.
+- `export_policies` (List of String) Reference to a Policy resource for route exports for this address family.
+- `import_policies` (List of String) Reference to a Policy resource for route imports for this address family.
 - `prefix_limit` (Attributes) Configures the maximum number of IPv4 unicast prefixes that can be received from a BGP peer. (see [below for nested schema](#nestedatt--spec--ipv4_unicast--prefix_limit))
 - `receive_ipv6_next_hops` (Boolean) Enables the advertisement of the RFC 5549 capability to receive IPv4 routes with IPv6 next-hops.
 
@@ -138,6 +140,8 @@ Optional:
 Optional:
 
 - `enabled` (Boolean) Enables the IPv6 unicast AFISAFI
+- `export_policies` (List of String) Reference to a Policy resource for route exports for this address family.
+- `import_policies` (List of String) Reference to a Policy resource for route imports for this address family.
 - `prefix_limit` (Attributes) Enables advertisement of IPv6 Unicast routes with IPv4 next-hops to peers. (see [below for nested schema](#nestedatt--spec--ipv6_unicast--prefix_limit))
 
 <a id="nestedatt--spec--ipv6_unicast--prefix_limit"></a>

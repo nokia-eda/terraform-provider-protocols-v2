@@ -102,33 +102,33 @@ func DefaultAggregateRouteDataSourceSchema(ctx context.Context) schema.Schema {
 			"spec": schema.SingleNestedAttribute{
 				Attributes: map[string]schema.Attribute{
 					"aggregator_asn": schema.Int64Attribute{
-						Optional:            true,
+						Computed:            true,
 						Description:         "Specifies the aggregator's ASN.",
 						MarkdownDescription: "Specifies the aggregator's ASN.",
 					},
 					"aggregator_ip": schema.StringAttribute{
-						Optional:            true,
+						Computed:            true,
 						Description:         "Specifies the aggregator's IP address.",
 						MarkdownDescription: "Specifies the aggregator's IP address.",
 					},
 					"default_router": schema.StringAttribute{
-						Optional:            true,
+						Computed:            true,
 						Description:         "Reference to a Default Router on which to configure the aggregate routes.  If no Nodes are provided then the aggregate routes will be provisioned on all Nodes on which the Router is provisioned.",
 						MarkdownDescription: "Reference to a Default Router on which to configure the aggregate routes.  If no Nodes are provided then the aggregate routes will be provisioned on all Nodes on which the Router is provisioned.",
 					},
 					"generate_icmp": schema.BoolAttribute{
-						Optional:            true,
+						Computed:            true,
 						Description:         "When set to true the router generares ICMP unreachable messages for packets matching the aggregate route (and not a more specific route).",
 						MarkdownDescription: "When set to true the router generares ICMP unreachable messages for packets matching the aggregate route (and not a more specific route).",
 					},
 					"prefixes": schema.ListAttribute{
 						ElementType:         types.StringType,
-						Optional:            true,
+						Computed:            true,
 						Description:         "List of destination prefixes for the aggregate routes.",
 						MarkdownDescription: "List of destination prefixes for the aggregate routes.",
 					},
 					"summary_only": schema.BoolAttribute{
-						Optional:            true,
+						Computed:            true,
 						Description:         "When set to true the router blocks the advertisement of all contributing routes of this aggregate route in dynamic protocols such as BGP.",
 						MarkdownDescription: "When set to true the router blocks the advertisement of all contributing routes of this aggregate route in dynamic protocols such as BGP.",
 					},
@@ -138,7 +138,7 @@ func DefaultAggregateRouteDataSourceSchema(ctx context.Context) schema.Schema {
 						AttrTypes: SpecValue{}.AttributeTypes(ctx),
 					},
 				},
-				Optional:            true,
+				Computed:            true,
 				Description:         "DefaultAggregateRoute allows the configuration of aggregate routes on a DefaultRouter. It includes specifying destination prefixes, the DefaultRouter, and settings for generating ICMP unreachable messages or blocking route advertisement. Additionally, it configures the aggregator’s IP address and ASN for efficient route management.",
 				MarkdownDescription: "DefaultAggregateRoute allows the configuration of aggregate routes on a DefaultRouter. It includes specifying destination prefixes, the DefaultRouter, and settings for generating ICMP unreachable messages or blocking route advertisement. Additionally, it configures the aggregator’s IP address and ASN for efficient route management.",
 			},

@@ -35,10 +35,6 @@ description: |-
 <a id="nestedatt--items"></a>
 ### Nested Schema for `items`
 
-Optional:
-
-- `spec` (Attributes) StaticRoute allows for the specification of destination prefixes, route preferences, and the associated Router. It also supports configuring nexthop groups and specifying the nodes where the static routes should be provisioned. (see [below for nested schema](#nestedatt--items--spec))
-
 Read-Only:
 
 - `alarms` (Attributes) (see [below for nested schema](#nestedatt--items--alarms))
@@ -46,71 +42,8 @@ Read-Only:
 - `deviations` (Attributes) (see [below for nested schema](#nestedatt--items--deviations))
 - `kind` (String)
 - `metadata` (Attributes) (see [below for nested schema](#nestedatt--items--metadata))
+- `spec` (Attributes) StaticRoute allows for the specification of destination prefixes, route preferences, and the associated Router. It also supports configuring nexthop groups and specifying the nodes where the static routes should be provisioned. (see [below for nested schema](#nestedatt--items--spec))
 - `status` (Attributes) StaticRouteStatus defines the observed state of Static Route (see [below for nested schema](#nestedatt--items--status))
-
-<a id="nestedatt--items--spec"></a>
-### Nested Schema for `items.spec`
-
-Optional:
-
-- `configured_name` (String) The name of the static route to configure on the device.
-- `nexthop_group` (Attributes) Group of nexthops for the list of prefixes. (see [below for nested schema](#nestedatt--items--spec--nexthop_group))
-- `nodes` (List of String) List of nodes on which to configure the static routes. An AND operation is executed against the nodes in this list and the nodes on which the Router is configured to determine the Nodes on which to configure the static routes.
-- `preference` (Number) Defines the route preference.
-- `prefixes` (List of String) List of destination prefixes and mask to use for the static routes.
-- `router` (String) Reference to a Router on which to configure the static routes.  If no Nodes are provided then the static routes will be provisioned on all Nodes on which the Router is provisioned.
-
-<a id="nestedatt--items--spec--nexthop_group"></a>
-### Nested Schema for `items.spec.nexthop_group`
-
-Optional:
-
-- `bfd` (Attributes) Enables BFD to the next-hops in the group. Local and Remote discriminator parameters have been deprecated at this level. Use Nexthop to set these parameters. (see [below for nested schema](#nestedatt--items--spec--nexthop_group--bfd))
-- `blackhole` (Boolean) If set to true all traffic destined to the prefixes will be blackholed.  If enabled, next-hops are ignored and this takes precedence.
-- `blackhole_send_icmp` (Boolean) When enabled, the router will generate ICMP Unreachable messages for packets destined to the blackhole route.
-- `follow` (Attributes) Follow the resolution of another route. This setting is mutually exclusive with all other settings in the group. (see [below for nested schema](#nestedatt--items--spec--nexthop_group--follow))
-- `nexthops` (Attributes List) Ordered list of nexthops. (see [below for nested schema](#nestedatt--items--spec--nexthop_group--nexthops))
-- `resolve` (Boolean) If set to true the next-hops can be destinations which are resolved in the route table.
-
-<a id="nestedatt--items--spec--nexthop_group--bfd"></a>
-### Nested Schema for `items.spec.nexthop_group.bfd`
-
-Optional:
-
-- `enabled` (Boolean) Defines whether BFD should be enabled towards the nexthops.
-- `local_address` (String) Defines the local address to use when establishing the BFD session with the nexthop.
-
-
-<a id="nestedatt--items--spec--nexthop_group--follow"></a>
-### Nested Schema for `items.spec.nexthop_group.follow`
-
-Optional:
-
-- `mode` (String) Follow mode. Only "NextLongest" is supported, which means that the route will follow the next-hop-group of the next most specific matching route in the routing table.
-
-
-<a id="nestedatt--items--spec--nexthop_group--nexthops"></a>
-### Nested Schema for `items.spec.nexthop_group.nexthops`
-
-Optional:
-
-- `bfd` (Attributes) Enables BFD to the next-hops in the group. This overrides the configuration at the group. (see [below for nested schema](#nestedatt--items--spec--nexthop_group--nexthops--bfd))
-- `ip_prefix` (String) Address to use.
-- `resolve` (Boolean) If set to true the next-hops can be destinations which are resolved in the route table. This overrides the configuration at the group.
-
-<a id="nestedatt--items--spec--nexthop_group--nexthops--bfd"></a>
-### Nested Schema for `items.spec.nexthop_group.nexthops.bfd`
-
-Optional:
-
-- `enabled` (Boolean) Defines whether BFD should be enabled towards the nexthops.
-- `local_address` (String) Defines the local address to use when establishing the BFD session with the nexthop.
-- `local_discriminator` (Number) Defines the local discriminator.
-- `remote_discriminator` (Number) Defines the remote discriminator.
-
-
-
-
 
 <a id="nestedatt--items--alarms"></a>
 ### Nested Schema for `items.alarms`
@@ -140,6 +73,70 @@ Read-Only:
 - `labels` (Map of String)
 - `name` (String)
 - `namespace` (String)
+
+
+<a id="nestedatt--items--spec"></a>
+### Nested Schema for `items.spec`
+
+Read-Only:
+
+- `configured_name` (String) The name of the static route to configure on the device.
+- `nexthop_group` (Attributes) Group of nexthops for the list of prefixes. (see [below for nested schema](#nestedatt--items--spec--nexthop_group))
+- `nodes` (List of String) List of nodes on which to configure the static routes. An AND operation is executed against the nodes in this list and the nodes on which the Router is configured to determine the Nodes on which to configure the static routes.
+- `preference` (Number) Defines the route preference.
+- `prefixes` (List of String) List of destination prefixes and mask to use for the static routes.
+- `router` (String) Reference to a Router on which to configure the static routes.  If no Nodes are provided then the static routes will be provisioned on all Nodes on which the Router is provisioned.
+
+<a id="nestedatt--items--spec--nexthop_group"></a>
+### Nested Schema for `items.spec.nexthop_group`
+
+Read-Only:
+
+- `bfd` (Attributes) Enables BFD to the next-hops in the group. Local and Remote discriminator parameters have been deprecated at this level. Use Nexthop to set these parameters. (see [below for nested schema](#nestedatt--items--spec--nexthop_group--bfd))
+- `blackhole` (Boolean) If set to true all traffic destined to the prefixes will be blackholed.  If enabled, next-hops are ignored and this takes precedence.
+- `blackhole_send_icmp` (Boolean) When enabled, the router will generate ICMP Unreachable messages for packets destined to the blackhole route.
+- `follow` (Attributes) Follow the resolution of another route. This setting is mutually exclusive with all other settings in the group. (see [below for nested schema](#nestedatt--items--spec--nexthop_group--follow))
+- `nexthops` (Attributes List) Ordered list of nexthops. (see [below for nested schema](#nestedatt--items--spec--nexthop_group--nexthops))
+- `resolve` (Boolean) If set to true the next-hops can be destinations which are resolved in the route table.
+
+<a id="nestedatt--items--spec--nexthop_group--bfd"></a>
+### Nested Schema for `items.spec.nexthop_group.bfd`
+
+Read-Only:
+
+- `enabled` (Boolean) Defines whether BFD should be enabled towards the nexthops.
+- `local_address` (String) Defines the local address to use when establishing the BFD session with the nexthop.
+
+
+<a id="nestedatt--items--spec--nexthop_group--follow"></a>
+### Nested Schema for `items.spec.nexthop_group.follow`
+
+Read-Only:
+
+- `mode` (String) Follow mode. Only "NextLongest" is supported, which means that the route will follow the next-hop-group of the next most specific matching route in the routing table.
+
+
+<a id="nestedatt--items--spec--nexthop_group--nexthops"></a>
+### Nested Schema for `items.spec.nexthop_group.nexthops`
+
+Read-Only:
+
+- `bfd` (Attributes) Enables BFD to the next-hops in the group. This overrides the configuration at the group. (see [below for nested schema](#nestedatt--items--spec--nexthop_group--nexthops--bfd))
+- `ip_prefix` (String) Address to use.
+- `resolve` (Boolean) If set to true the next-hops can be destinations which are resolved in the route table. This overrides the configuration at the group.
+
+<a id="nestedatt--items--spec--nexthop_group--nexthops--bfd"></a>
+### Nested Schema for `items.spec.nexthop_group.nexthops.bfd`
+
+Read-Only:
+
+- `enabled` (Boolean) Defines whether BFD should be enabled towards the nexthops.
+- `local_address` (String) Defines the local address to use when establishing the BFD session with the nexthop.
+- `local_discriminator` (Number) Defines the local discriminator.
+- `remote_discriminator` (Number) Defines the remote discriminator.
+
+
+
 
 
 <a id="nestedatt--items--status"></a>

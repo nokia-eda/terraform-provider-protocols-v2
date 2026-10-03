@@ -5,6 +5,7 @@ package resource_aggregate_route
 import (
 	"context"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -126,22 +127,29 @@ func AggregateRouteResourceSchema(ctx context.Context) schema.Schema {
 				Attributes: map[string]schema.Attribute{
 					"aggregator_asn": schema.Int64Attribute{
 						Optional:            true,
+						Computed:            true,
 						Description:         "Specifies the aggregator's ASN.",
 						MarkdownDescription: "Specifies the aggregator's ASN.",
+						Validators: []validator.Int64{
+							int64validator.Between(1, 4294967295),
+						},
 					},
 					"aggregator_ip": schema.StringAttribute{
 						Optional:            true,
+						Computed:            true,
 						Description:         "Specifies the aggregator's IP address.",
 						MarkdownDescription: "Specifies the aggregator's IP address.",
 					},
 					"generate_icmp": schema.BoolAttribute{
 						Optional:            true,
+						Computed:            true,
 						Description:         "When set to true the router generares ICMP unreachable messages for packets matching the aggregate route (and not a more specific route).",
 						MarkdownDescription: "When set to true the router generares ICMP unreachable messages for packets matching the aggregate route (and not a more specific route).",
 					},
 					"nodes": schema.ListAttribute{
 						ElementType:         types.StringType,
 						Optional:            true,
+						Computed:            true,
 						Description:         "List of nodes on which to configure the aggregate routes. An AND operation is executed against the nodes in this list and the nodes on which the Router is configured to determine the Nodes on which to configure the aggregate routes.",
 						MarkdownDescription: "List of nodes on which to configure the aggregate routes. An AND operation is executed against the nodes in this list and the nodes on which the Router is configured to determine the Nodes on which to configure the aggregate routes.",
 					},
@@ -158,6 +166,7 @@ func AggregateRouteResourceSchema(ctx context.Context) schema.Schema {
 					},
 					"summary_only": schema.BoolAttribute{
 						Optional:            true,
+						Computed:            true,
 						Description:         "When set to true the router blocks the advertisement of all contributing routes of this aggregate route in dynamic protocols such as BGP.",
 						MarkdownDescription: "When set to true the router blocks the advertisement of all contributing routes of this aggregate route in dynamic protocols such as BGP.",
 					},

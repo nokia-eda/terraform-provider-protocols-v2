@@ -127,10 +127,12 @@ func CheckDefaultBgpPeersResourceSchema(ctx context.Context) schema.Schema {
 					"node_selectors": schema.ListAttribute{
 						ElementType: types.StringType,
 						Optional:    true,
+						Computed:    true,
 					},
 					"nodes": schema.ListAttribute{
 						ElementType: types.StringType,
 						Optional:    true,
+						Computed:    true,
 					},
 				},
 				CustomType: SpecType{

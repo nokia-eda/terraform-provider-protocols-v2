@@ -55,10 +55,21 @@ Optional:
 
 - `address_family` (String) Selects an address family for OSPFv3. It is mandatory to specify at least one address family when OSPFv3 is selected.
 - `enabled` (Boolean) Enables OSPF instance.
+- `lfa` (Attributes) LFA (Loop-Free Alternate) functionality. (see [below for nested schema](#nestedatt--spec--lfa))
 - `max_ecmp` (Number) The maximum number of ECMP paths (next-hops).
 - `max_metric` (Attributes) Configuration related to OSPF Max Metric / Overload. (see [below for nested schema](#nestedatt--spec--max_metric))
+- `redistribution` (Attributes) Redistribution settings. (see [below for nested schema](#nestedatt--spec--redistribution))
 - `reference_bandwidth_gbps` (Number) Reference bandwidth (in Gbps) for automatic metric calculation.
+- `route_preference` (Attributes) Route preference configuration. (see [below for nested schema](#nestedatt--spec--route_preference))
 - `timers` (Attributes) Configures OSPF timers. (see [below for nested schema](#nestedatt--spec--timers))
+
+<a id="nestedatt--spec--lfa"></a>
+### Nested Schema for `spec.lfa`
+
+Required:
+
+- `enabled` (Boolean) Enables OSPF LFA (Loop-Free Alternate) functionality.
+
 
 <a id="nestedatt--spec--max_metric"></a>
 ### Nested Schema for `spec.max_metric`
@@ -67,6 +78,24 @@ Optional:
 
 - `on_boot` (Number) Set Max Metric on boot for the fixed period of time (in seconds).
 - `overload` (Boolean) Enable Max Link Metric on all interfaces.
+
+
+<a id="nestedatt--spec--redistribution"></a>
+### Nested Schema for `spec.redistribution`
+
+Optional:
+
+- `export_policy` (String) Export policy to use for redistributing routes into OSPF.
+- `external_route_tag` (String) ExternalRouteTag to attach to the redistributed routes.
+
+
+<a id="nestedatt--spec--route_preference"></a>
+### Nested Schema for `spec.route_preference`
+
+Optional:
+
+- `external` (Number) RTM Route Preference (Administrative Distance) for external routes.
+- `internal` (Number) RTM Route Preference (Administrative Distance) for internal routes.
 
 
 <a id="nestedatt--spec--timers"></a>

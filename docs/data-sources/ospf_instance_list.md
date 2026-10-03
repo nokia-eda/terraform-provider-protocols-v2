@@ -35,10 +35,6 @@ description: |-
 <a id="nestedatt--items"></a>
 ### Nested Schema for `items`
 
-Optional:
-
-- `spec` (Attributes) OSPFInstanceSpec defines the desired state of OSPFInstance (see [below for nested schema](#nestedatt--items--spec))
-
 Read-Only:
 
 - `alarms` (Attributes) (see [below for nested schema](#nestedatt--items--alarms))
@@ -46,62 +42,8 @@ Read-Only:
 - `deviations` (Attributes) (see [below for nested schema](#nestedatt--items--deviations))
 - `kind` (String)
 - `metadata` (Attributes) (see [below for nested schema](#nestedatt--items--metadata))
+- `spec` (Attributes) OSPFInstanceSpec defines the desired state of OSPFInstance (see [below for nested schema](#nestedatt--items--spec))
 - `status` (Attributes) OSPFInstanceStatus defines the observed state of OSPFInstance (see [below for nested schema](#nestedatt--items--status))
-
-<a id="nestedatt--items--spec"></a>
-### Nested Schema for `items.spec`
-
-Optional:
-
-- `address_family` (String) Selects an address family for OSPFv3. It is mandatory to specify at least one address family when OSPFv3 is selected.
-- `enabled` (Boolean) Enables OSPF instance.
-- `max_ecmp` (Number) The maximum number of ECMP paths (next-hops).
-- `max_metric` (Attributes) Configuration related to OSPF Max Metric / Overload. (see [below for nested schema](#nestedatt--items--spec--max_metric))
-- `reference_bandwidth_gbps` (Number) Reference bandwidth (in Gbps) for automatic metric calculation.
-- `timers` (Attributes) Configures OSPF timers. (see [below for nested schema](#nestedatt--items--spec--timers))
-- `version` (String) OSPF version to use. OSPFv2 is supported over IPv4-enabled interfaces, OSPFv3 over IPv6-enabled interfaces.
-
-<a id="nestedatt--items--spec--max_metric"></a>
-### Nested Schema for `items.spec.max_metric`
-
-Optional:
-
-- `on_boot` (Number) Set Max Metric on boot for the fixed period of time (in seconds).
-- `overload` (Boolean) Enable Max Link Metric on all interfaces.
-
-
-<a id="nestedatt--items--spec--timers"></a>
-### Nested Schema for `items.spec.timers`
-
-Optional:
-
-- `lsa_timers` (Attributes) LSA Timers configuration. (see [below for nested schema](#nestedatt--items--spec--timers--lsa_timers))
-- `spf_timers` (Attributes) SPF Timers configuration. (see [below for nested schema](#nestedatt--items--spec--timers--spf_timers))
-
-<a id="nestedatt--items--spec--timers--lsa_timers"></a>
-### Nested Schema for `items.spec.timers.lsa_timers`
-
-Optional:
-
-- `accumulate_ms` (Number) Delay (in milliseconds) to gather LSAs before advertising to neighbors
-- `arrival_ms` (Number) Minimum interval (in milliseconds) to accept an identical LSA.
-- `gen_hold_interval_ms` (Number) Hold interval (in milliseconds) for subsequent LSA regeneration.
-- `gen_initial_delay_ms` (Number) Initial delay (in milliseconds) to generate the first instance of LSAs.
-- `gen_max_delay_ms` (Number) Maximum interval (in milliseconds) between two consecutive regenerations (of the same LSA).
-
-
-<a id="nestedatt--items--spec--timers--spf_timers"></a>
-### Nested Schema for `items.spec.timers.spf_timers`
-
-Optional:
-
-- `hold_interval_ms` (Number) Hold interval for subsequent SPF calculations.
-- `incremental_spf_delay_ms` (Number) Delay (in milliseconds) before an incremental SPF calculation starts.
-- `initial_delay_ms` (Number) Initial SPF calculation delay (in milliseconds).
-- `max_delay_ms` (Number) Maximum interval (in milliseconds) between two consecutive SPF calculations.
-
-
-
 
 <a id="nestedatt--items--alarms"></a>
 ### Nested Schema for `items.alarms`
@@ -131,6 +73,90 @@ Read-Only:
 - `labels` (Map of String)
 - `name` (String)
 - `namespace` (String)
+
+
+<a id="nestedatt--items--spec"></a>
+### Nested Schema for `items.spec`
+
+Read-Only:
+
+- `address_family` (String) Selects an address family for OSPFv3. It is mandatory to specify at least one address family when OSPFv3 is selected.
+- `enabled` (Boolean) Enables OSPF instance.
+- `lfa` (Attributes) LFA (Loop-Free Alternate) functionality. (see [below for nested schema](#nestedatt--items--spec--lfa))
+- `max_ecmp` (Number) The maximum number of ECMP paths (next-hops).
+- `max_metric` (Attributes) Configuration related to OSPF Max Metric / Overload. (see [below for nested schema](#nestedatt--items--spec--max_metric))
+- `redistribution` (Attributes) Redistribution settings. (see [below for nested schema](#nestedatt--items--spec--redistribution))
+- `reference_bandwidth_gbps` (Number) Reference bandwidth (in Gbps) for automatic metric calculation.
+- `route_preference` (Attributes) Route preference configuration. (see [below for nested schema](#nestedatt--items--spec--route_preference))
+- `timers` (Attributes) Configures OSPF timers. (see [below for nested schema](#nestedatt--items--spec--timers))
+- `version` (String) OSPF version to use. OSPFv2 is supported over IPv4-enabled interfaces, OSPFv3 over IPv6-enabled interfaces.
+
+<a id="nestedatt--items--spec--lfa"></a>
+### Nested Schema for `items.spec.lfa`
+
+Read-Only:
+
+- `enabled` (Boolean) Enables OSPF LFA (Loop-Free Alternate) functionality.
+
+
+<a id="nestedatt--items--spec--max_metric"></a>
+### Nested Schema for `items.spec.max_metric`
+
+Read-Only:
+
+- `on_boot` (Number) Set Max Metric on boot for the fixed period of time (in seconds).
+- `overload` (Boolean) Enable Max Link Metric on all interfaces.
+
+
+<a id="nestedatt--items--spec--redistribution"></a>
+### Nested Schema for `items.spec.redistribution`
+
+Read-Only:
+
+- `export_policy` (String) Export policy to use for redistributing routes into OSPF.
+- `external_route_tag` (String) ExternalRouteTag to attach to the redistributed routes.
+
+
+<a id="nestedatt--items--spec--route_preference"></a>
+### Nested Schema for `items.spec.route_preference`
+
+Read-Only:
+
+- `external` (Number) RTM Route Preference (Administrative Distance) for external routes.
+- `internal` (Number) RTM Route Preference (Administrative Distance) for internal routes.
+
+
+<a id="nestedatt--items--spec--timers"></a>
+### Nested Schema for `items.spec.timers`
+
+Read-Only:
+
+- `lsa_timers` (Attributes) LSA Timers configuration. (see [below for nested schema](#nestedatt--items--spec--timers--lsa_timers))
+- `spf_timers` (Attributes) SPF Timers configuration. (see [below for nested schema](#nestedatt--items--spec--timers--spf_timers))
+
+<a id="nestedatt--items--spec--timers--lsa_timers"></a>
+### Nested Schema for `items.spec.timers.lsa_timers`
+
+Read-Only:
+
+- `accumulate_ms` (Number) Delay (in milliseconds) to gather LSAs before advertising to neighbors
+- `arrival_ms` (Number) Minimum interval (in milliseconds) to accept an identical LSA.
+- `gen_hold_interval_ms` (Number) Hold interval (in milliseconds) for subsequent LSA regeneration.
+- `gen_initial_delay_ms` (Number) Initial delay (in milliseconds) to generate the first instance of LSAs.
+- `gen_max_delay_ms` (Number) Maximum interval (in milliseconds) between two consecutive regenerations (of the same LSA).
+
+
+<a id="nestedatt--items--spec--timers--spf_timers"></a>
+### Nested Schema for `items.spec.timers.spf_timers`
+
+Read-Only:
+
+- `hold_interval_ms` (Number) Hold interval for subsequent SPF calculations.
+- `incremental_spf_delay_ms` (Number) Delay (in milliseconds) before an incremental SPF calculation starts.
+- `initial_delay_ms` (Number) Initial SPF calculation delay (in milliseconds).
+- `max_delay_ms` (Number) Maximum interval (in milliseconds) between two consecutive SPF calculations.
+
+
 
 
 <a id="nestedatt--items--status"></a>

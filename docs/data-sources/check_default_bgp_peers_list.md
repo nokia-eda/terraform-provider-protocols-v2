@@ -35,10 +35,6 @@ description: |-
 <a id="nestedatt--items"></a>
 ### Nested Schema for `items`
 
-Optional:
-
-- `spec` (Attributes) CheckDefaultBgpPeersSpec defines the desired state of CheckDefaultBgpPeers (see [below for nested schema](#nestedatt--items--spec))
-
 Read-Only:
 
 - `alarms` (Attributes) (see [below for nested schema](#nestedatt--items--alarms))
@@ -46,16 +42,8 @@ Read-Only:
 - `deviations` (Attributes) (see [below for nested schema](#nestedatt--items--deviations))
 - `kind` (String)
 - `metadata` (Attributes) (see [below for nested schema](#nestedatt--items--metadata))
+- `spec` (Attributes) CheckDefaultBgpPeersSpec defines the desired state of CheckDefaultBgpPeers (see [below for nested schema](#nestedatt--items--spec))
 - `status` (Attributes) CheckDefaultBgpPeersStatus defines the observed state of CheckDefaultBgpPeers (see [below for nested schema](#nestedatt--items--status))
-
-<a id="nestedatt--items--spec"></a>
-### Nested Schema for `items.spec`
-
-Optional:
-
-- `node_selectors` (List of String)
-- `nodes` (List of String)
-
 
 <a id="nestedatt--items--alarms"></a>
 ### Nested Schema for `items.alarms`
@@ -85,6 +73,15 @@ Read-Only:
 - `labels` (Map of String)
 - `name` (String)
 - `namespace` (String)
+
+
+<a id="nestedatt--items--spec"></a>
+### Nested Schema for `items.spec`
+
+Read-Only:
+
+- `node_selectors` (List of String)
+- `nodes` (List of String)
 
 
 <a id="nestedatt--items--status"></a>

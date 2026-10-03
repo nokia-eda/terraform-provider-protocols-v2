@@ -77,6 +77,26 @@ data_sources:
       path: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultbgppeers
       method: GET
 
+  default_isis_instance:
+    read:
+      path: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultisisinstances/{name}
+      method: GET
+
+  default_isis_instance_list:
+    read:
+      path: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultisisinstances
+      method: GET
+
+  default_isis_interface:
+    read:
+      path: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultisisinterfaces/{name}
+      method: GET
+
+  default_isis_interface_list:
+    read:
+      path: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultisisinterfaces
+      method: GET
+
   default_ospf_area:
     read:
       path: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultospfareas/{name}
@@ -135,6 +155,26 @@ data_sources:
   default_static_route_list:
     read:
       path: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultstaticroutes
+      method: GET
+
+  isis_instance:
+    read:
+      path: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/isisinstances/{name}
+      method: GET
+
+  isis_instance_list:
+    read:
+      path: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/isisinstances
+      method: GET
+
+  isis_interface:
+    read:
+      path: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/isisinterfaces/{name}
+      method: GET
+
+  isis_interface_list:
+    read:
+      path: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/isisinterfaces
       method: GET
 
   ospf_area:
@@ -303,6 +343,34 @@ resources:
       path: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultbgppeers/{name}
       method: DELETE
 
+  default_isis_instance:
+    create:
+      path: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultisisinstances
+      method: POST
+    read:
+      path: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultisisinstances/{name}
+      method: GET
+    update:
+      path: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultisisinstances/{name}
+      method: PUT
+    delete:
+      path: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultisisinstances/{name}
+      method: DELETE
+
+  default_isis_interface:
+    create:
+      path: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultisisinterfaces
+      method: POST
+    read:
+      path: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultisisinterfaces/{name}
+      method: GET
+    update:
+      path: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultisisinterfaces/{name}
+      method: PUT
+    delete:
+      path: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultisisinterfaces/{name}
+      method: DELETE
+
   default_ospf_area:
     create:
       path: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultospfareas
@@ -385,6 +453,34 @@ resources:
       method: PUT
     delete:
       path: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/defaultstaticroutes/{name}
+      method: DELETE
+
+  isis_instance:
+    create:
+      path: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/isisinstances
+      method: POST
+    read:
+      path: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/isisinstances/{name}
+      method: GET
+    update:
+      path: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/isisinstances/{name}
+      method: PUT
+    delete:
+      path: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/isisinstances/{name}
+      method: DELETE
+
+  isis_interface:
+    create:
+      path: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/isisinterfaces
+      method: POST
+    read:
+      path: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/isisinterfaces/{name}
+      method: GET
+    update:
+      path: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/isisinterfaces/{name}
+      method: PUT
+    delete:
+      path: /apps/protocols.eda.nokia.com/v2/namespaces/{namespace}/isisinterfaces/{name}
       method: DELETE
 
   ospf_area:

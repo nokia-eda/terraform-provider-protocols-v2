@@ -23,7 +23,6 @@ description: |-
 ### Optional
 
 - `hash` (String) resource content will be returned as it was at the time of this git hash
-- `spec` (Attributes) OSPFAreaSpec defines the desired state of OSPFArea (see [below for nested schema](#nestedatt--spec))
 
 ### Read-Only
 
@@ -32,16 +31,8 @@ description: |-
 - `deviations` (Attributes) (see [below for nested schema](#nestedatt--deviations))
 - `kind` (String)
 - `metadata` (Attributes) (see [below for nested schema](#nestedatt--metadata))
+- `spec` (Attributes) OSPFAreaSpec defines the desired state of OSPFArea (see [below for nested schema](#nestedatt--spec))
 - `status` (Attributes) OSPFAreaStatus defines the observed state of OSPFArea (see [below for nested schema](#nestedatt--status))
-
-<a id="nestedatt--spec"></a>
-### Nested Schema for `spec`
-
-Optional:
-
-- `area_id` (String) Area ID. 32-bit in the dotted-quad notation (e.g., "0.0.0.0").
-- `area_type` (String) Area type. Normal is assumed if not specified.
-
 
 <a id="nestedatt--alarms"></a>
 ### Nested Schema for `alarms`
@@ -71,6 +62,15 @@ Read-Only:
 - `labels` (Map of String)
 - `name` (String)
 - `namespace` (String)
+
+
+<a id="nestedatt--spec"></a>
+### Nested Schema for `spec`
+
+Read-Only:
+
+- `area_id` (String) Area ID. 32-bit in the dotted-quad notation (e.g., "0.0.0.0").
+- `area_type` (String) Area type. Normal is assumed if not specified.
 
 
 <a id="nestedatt--status"></a>
